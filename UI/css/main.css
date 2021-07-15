@@ -1,0 +1,50 @@
+@import url("./base/button.css");
+@import url("./variable/variable.css");
+@import url("./common/header.css");
+@import url("./common/menu.css");
+@import url("./common/content.css");
+@import url("./variable/resetcss.css");
+@import url("./common/popup.css");
+
+body {
+    font-family: MISAGoogleSan;
+    font-size: 13px;
+    background-color: var(--primary-color);
+    height: 100vh;
+}
+
+@font-face {
+    font-family: MISAGoogleSan;
+    src: url('../content/font/GoogleSans-Regular.otf');
+}
+
+@font-face {
+    font-family: MISAGoogleSan-Bold;
+    src: url('../content/font/GoogleSans-Bold.otf');
+}
+
+@font-face {
+    font-family: MISAGoogleSan-Italic;
+    src: url('../content/font/GoogleSans-Italic.otf');
+}
+
+.text-red {
+    color: red;
+}
+
+.app {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 700px;
+    width: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex: 1;
+}
