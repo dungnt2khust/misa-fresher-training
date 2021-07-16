@@ -11,6 +11,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="stylesheet" href="./css/components/css/dropdown.css">
     <link rel="stylesheet" href="./css/main.css" />
 
     <title>Phần mềm quản lý nhà hàng MISA-CUKCUK</title>
@@ -701,12 +702,18 @@
                 </div>
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
-                    Giới tính </span>
-                  <select name="" id="" class="popup-infor__input">
-                    <option value="" selected>Nam</option>
-                    <option value="">Nữ </option>
-                    <option value=""> Khác</option>
-                  </select>
+                    Vị trí </span>
+                  <label class="dropdown" for="dropdown-input">
+                    <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
+                    <div class="dropdown-header-wrapper"> 
+                        <span class="dropdown-value dropdown-value--position">
+                        </span>
+                        <i class="fas fa-chevron-down icon-down show"></i>
+                        <i class="fas fa-chevron-up icon-up"></i>
+                    </div>
+                    <ul class="dropdown-list dropdown-list--position">
+                    </ul>
+                  </label> 
                 </div>
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
@@ -740,24 +747,33 @@
               <div class="popup-infor__list">
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
-                    Vị trí</span>
-                  <select name="" id="" class="popup-infor__input">
-                    <option value="" selected> Fresher Web</option>
-                    <option value=""> Giám đốc</option>
-                    <option value=""> Bố giám đốc</option>
-                    <option value=""> Người yêu giám đốc</option>
-                  </select>
+                    Vị trí </span>
+                  <label class="dropdown dropdown--position-b" for="dropdown-input">
+                    <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
+                    <div class="dropdown-header-wrapper"> 
+                        <span class="dropdown-value dropdown-value--position-b">
+                        </span>
+                        <i class="fas fa-chevron-down icon-down show"></i>
+                        <i class="fas fa-chevron-up icon-up"></i>
+                    </div>
+                    <ul class="dropdown-list dropdown-list--position-b">
+                    </ul>
+                  </label> 
                 </div>
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
                     Phòng ban </span>
-                  <select name="" id="" class="popup-infor__input">
-                    <option value="" selected> Viện đào tạo và nghiên cứu công nghệ</option>
-                    <option value=""> Phòng nhân sự</option>
-                    <option value=""> Phòng bảo vệ</option>
-                    <option value=""> Phòng giám đốc</option>
-                    <option value=""> Phòng chống dịch bệnh covid 19</option>
-                  </select>
+                  <label class="dropdown dropdown--department" for="dropdown-input">
+                    <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
+                    <div class="dropdown-header-wrapper"> 
+                        <span class="dropdown-value dropdown-value--department">
+                        </span>
+                        <i class="fas fa-chevron-down icon-down show"></i>
+                        <i class="fas fa-chevron-up icon-up"></i>
+                    </div>
+                    <ul class="dropdown-list dropdown-list--department">
+                    </ul>
+                  </label> 
                 </div>
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
@@ -776,13 +792,18 @@
                 </div>
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
-                    Tình trạng công việc</span>
-                  <select name="" id="" class="popup-infor__input">
-                    <option value="" selected> Đang đào tạo</option>
-                    <option value=""> Chưa có người yêu</option>
-                    <option value=""> Đã lấy chồng</option>
-                    <option value=""> 3 con rồi</option>
-                  </select>
+                    Tình trạng công việc </span>
+                  <label class="dropdown dropdown--workstatus" for="dropdown-input">
+                    <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
+                    <div class="dropdown-header-wrapper"> 
+                        <span class="dropdown-value dropdown-value--workstatus">
+                        </span>
+                        <i class="fas fa-chevron-down icon-down show"></i>
+                        <i class="fas fa-chevron-up icon-up"></i>
+                    </div>
+                    <ul class="dropdown-list dropdown-list--workstatus">
+                    </ul>
+                  </label> 
                 </div>
               </div>
             </div>
@@ -796,5 +817,6 @@
     </div>
     <script src="./js/main.js"></script>
     <script src="./js/clickmaume.js"></script>
+    <script src="./css/components/js/dropdown.js"></script>
   </body>
 </html>
