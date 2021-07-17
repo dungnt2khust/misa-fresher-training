@@ -24,6 +24,7 @@
     /* overflow: hidden; */
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
 }
 
 .popup-header {
@@ -144,6 +145,10 @@
     border-radius: 3;
     border-radius: 4px;
     outline: none;
+}
+
+.popup-infor__input:focus {
+    border: 1px solid #019160;
 }
 
 

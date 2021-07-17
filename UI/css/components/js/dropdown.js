@@ -1,7 +1,7 @@
 // VỊ TRÍ
-var dropdown = document.querySelector(".dropdown");
-var dropdownListPosition = document.querySelector(".dropdown-list.dropdown-list--position");
-var dropdownValuePosition = document.querySelector(".dropdown-value.dropdown-value--position");
+var dropdownPositionA = document.querySelector(".dropdown--position-a");
+var dropdownListPositionA = document.querySelector(".dropdown-list.dropdown-list--position-a");
+var dropdownValuePositionA = document.querySelector(".dropdown-value.dropdown-value--position-a");
 
 // VỊ TRÍ B
 var dropdownPositionB = document.querySelector(".dropdown--position-b");
@@ -18,6 +18,13 @@ var dropdownWorkStatus = document.querySelector(".dropdown--workstatus");
 var dropdownListWorkStatus = document.querySelector(".dropdown-list.dropdown-list--workstatus");
 var dropdownValueWorkStatus = document.querySelector(".dropdown-value.dropdown-value--workstatus");
 
+// TÌNH TRẠNG CÔNG VIỆC
+var dropdownRestaurant = document.querySelector(".dropdown--restaurant");
+var dropdownListRestaurant = document.querySelector(".dropdown-list.dropdown-list--restaurant");
+var dropdownValueRestaurant = document.querySelector(".dropdown-value.dropdown-value--restaurant");
+
+
+
 //ICON
 var iconDown = document.querySelector(".icon-down");
 var iconUp = document.querySelector(".icon-up");
@@ -25,7 +32,7 @@ var iconUp = document.querySelector(".icon-up");
 
 var state = false;
 
-var currValPosition = 4;
+var currValPosition = 0;
 
 
 var dropdownDataPosition = [
@@ -50,7 +57,14 @@ var dropdownDataWorkStatus = [
     "Đã lấy chồng",
     "3 con rồi",
     "test"
-]
+];
+
+var dropdownDataRestaurants = [
+    "Nhà hàng Văn Diện",
+    "Nhà hàng Khánh Bùi",
+    "Nhà hàng Nê Tùng",
+    "Nhà hàng MÍA"
+];
 
 
 function renderDropdown(dropdownValue, dropdownList, currVal, dropdownValue, dropdownData) {
@@ -83,7 +97,7 @@ function renderDropdown(dropdownValue, dropdownList, currVal, dropdownValue, dro
     }
 }
 
-renderDropdown(dropdownValuePosition, dropdownListPosition, currValPosition, dropdownValuePosition, dropdownDataPosition);
+renderDropdown(dropdownValuePositionA, dropdownListPositionA, currValPosition, dropdownValuePositionA, dropdownDataPosition);
 
 renderDropdown(dropdownValuePositionB, dropdownListPositionB, currValPosition, dropdownValuePositionB, dropdownDataPosition);
 
@@ -91,6 +105,7 @@ renderDropdown(dropdownValueDepartment, dropdownListDepartment, currValPosition,
 
 renderDropdown(dropdownValueWorkStatus, dropdownListWorkStatus, currValPosition, dropdownValueWorkStatus, dropdownDataWorkStatus);
 
+renderDropdown(dropdownValueRestaurant, dropdownListRestaurant, currValPosition, dropdownValueRestaurant, dropdownDataRestaurants);
 
 
 
@@ -129,28 +144,38 @@ renderDropdown(dropdownValueWorkStatus, dropdownListWorkStatus, currValPosition,
 // });
 
 // CÁCH 3: 
-dropdown.addEventListener('click', function () {
-    dropdownListPosition.classList.toggle('show');
+dropdownPositionA.addEventListener('click', function () {
+    dropdownPositionA.classList.toggle('focus-dropdown');
+    dropdownListPositionA.classList.toggle('show');
     iconUp.classList.toggle('show');
     iconDown.classList.toggle('show');
 });
 
 dropdownPositionB.addEventListener('click', function () {
+    dropdownPositionB.classList.toggle('focus-dropdown');
     dropdownListPositionB.classList.toggle('show');
     iconUp.classList.toggle('show');
     iconDown.classList.toggle('show');
 });
 
 dropdownDepartment.addEventListener('click', function () {
+    dropdownDepartment.classList.toggle('focus-dropdown');
     dropdownListDepartment.classList.toggle('show');
     iconUp.classList.toggle('show');
     iconDown.classList.toggle('show');
 });
 
 dropdownWorkStatus.addEventListener('click', function () {
+    dropdownWorkStatus.classList.toggle('focus-dropdown');
     dropdownListWorkStatus.classList.toggle('show');
     iconUp.classList.toggle('show');
     iconDown.classList.toggle('show');
 });
 
+dropdownRestaurant.addEventListener('click', function () {
+    dropdownRestaurant.classList.toggle('focus-dropdown');
+    dropdownListRestaurant.classList.toggle('show');
+    iconUp.classList.toggle('show');
+    iconDown.classList.toggle('show');
+});
 

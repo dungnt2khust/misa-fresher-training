@@ -24,11 +24,17 @@
         <div class="logo"></div>
       </div>
       <div class="header-right">
-        <div class="restaurant">
-          Nhà hàng Biển Đông
-          <i class="fas fa-chevron-down restaurant__icon"></i>
-          <ul class="restaurant__dropdown"></ul>
-        </div>
+        <label class="dropdown dropdown--restaurant" for="dropdown-input">
+          <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
+          <div class="dropdown-header-wrapper"> 
+              <span class="dropdown-value dropdown-value--restaurant">
+              </span>
+              <i class="fas fa-chevron-down icon-down show"></i>
+              <i class="fas fa-chevron-up icon-up"></i>
+          </div>
+          <ul class="dropdown-list dropdown-list--restaurant">
+          </ul>
+        </label> 
         <div class="account">
           <div class="account__notify">
             <i class="far fa-bell"></i>
@@ -654,7 +660,7 @@
         </div>
       </div>
     </div> 
-  </div>
+    </div>
     <div class="popup-overlay">
       <div class="popup">
         <div class="popup-header">
@@ -681,14 +687,14 @@
             </div>
             <button class="button btn-setavatar">Đặt ảnh đại diện</button>
           </div>
-          <div class="popup-infor">
+          <form class="popup-infor">
             <div class="popup-infor__common">
               <span class="popup-infor__title">A. THÔNG TIN CHUNG.</span>
               <div class="popup-infor__list">
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
                     Mã nhân viên (<span class="text-red">*</span>)</span>
-                  <input type="text" class="popup-infor__input" value="MF936"/>
+                  <input id="1" type="text" class="popup-infor__input" value="MF936" />
                 </div>
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
@@ -703,15 +709,15 @@
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
                     Vị trí </span>
-                  <label class="dropdown" for="dropdown-input">
+                  <label class="dropdown dropdown--position-a" for="dropdown-input">
                     <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                     <div class="dropdown-header-wrapper"> 
-                        <span class="dropdown-value dropdown-value--position">
+                        <span class="dropdown-value dropdown-value--position-a">
                         </span>
                         <i class="fas fa-chevron-down icon-down show"></i>
                         <i class="fas fa-chevron-up icon-up"></i>
                     </div>
-                    <ul class="dropdown-list dropdown-list--position">
+                    <ul class="dropdown-list dropdown-list--position-a">
                     </ul>
                   </label> 
                 </div>
@@ -807,7 +813,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
         <div class="popup-footer">
           <button class="popup-btn-cancel"> Huỷ</button> 

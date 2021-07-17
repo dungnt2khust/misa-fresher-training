@@ -90,6 +90,9 @@ function showPopup() {
     console.log("show popup");
     popupOverlay.style.visibility = "visible";
     popupOverlay.style.opacity = 1;
+    var firstInput = document.querySelector(".popup-infor__input");
+    console.log(firstInput);
+    firstInput.focus();
 }
 
 function hidePopup() {

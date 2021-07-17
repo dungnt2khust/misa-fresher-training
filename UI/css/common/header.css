@@ -33,8 +33,6 @@ body {
     cursor: pointer;
 }
 
-
-
 /* HEADER RIGHT */
 .header-right {
     display: flex;
@@ -43,55 +41,7 @@ body {
     width: 100%;
 }
 
-.restaurant {
-    height: 30px;
-    line-height: 30px;
-    padding: 0 16px;
-    font-size: 13px;
-    color: #000;
-    margin-left: 10px;
-    border: 1px solid #BBBBBB;
-    border-radius: 4px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    user-select: none;
-    white-space: nowrap;
-}
 
-
-/* HEADER RIGHT RESTAURANT */
-.restaurant__icon {
-    color: #000;
-    font-size: 12px;
-    margin-left: 10px;
-}
-
-.restaurant__dropdown {
-    z-index: 20;
-    overflow: hidden;
-    display: none;
-    list-style: none;
-    position: absolute;
-    top: calc(100% + 3px);
-    right: 0;
-    background-color: #fff;
-    width: 174px;
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
-}
-
-.restaurant__dropdown.show {
-    display: block;
-}
-
-.restaurant__dropdown-item {
-    padding: 4px 16px;
-}
-
-.restaurant__dropdown-item:hover {
-    background-color: #019160;
-    color: #fff;
-}
 
 
 /* HEADER RIGHT ACCOUNT */
