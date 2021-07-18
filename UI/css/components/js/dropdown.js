@@ -36,11 +36,11 @@ var currValPosition = 0;
 
 
 var dropdownDataPosition = [
-    "Tổng giám đốc",
-    "Giám đốc",
-    "Bố giám đốc",
-    "Người yêu giám đốc",
-    "Giám đốc giả vờ và cái kết"
+    "Fresher Web",
+    "Intern Web",
+    "Intern HR",
+    "EM",
+    "BA"
 ];
 
 var dropdownDataDepartment = [
@@ -53,17 +53,16 @@ var dropdownDataDepartment = [
 
 var dropdownDataWorkStatus = [
     "Đang đào tạo",
-    "Chưa có người yêu",
-    "Đã lấy chồng",
-    "3 con rồi",
-    "test"
+    "Đang thực tập",
+    "Đang làm việc",
+    "Đã nghỉ"
 ];
 
 var dropdownDataRestaurants = [
-    "Nhà hàng Văn Diện",
-    "Nhà hàng Khánh Bùi",
-    "Nhà hàng Nê Tùng",
-    "Nhà hàng MÍA"
+    "Nhà hàng biến Đông",
+    "Nhà hàng biến Tây",
+    "Nhà hàng biến Nam",
+    "Nhà hàng biến Bắc"
 ];
 
 
