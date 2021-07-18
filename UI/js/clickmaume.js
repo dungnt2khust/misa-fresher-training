@@ -88,7 +88,7 @@ function setAvatar() {
 
 function showPopup() {
     console.log("show popup");
-    popupOverlay.style.visibility = "visible";
+    popupOverlay.style.display = "block";
     popupOverlay.style.opacity = 1;
     var firstInput = document.querySelector(".popup-infor__input");
     console.log(firstInput);
@@ -96,7 +96,7 @@ function showPopup() {
 }
 
 function hidePopup() {
-    popupOverlay.style.visibility = "hidden";
+    popupOverlay.style.display = "none";
     popupOverlay.style.opacity = 0;
 }
 

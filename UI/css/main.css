@@ -5,6 +5,7 @@
 @import url("./common/content.css");
 @import url("./variable/resetcss.css");
 @import url("./common/popup.css");
+@import url("./common/placeholderItalic.css");
 
 body {
     font-family: MISAGoogleSan;

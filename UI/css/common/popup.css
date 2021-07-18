@@ -9,14 +9,14 @@
     display: flex;
     justify-content: center;
     height: 1000px;
-    visibility: hidden;
+    display: none;
     opacity: 0;
     transition: all 0.2s ease;
 }
 
 .popup {
-    position: relative;
-    top: 20px;
+    margin: auto;
+    margin-top: 20px;
     width: 800px;
     height: 820px;
     background-color: #fff;

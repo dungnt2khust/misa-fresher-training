@@ -31,11 +31,12 @@
 
 .table-search {
     height: 40px;
-    width: 300px;
+    width: 400px;
     display: flex;
     align-items: center;
     border: 1px solid #bbb;
     border-radius: 4px;
+    font-size: 14px;
 }
 
 .table-search__icon {}
@@ -199,11 +200,12 @@
 
 .table-wrapper {
     height: calc(100% - 65px);
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .table-employee {
-    table-layout: auto;
+    table-layout: fixed;
     width: 100%;
     border-spacing: 0;
 }
@@ -221,7 +223,7 @@
 }
 
 .table-employee__row {
-    height: calc((100vh - 226px) / 10);
+    height: calc((100vh - 272px) / 10);
 }
 
 .table-employee__row:hover {
@@ -233,7 +235,9 @@
 .table-employee__row td {
     border-bottom: 1px solid #bbb;
     padding-left: 10px;
-    word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .table-employee__row:nth-child(odd) {
@@ -246,7 +250,48 @@
     text-align: start;
     height: 40px;
     padding-left: 10px;
+    white-space: nowrap;
 }
+
+.table-employee__header:nth-child(1) {
+    width: 30px;
+}
+
+.table-employee__header:nth-child(2) {
+    width: 90px;
+}
+
+.table-employee__header:nth-child(3) {
+    width: 124px;
+}
+
+.table-employee__header:nth-child(4) {
+    width: 62px;
+}
+
+.table-employee__header:nth-child(5) {
+    width: 80px;
+}
+
+.table-employee__header:nth-child(6) {
+    width: 100px;
+}
+
+/* .table-employee__header:nth-child(7) {
+    width: 150px;
+}
+
+.table-employee__header:nth-child(8) {
+    width: 100px;
+}
+
+.table-employee__header:nth-child(9) {
+    width: 180px;
+}
+
+.table-employee__header:nth-child(10) {
+    width: 120px;
+} */
 
 .table-employee__code {}
 
@@ -264,7 +309,10 @@
 
 .table-employee__department {}
 
-.table-employee__salary {}
+.table-employee__salary {
+    text-align: right;
+    padding-right: 20px;
+}
 
 .table-employee__status {}
 
