@@ -40,8 +40,8 @@ slideScale.addEventListener('input', () => {
 }, false);
 
 
-listEmployee.onclick = () => {
-    showPopup();
+listEmployee.onclick = (e) => {
+    showPopup(e);
 }
 
 popupCancel.onclick = () => {
@@ -86,13 +86,14 @@ function setAvatar() {
     console.log(positionX, positionY, scale);
 }
 
-function showPopup() {
-    console.log("show popup");
-    popupOverlay.style.display = "block";
-    popupOverlay.style.opacity = 1;
-    var firstInput = document.querySelector(".popup-infor__input");
-    console.log(firstInput);
-    firstInput.focus();
+function showPopup(e) {
+    var checkbox = document.querySelector(".table-employee__row input");
+    if (e.target != checkbox) {
+        popupOverlay.style.display = "block";
+        popupOverlay.style.opacity = 1;
+        var firstInput = document.querySelector(".popup-infor__input");
+        firstInput.focus();
+    }
 }
 
 function hidePopup() {
