@@ -28,10 +28,7 @@ var dropdownListWorkStatus = $(".dropdown-list--workstatus")[0];
 // DATA
 var state = false;
 
-var currValDepartment = 0;
-var currValPosition = 0;
 var currValRestaurant = 0;
-var currValWorkStatus = 0;
 
 var dropdownDataPosition = [
     "Fresher Web",
@@ -64,12 +61,19 @@ var dropdownDataWorkStatus = [
 
 
 // FUNCTIONS
-function renderDropdown(dropdownValue, dropdownList, currVal, dropdownData) {
+function renderDropdown(dropdownValue, dropdownList, dropdownData) {
+
     render();
 
     function render() {
+        var currVal = parseInt(dropdownValue.getAttribute('currVal'));
         var dropdownListHTML = '';
-        dropdownValue.innerText = dropdownData[currVal];
+        console.log()
+        if (Number.isInteger(currVal)) {
+            dropdownValue.innerText = dropdownData[currVal];
+        } else {
+            dropdownValue.innerText = '';
+        }
 
         for (var i = 0; i < dropdownData.length; i++) {
             if (i != currVal) {
@@ -87,6 +91,7 @@ function renderDropdown(dropdownValue, dropdownList, currVal, dropdownData) {
             item.addEventListener('click', () => {
                 var dataId = item.getAttribute('data-id');
                 currVal = dataId;
+                dropdownValue.setAttribute('currVal', currVal);
                 render();
             });
         });
@@ -95,17 +100,17 @@ function renderDropdown(dropdownValue, dropdownList, currVal, dropdownData) {
 
 
 // MAIN PROGRAM
-renderDropdown(filterValueDepartment, filterListDepartment, currValDepartment, dropdownDataDepartment);
+renderDropdown(filterValueDepartment, filterListDepartment, dropdownDataDepartment);
 
-renderDropdown(filterValuePosition, filterListPosition, currValPosition, dropdownDataPosition);
+renderDropdown(filterValuePosition, filterListPosition, dropdownDataPosition);
 
-renderDropdown(dropdownValueRestaurant, dropdownListRestaurant, currValRestaurant, dropdownDataRestaurant);
+renderDropdown(dropdownValueRestaurant, dropdownListRestaurant, dropdownDataRestaurant);
 
-renderDropdown(dropdownValuePosition, dropdownListPosition, currValPosition, dropdownDataPosition);
+renderDropdown(dropdownValuePosition, dropdownListPosition, dropdownDataPosition);
 
-renderDropdown(dropdownValueDepartment, dropdownListDepartment, currValDepartment, dropdownDataDepartment);
+renderDropdown(dropdownValueDepartment, dropdownListDepartment, dropdownDataDepartment);
 
-renderDropdown(dropdownValueWorkStatus, dropdownListWorkStatus, currValWorkStatus, dropdownDataWorkStatus);
+renderDropdown(dropdownValueWorkStatus, dropdownListWorkStatus, dropdownDataWorkStatus);
 
 // HANDLE EVENTS
 var dropdowns = document.querySelectorAll('.dropdown');

@@ -113,3 +113,7 @@
 .focus-dropdown {
     border: 1px solid #019160 !important;
 }
+
+.icon-down {
+    line-height: 40px !important;
+}

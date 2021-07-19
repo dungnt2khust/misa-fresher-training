@@ -1,9 +1,4 @@
-var popupOverlay = document.querySelector(".popup-overlay");
-var popupCancel = document.querySelector(".popup-header__cancel")
-var popupBtnCancel = document.querySelector(".popup-btn-cancel");
-var popupBtnSave = document.querySelector(".popup-btn-save");
-var listEmployee = document.querySelector(".table-employee__body");
-var popup = document.querySelector(".pop-up");
+// DECLARE VARIABLES
 var avatar = document.querySelector(".popup-avatar__img");
 var inputFile = document.querySelector("#avatar-upload");
 var buttonSetAvatar = document.querySelector(".btn-setavatar");
@@ -39,23 +34,6 @@ slideScale.addEventListener('input', () => {
     setAvatar();
 }, false);
 
-
-listEmployee.onclick = (e) => {
-    showPopup(e);
-}
-
-popupCancel.onclick = () => {
-    hidePopup();
-}
-
-popupBtnCancel.onclick = () => {
-    hidePopup();
-}
-
-popupBtnSave.onclick = () => {
-    hidePopup();
-}
-
 buttonSetAvatar.onclick = () => {
     setAvatar();
 }
@@ -83,21 +61,8 @@ function setAvatar() {
 
     avatar.style.backgroundPosition = `${positionX}px ${positionY}px`;
 
-    console.log(positionX, positionY, scale);
+    // console.log(positionX, positionY, scale);
 }
 
-function showPopup(e) {
-    var checkbox = document.querySelector(".table-employee__row input");
-    if (e.target != checkbox) {
-        popupOverlay.style.display = "block";
-        popupOverlay.style.opacity = 1;
-        var firstInput = document.querySelector(".popup-infor__input");
-        firstInput.focus();
-    }
-}
 
-function hidePopup() {
-    popupOverlay.style.display = "none";
-    popupOverlay.style.opacity = 0;
-}
 
