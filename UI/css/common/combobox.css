@@ -1,25 +1,17 @@
-.wrapper {
-    width: 500px;
-    height: 500px;
-    background-color: burlywood;
-    margin: auto;
-    position: relative;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
 .combobox {
     height: 40px;
-    width: 300px;
+    width: 100%;
     background-color: #fff;
     position: absolute;
     top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 4px;
-    border: 2px solid #bbb;
+    border: 1px solid #bbb;
     display: flex;
     justify-content: space-between;
     position: relative;
+    margin-top: 5px;
 }
 
 .combobox__input {
@@ -73,7 +65,6 @@
 .combobox__item {
     height: 30px;
     padding: 5px 10px;
-    line-height: 30px;
 }
 
 .combobox__item:hover {
