@@ -8,6 +8,7 @@
 @import url("./common/placeholderItalic.css");
 @import url("./common/dropdown.css");
 @import url("./common/combobox.css");
+@import url("base/customizeScrollbar.css");
 
 body {
     font-family: MISAGoogleSan;
