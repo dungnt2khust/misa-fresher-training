@@ -208,6 +208,7 @@
     table-layout: fixed;
     width: 100%;
     border-spacing: 0;
+    padding: 0 16px;
 }
 
 .table-employee__head {
@@ -270,11 +271,15 @@
 }
 
 .table-employee__header:nth-child(5) {
-    width: 80px;
+    width: 100px;
 }
 
 .table-employee__header:nth-child(6) {
     width: 100px;
+}
+
+.table-employee__header:nth-child(10) {
+    width: 130px;
 }
 
 /* .table-employee__header:nth-child(7) {

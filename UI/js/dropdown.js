@@ -25,7 +25,6 @@ var dropdownValueWorkStatus = $(".dropdown-value--workstatus")[0];
 var dropdownListWorkStatus = $(".dropdown-list--workstatus")[0];
 
 
-console.log(dropdownValueWorkStatus, dropdownListWorkStatus);
 // DATA
 var state = false;
 
