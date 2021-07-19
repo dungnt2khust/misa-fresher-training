@@ -81,44 +81,29 @@
                 </div>
                 <input class="table-search__input" placeholder="Tìm theo mã, họ tên hoặc số điện thoại" type="text" />
               </div>
-              <div class="table-filter__department">
-                Tất cả phòng ban
-                <i class="fas fa-chevron-down select-icon active"></i>
-                <i class="fas fa-chevron-up select-icon"></i>
-                <ul class="department-list">
-                  <li class="department-list__item">
-                    <i class="fas fa-check check-item"></i>Phòng ban số 1
-                  </li>
-                  <li class="department-list__item">
-                    <i class="fas fa-check check-item"></i>Phòng ban số 1
-                  </li>
-                  <li class="department-list__item active">
-                    <i class="fas fa-check check-item"></i>Phòng ban số 1
-                  </li>
-                  <li class="department-list__item">
-                    <i class="fas fa-check check-item"></i> Phòng ban số 1
-                  </li>
+              <label class="dropdown table-filter__department" for="dropdown-input">
+                <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
+                <div class="dropdown-header-wrapper"> 
+                    <span class="dropdown-value filter__value--department">
+                    </span>
+                    <i class="fas fa-chevron-down icon-down show"></i>
+                    <i class="fas fa-chevron-up icon-up"></i>
+                </div>
+                <ul class="dropdown-list filter__list--department">
                 </ul>
-              </div>
-              <div class="table-filter__position">
-                Tất cả vị trí
-                <i class="fas fa-chevron-down select-icon active"></i>
-                <i class="fas fa-chevron-up select-icon"></i>
-                <ul class="department-list">
-                  <li class="department-list__item">
-                    <i class="fas fa-check check-item"></i> Vị trí số 1
-                  </li>
-                  <li class="department-list__item">
-                    <i class="fas fa-check check-item"></i> Vị trí số 2
-                  </li>
-                  <li class="department-list__item active">
-                    <i class="fas fa-check check-item"></i> Vị trí số 3
-                  </li>
-                  <li class="department-list__item">
-                    <i class="fas fa-check check-item"></i> Vị trí số 4
-                  </li>
+              </label>
+
+              <label class="dropdown table-filter__position" for="dropdown-input">
+                <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
+                <div class="dropdown-header-wrapper"> 
+                    <span class="dropdown-value filter__value--position">
+                    </span>
+                    <i class="fas fa-chevron-down icon-down show"></i>
+                    <i class="fas fa-chevron-up icon-up"></i>
+                </div>
+                <ul class="dropdown-list filter__list--position">
                 </ul>
-              </div>
+              </label> 
             </div>
           </div>
           <div class="content__header-right">
@@ -1418,7 +1403,7 @@
       <div class="popup">
         <div class="popup-header">
           <span class="popup-header__label"> THÔNG TIN NHÂN VIÊN</span>
-          <span class="popup-header__cancel">x</span>
+          <div class="popup-header__cancel"></div>
         </div>
         <div class="popup-body">
           <div class="popup-avatar">
@@ -1462,15 +1447,15 @@
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
                     Vị trí </span>
-                  <label class="dropdown dropdown--position-a" for="dropdown-input">
+                  <label class="dropdown" for="dropdown-input">
                     <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                     <div class="dropdown-header-wrapper"> 
-                        <span class="dropdown-value dropdown-value--position-a">
+                        <span class="dropdown-value dropdown-value--gender">
                         </span>
                         <i class="fas fa-chevron-down icon-down show"></i>
                         <i class="fas fa-chevron-up icon-up"></i>
                     </div>
-                    <ul class="dropdown-list dropdown-list--position-a">
+                    <ul class="dropdown-list dropdown-list--gender">
                     </ul>
                   </label> 
                 </div>
@@ -1507,15 +1492,15 @@
                 <div class="popup-infor__item">
                   <span class="popup-infor__label">
                     Vị trí </span>
-                  <label class="dropdown dropdown--position-b" for="dropdown-input">
+                  <label class="dropdown dropdown--position" for="dropdown-input">
                     <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                     <div class="dropdown-header-wrapper"> 
-                        <span class="dropdown-value dropdown-value--position-b">
+                        <span class="dropdown-value dropdown-value--position">
                         </span>
                         <i class="fas fa-chevron-down icon-down show"></i>
                         <i class="fas fa-chevron-up icon-up"></i>
                     </div>
-                    <ul class="dropdown-list dropdown-list--position-b">
+                    <ul class="dropdown-list dropdown-list--position">
                     </ul>
                   </label> 
                 </div>
@@ -1574,8 +1559,9 @@
         </div>
       </div>
     </div>
+    <script src="./js/jquery-3.6.0.min.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/clickmaume.js"></script>
-    <script src="./css/components/js/dropdown.js"></script>
+    <script src="./js/dropdown.js"></script>
   </body>
 </html>

@@ -6,6 +6,7 @@
 @import url("./variable/resetcss.css");
 @import url("./common/popup.css");
 @import url("./common/placeholderItalic.css");
+@import url("./common/dropdown.css");
 
 body {
     font-family: MISAGoogleSan;

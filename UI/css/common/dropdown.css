@@ -1,0 +1,15 @@
+.table-filter__department {
+    padding: 0;
+    width: 200px;
+    margin-top: 0;
+}
+
+.table-filter__position {
+    padding: 0;
+    width: 200px;
+    margin-top: 0;
+}
+
+.dropdown-header-wrapper {
+    width: 100%;
+}
