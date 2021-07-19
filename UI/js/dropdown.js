@@ -26,23 +26,39 @@ var dropdownListWorkStatus = $(".dropdown-list--workstatus")[0];
 
 
 // DATA
+
+// CALL API TO LOAD DATA
+var dropdownDataDepartment;
+var dropdownDataPosition;
+$(document).ready(function () {
+    // GET DEPARTMENT
+    $.ajax({
+        url: 'http://cukcuk.manhnv.net/api/Department',
+        method: 'GET'
+    }).done(function (res) {
+        dropdownDataDepartment = res;
+        renderDropdownAPI(filterValueDepartment, filterListDepartment, dropdownDataDepartment, "DepartmentName");
+
+        renderDropdownAPI(dropdownValueDepartment, dropdownListDepartment, dropdownDataDepartment, "DepartmentName");
+    }).fail(function (res) {
+        console.log('fail to get department')
+    });
+
+    // GET POSITION
+    $.ajax({
+        url: 'http://cukcuk.manhnv.net/v1/Positions',
+        method: 'GET'
+    }).done(function (res) {
+        dropdownDataPosition = res;
+
+        renderDropdownAPI(filterValuePosition, filterListPosition, dropdownDataPosition, "PositionName");
+        renderDropdownAPI(dropdownValuePosition, dropdownListPosition, dropdownDataPosition, "PositionName");
+    }).fail(function (res) {
+        console.log('fail to get position');
+    });
+});
+
 var state = false;
-
-var currValRestaurant = 0;
-
-var dropdownDataPosition = [
-    "Fresher Web",
-    "Intern Web",
-    "Intern HR",
-    "EM",
-    "BA"
-];
-
-var dropdownDataDepartment = [
-    "Phòng nhân sự",
-    "Phòng bảo vệ",
-    "Phòng giám đốc",
-];
 
 var dropdownDataRestaurant = [
     "Nhà hàng Biển Đông",
@@ -98,19 +114,49 @@ function renderDropdown(dropdownValue, dropdownList, dropdownData) {
     }
 }
 
+function renderDropdownAPI(dropdownValue, dropdownList, dropdownData, type) {
 
+    renderAPI();
+
+    function renderAPI() {
+        var currVal = parseInt(dropdownValue.getAttribute('currVal'));
+        var dropdownListHTML = '';
+
+        if (Number.isInteger(currVal)) {
+            dropdownValue.innerText = dropdownData[currVal][type];
+        } else {
+            dropdownValue.innerText = '';
+        }
+
+        for (var i = 0; i < dropdownData.length; i++) {
+            if (i != currVal) {
+                dropdownListHTML += `<li data-id=${i} class="dropdown-item"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i][type]} </li>`;
+            } else {
+                dropdownListHTML += `<li data-id=${i} class="dropdown-item active"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i][type]} </li>`;
+            }
+        }
+
+        dropdownList.innerHTML = dropdownListHTML;
+
+        var items = dropdownList.querySelectorAll('.dropdown-item');
+
+        items.forEach((item) => {
+            item.addEventListener('click', () => {
+                var dataId = item.getAttribute('data-id');
+                currVal = dataId;
+                dropdownValue.setAttribute('currVal', currVal);
+                renderAPI();
+            });
+        });
+    }
+}
 // MAIN PROGRAM
-renderDropdown(filterValueDepartment, filterListDepartment, dropdownDataDepartment);
 
-renderDropdown(filterValuePosition, filterListPosition, dropdownDataPosition);
 
 renderDropdown(dropdownValueRestaurant, dropdownListRestaurant, dropdownDataRestaurant);
 
-renderDropdown(dropdownValuePosition, dropdownListPosition, dropdownDataPosition);
-
-renderDropdown(dropdownValueDepartment, dropdownListDepartment, dropdownDataDepartment);
-
 renderDropdown(dropdownValueWorkStatus, dropdownListWorkStatus, dropdownDataWorkStatus);
+
 
 // HANDLE EVENTS
 var dropdowns = document.querySelectorAll('.dropdown');
