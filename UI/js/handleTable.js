@@ -37,6 +37,6 @@ function renderTableEmployee(datas) {
                             <td class="table-employee__salary">${data.Salary}</td>
                             <td class="table-employee__status">${data.WorkStatus}</td>
                         </tr>`;
-        tbodyEmployee.prepend(tableRow);
+        tbodyEmployee.append(tableRow);
     });
 }

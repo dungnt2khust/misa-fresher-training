@@ -73,9 +73,9 @@ function renderDropdown(dropdownValue, dropdownList, currVal, dropdownData) {
 
         for (var i = 0; i < dropdownData.length; i++) {
             if (i != currVal) {
-                dropdownListHTML += `<li data-id=${i} class="dropdown-item"> ${dropdownData[i]} </li>`;
+                dropdownListHTML += `<li data-id=${i} class="dropdown-item"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i]} </li>`;
             } else {
-                dropdownListHTML += `<li data-id=${i} class="dropdown-item active"> ${dropdownData[i]} </li>`;
+                dropdownListHTML += `<li data-id=${i} class="dropdown-item active"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i]} </li>`;
             }
         }
 
@@ -113,7 +113,6 @@ var dropdowns = document.querySelectorAll('.dropdown');
 dropdowns.forEach(function (dropdown) {
     dropdown.addEventListener('click', function () {
         dropdown.querySelector('.dropdown-list').classList.toggle('show');
-        dropdown.querySelector('.icon-up').classList.toggle('show');
         dropdown.querySelector('.icon-down').classList.toggle('show');
     });
 });
