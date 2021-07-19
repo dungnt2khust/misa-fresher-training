@@ -69,14 +69,6 @@
 
 
 
-.icon-down {
-    /* display: none; */
-}
-
-.icon-up {
-    display: none;
-}
-
 #dropdown-input:checked~.dropdown-list {
     display: block;
 }
@@ -92,16 +84,18 @@
 
 /* ghi de */
 
-.icon-down,
-.icon-up,
-.dropdown-list {
-    display: none;
-}
-
-.icon-down.show,
-.icon-up.show,
 .dropdown-list.show {
     display: block;
+}
+
+.icon-down {
+    transform: rotate(0);
+    transition: all 0.3s ease;
+}
+
+.icon-down.show {
+    transform: rotate(180deg);
+    transition: all 0.3s ease;
 }
 
 .dropdown-header-wrapper {

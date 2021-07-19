@@ -278,25 +278,25 @@
     width: 100px;
 }
 
+.table-employee__header:nth-child(7) {
+    width: 200px;
+}
+
+.table-employee__header:nth-child(8) {
+    width: 130px;
+}
+
+.table-employee__header:nth-child(9) {
+    width: 130px;
+}
+
 .table-employee__header:nth-child(10) {
     width: 130px;
 }
 
-/* .table-employee__header:nth-child(7) {
-    width: 150px;
-}
-
-.table-employee__header:nth-child(8) {
-    width: 100px;
-}
-
-.table-employee__header:nth-child(9) {
-    width: 180px;
-}
-
-.table-employee__header:nth-child(10) {
+.table-employee__header:nth-child(11) {
     width: 120px;
-} */
+}
 
 .table-employee__code {}
 
@@ -319,7 +319,10 @@
     padding-right: 20px;
 }
 
-.table-employee__status {}
+.table-employee__status {
+    text-align: right;
+    padding-right: 10px;
+}
 
 
 

@@ -13,3 +13,12 @@
 .dropdown-header-wrapper {
     width: 100%;
 }
+
+.dropdown-icon {
+    visibility: hidden;
+    margin-right: 5px;
+}
+
+.dropdown-item.active .dropdown-icon {
+    visibility: visible;
+}
