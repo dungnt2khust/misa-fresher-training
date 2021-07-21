@@ -345,9 +345,31 @@
       </div>
       <div class="popup-footer">
         <button class="popup-btn-cancel"> Huỷ</button>
+        <button class="btn-delete">Xoá</button>
         <button id="popup-btn-save--infor" class="button popup-btn-save"><i class="far fa-save popup-save-icon"></i>
           Lưu</button>
       </div>
+    </div>
+  </div>
+  <div id="confirm-delete-one" class="popup-overlay--confirm">
+    <div class="confirm-delete">
+        <span class="confirm-delete__text">Bạn có muốn xoá nhân viên này không ?</span>
+        <span class="employee-infor-delete">nguyen tien dung - mf936</span>
+        <div class="confirm-button__wrapper">
+          <button class="confirm-button button confirm-button__agree"> Có</button>
+          <button class="confirm-button confirm-button__cancel"> Không</button>
+        </div>
+      </div>
+    </div>|
+    <div id="confirm-delete-multi" class="popup-overlay--confirm">
+    <div class="confirm-delete-multi">
+        <span class="confirm-delete__text">Bạn có muốn xoá nhân viên này không ?</span>
+        <ul class="employees-list-delete"> 
+        </ul>
+        <div class="confirm-button__wrapper">
+          <button id="confirm-delete-btn-multi" class="confirm-button button confirm-button__agree"> Có</button>
+          <button class="confirm-button confirm-button__cancel"> Không</button>
+        </div>
     </div>
   </div>
   <script src="../lib/js/jquery-3.6.0.min.js"></script>
