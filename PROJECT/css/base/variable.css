@@ -13,6 +13,8 @@
     --pagination-active-color: #019160;
     --button-normal-default-color: #01B075;
     --underline-label-color: #01B075;
-    --table-row-hover: #18c78d8c;
+    --table-row-hover: #d8d8d88c;
     --table-row-focus: #0191628c;
+    --container-color: #d9d9d9;
+    --checkbox-color: #019160;
 }

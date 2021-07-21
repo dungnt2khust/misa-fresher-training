@@ -114,8 +114,11 @@
               </div>
               <span class="button__name"> Thêm nhân viên </span>
             </button>
-            <div class="refresh">
-              <img src="../content/icon/refresh.png" alt="" />
+            <div class="button-f5-delete">
+              <button id="button-delete" class="button"> <i class="fas fa-minus-square"></i> Xoá nhân viên</button>
+              <div class="refresh">
+                <img src="../content/icon/refresh.png" alt="" />
+              </div>
             </div>
           </div>
         </div>
@@ -280,7 +283,7 @@
                 <label class="dropdown dropdown--position" for="dropdown-input">
                   <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                   <div class="dropdown-header-wrapper">
-                    <span id="employee__position" class="dropdown-value dropdown-value--position">
+                    <span id="employee__position" positionid="" class="dropdown-value dropdown-value--position">
                     </span>
                     <i class="fas fa-chevron-down icon-down"></i>
                   </div>
@@ -295,7 +298,7 @@
                 <label class="dropdown dropdown--department" for="dropdown-input">
                   <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                   <div class="dropdown-header-wrapper">
-                    <span id="employee__department" class="dropdown-value dropdown-value--department">
+                    <span id="employee__department" departmentid="" class="dropdown-value dropdown-value--department">
                     </span>
                     <i class="fas fa-chevron-down icon-down"></i>
                   </div>
@@ -352,6 +355,7 @@
   <script src="../js/setavatar.js"></script>
   <script src="../js/dropdown.js"></script>
   <script src="../js/combobox.js"></script>
+  <script src="../js/checkbox.js"></script>
   <script src="../js/employee.js"></script>
 </body>
 
