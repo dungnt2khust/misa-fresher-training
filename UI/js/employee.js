@@ -26,10 +26,10 @@ function renderTableEmployee(datas) {
                             <td class="table-employee__check"><input type="checkbox" name="" id=""></td>
                             <td class="table-employee__code">${datas[i].EmployeeCode}</td>
                             <td class="table-employee__name">${datas[i].FullName}</td>
-                            <td class="table-employee__gender">${datas[i].Gender}</td>
+                            <td class="table-employee__gender">${datas[i].GenderName}</td>
                             <td class="table-employee__dob">${datas[i].DateOfBirth}</td>
                             <td class="table-employee__phone">${datas[i].PhoneNumber}</td>
-                            <td class="table-employee__email">${datas[i].Email}</td>
+                            <td class="table-employee__email" title="${datas[i].Email}">${datas[i].Email}</td>
                             <td class="table-employee__position">${datas[i].PositionName}</td>
                             <td class="table-employee__department">${datas[i].DepartmentName}</td>
                             <td class="table-employee__salary">${datas[i].Salary}</td>
@@ -101,11 +101,59 @@ $(document).ready(function () {
     }, 1000);
 });
 
+
+function createEmployee() {
+    var newEmployee = `{
+    "EmployeeCode": "NV0311",
+    "FirstName": null,
+    "LastName": null,
+    "FullName": "Lưu Tiến Đức",
+    "Gender": -1,
+    "DateOfBirth": "2021-07-20T00:00:00",
+    "PhoneNumber": "0666891179",
+    "Email": "email@email.com",
+    "Address": null,
+    "IdentityNumber": "HUNGNN00251",
+    "IdentityDate": null,
+    "IdentityPlace": "Hà Nội",
+    "JoinDate": "2021-07-24T00:00:00",
+    "MartialStatus": null,
+    "EducationalBackground": null,
+    "QualificationId": null,
+    "DepartmentId": null,
+    "PositionId": null,
+    "WorkStatus": 0,
+    "PersonalTaxCode": "8215092",
+    "Salary": 409137336,
+    "PositionCode": null,
+    "PositionName": null,
+    "DepartmentCode": null,
+    "DepartmentName": null,
+    "QualificationName": null,
+    "GenderName": null,
+    "EducationalBackgroundName": null,
+    "MartialStatusName": null,
+    "CreatedDate": "2021-07-20T13:32:19",
+    "CreatedBy": null,
+    "ModifiedDate": null,
+    "ModifiedBy": null
+  }`;
+}
+
+
+
+
 // SHOW POP UP CREATE
 buttonAddEmployee.onclick = () => {
     popupOverlayCreate.style.display = "block";
-    popupOverlayCreate.style.opacity = "1";
+    popupOverlayCreate.style.opacity = "1"; 
+    getNewEmployeeId();
 }
+
+
+$('#popup-btn-save--create').click(function() {
+    getCreateData();
+})
 
 
 // HIDE POP UP
@@ -124,7 +172,24 @@ popupBtnCancels.forEach((popupCancel) => {
 });
 
 
-// FUNCTIONS
+function getCreateData() {
+
+}
+
+function getNewEmployeeId() {
+    $.ajax({
+        url: 'http://cukcuk.manhnv.net/v1/Employees/NewEmployeeCode',
+        method: 'GET',
+        async: false
+    }).done(function (res) {
+        $('#employee__code--create').val(res);
+        $('#employee__code--create').focus();
+    }).fail(function (res) {
+        console.log('cannot get new employee id');
+    });
+}
+
+
 function showPopupUpdate(e) {
     var checkbox = document.querySelector(".table-employee__row input");
     if (e.target != checkbox) {

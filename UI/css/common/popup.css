@@ -6,12 +6,12 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.4);
-    display: flex;
     justify-content: center;
     height: 1000px;
     display: none;
     opacity: 0;
     transition: all 0.2s ease;
+    overflow: hidden;
 }
 
 .popup {
@@ -21,7 +21,6 @@
     height: 820px;
     background-color: #fff;
     border-radius: 6px;
-    /* overflow: hidden; */
     display: flex;
     flex-direction: column;
     flex-shrink: 0;

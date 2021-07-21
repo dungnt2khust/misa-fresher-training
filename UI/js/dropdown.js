@@ -1,4 +1,3 @@
-// DECLARE VARIABLES
 // FILTER DEPARTMENT
 var filterValueDepartment = $(".filter__value--department")[0];
 var filterListDepartment = $(".filter__list--department")[0];
@@ -26,40 +25,6 @@ var dropdownListWorkStatus = $(".dropdown-list--workstatus")[0];
 
 
 // DATA
-
-// CALL API TO LOAD DATA
-var dropdownDataDepartment;
-var dropdownDataPosition;
-$(document).ready(function () {
-    // GET DEPARTMENT
-    $.ajax({
-        url: 'http://cukcuk.manhnv.net/api/Department',
-        method: 'GET'
-    }).done(function (res) {
-        dropdownDataDepartment = res;
-        renderDropdownAPI(filterValueDepartment, filterListDepartment, dropdownDataDepartment, "DepartmentName");
-
-        renderDropdownAPI(dropdownValueDepartment, dropdownListDepartment, dropdownDataDepartment, "DepartmentName");
-    }).fail(function (res) {
-        console.log('fail to get department')
-    });
-
-    // GET POSITION
-    $.ajax({
-        url: 'http://cukcuk.manhnv.net/v1/Positions',
-        method: 'GET'
-    }).done(function (res) {
-        dropdownDataPosition = res;
-
-        renderDropdownAPI(filterValuePosition, filterListPosition, dropdownDataPosition, "PositionName");
-        renderDropdownAPI(dropdownValuePosition, dropdownListPosition, dropdownDataPosition, "PositionName");
-    }).fail(function (res) {
-        console.log('fail to get position');
-    });
-});
-
-var state = false;
-
 var dropdownDataRestaurant = [
     "Nhà hàng Biển Đông",
     "Nhà hàng Biển Tây",
@@ -75,12 +40,59 @@ var dropdownDataWorkStatus = [
 ];
 
 
+// CALL API TO LOAD DATA
+var dropdownDataDepartment;
+var dropdownDataPosition;
+$(document).ready(function () {
+    // Gọi API lấy các phòng ban
+    $.ajax({
+        url: 'http://cukcuk.manhnv.net/api/Department',
+        method: 'GET'
+    }).done(function (res) {
+        dropdownDataDepartment = res;
 
-// FUNCTIONS
+        // Render các dropdown phòng ban
+        renderDropdownAPI(filterValueDepartment, filterListDepartment, dropdownDataDepartment, "DepartmentName");
+        renderDropdownAPI(dropdownValueDepartment, dropdownListDepartment, dropdownDataDepartment, "DepartmentName");
+    }).fail(function (res) {
+        console.log('fail to get department')
+    });
+
+    // Gọi API lấy các vị trí
+    $.ajax({
+        url: 'http://cukcuk.manhnv.net/v1/Positions',
+        method: 'GET'
+    }).done(function (res) {
+        dropdownDataPosition = res;
+
+        // Render các dropdown vị trí
+        renderDropdownAPI(filterValuePosition, filterListPosition, dropdownDataPosition, "PositionName");
+        renderDropdownAPI(dropdownValuePosition, dropdownListPosition, dropdownDataPosition, "PositionName");
+    }).fail(function (res) {
+        console.log('fail to get position');
+    }); 
+});
+
+// Render các dropdown khác được fix cứng
+renderDropdown(dropdownValueRestaurant, dropdownListRestaurant, dropdownDataRestaurant);
+renderDropdown(dropdownValueWorkStatus, dropdownListWorkStatus, dropdownDataWorkStatus);
+        
+
+/*******************************************************************************
+ * Hàm bao đóng để render cho nhiều dropdown khác nhau (fix cứng dữ liệu)
+ * Author: NTDUNG (21/07/2021)
+ * @param {element} dropdownValue 
+ * @param {element} dropdownList 
+ * @param {element} dropdownData 
+ */
 function renderDropdown(dropdownValue, dropdownList, dropdownData) {
 
     render();
 
+    /*******************************
+     * Hàm render dropdown
+     * Author: NTDUNG (21/7/20212)
+     */
     function render() {
         var currVal = parseInt(dropdownValue.getAttribute('currVal'));
         var dropdownListHTML = '';
@@ -114,6 +126,14 @@ function renderDropdown(dropdownValue, dropdownList, dropdownData) {
     }
 }
 
+/******************************************************************
+ * Hàm bao đóng để render ra nhiều dropdown khác nhau (Rend từ API)
+ * Author: NTDUNG (21/07/2021)
+ * @param {element} dropdownValue 
+ * @param {element} dropdownList 
+ * @param {element} dropdownData 
+ * @param {element} type 
+ */
 function renderDropdownAPI(dropdownValue, dropdownList, dropdownData, type) {
 
     renderAPI();
@@ -150,18 +170,10 @@ function renderDropdownAPI(dropdownValue, dropdownList, dropdownData, type) {
         });
     }
 }
-// MAIN PROGRAM
 
 
-renderDropdown(dropdownValueRestaurant, dropdownListRestaurant, dropdownDataRestaurant);
-
-renderDropdown(dropdownValueWorkStatus, dropdownListWorkStatus, dropdownDataWorkStatus);
-
-
-// HANDLE EVENTS
-var dropdowns = document.querySelectorAll('.dropdown');
-
-dropdowns.forEach(function (dropdown) {
+// Xử lý sự kiện click vào dropdown thì ẩn hiện danh sách chọn phía dưới 
+document.querySelectorAll('.dropdown').forEach(function (dropdown) {
     dropdown.addEventListener('click', function () {
         dropdown.querySelector('.dropdown-list').classList.toggle('show');
         dropdown.querySelector('.icon-down').classList.toggle('show');

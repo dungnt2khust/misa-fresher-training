@@ -38,7 +38,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    min-width: 1258px;
+    flex-shrink: 0;
 }
 
 

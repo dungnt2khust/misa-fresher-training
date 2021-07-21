@@ -46,6 +46,8 @@ body {
     flex-direction: column;
     min-height: 700px;
     width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
 }
 
 .wrapper {
