@@ -11,6 +11,7 @@ var buttonAddEmployee = document.querySelector(".button-addemployee");
 
 // HANDLE EVENTS
 // SHOW POP UP UPDATE
+
 $(document).ready(function () {
     setTimeout(function () {
         var employeeItems = listEmployee.querySelectorAll('.table-employee__row');

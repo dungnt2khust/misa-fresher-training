@@ -14,25 +14,26 @@
     margin-top: 5px;
 }
 
-.combobox__input {
-    width: calc(100% - 92px);
-    border: 0;
-    border-radius: 4px;
-    outline: none;
-    font-size: 14px;
-    padding-left: 10px;
-    background-color: #fff;
-}
+  
+    .combobox__input {
+        width: calc(100% - 92px);
+        border: 0;
+        border-radius: 4px;
+        outline: none;
+        font-size: 14px;
+        padding-left: 10px;
+        background-color: #fff;
+    }
 
-.combobox__dropdown {
-    flex-grow: 0;
-    border-left: 1px solid #bbb;
-    width: 50px;
-    font-size: 16px;
-    text-align: center;
-    line-height: 40px;
-    cursor: pointer;
-}
+    .combobox__dropdown {
+        flex-grow: 0;
+        border-left: 1px solid #bbb;
+        width: 50px;
+        font-size: 16px;
+        text-align: center;
+        line-height: 40px;
+        cursor: pointer;
+    }
 
 .combobox__icon {
     transform: rotate(0);

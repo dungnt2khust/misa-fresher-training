@@ -1,13 +1,8 @@
-// BEGIN DECLARE VARIABLES
-
 // COMBOBOX GENDER
 var comboboxGender = document.querySelector('.combobox--gender');
 var comboboxDropdownGender = document.querySelector('.combobox__dropdown--gender');
 var comboboxListGender = document.querySelector('.combobox__list--gender');
 var comboboxInputGender = document.querySelector('.combobox__input--gender');
-
-// STATUS
-var statusComboboxList = false;
 
 // DATA
 var comboboxDataGender = [
@@ -16,66 +11,77 @@ var comboboxDataGender = [
     'Khác'
 ];
 
+// Giá trị hiện tại
 var currentValue = 0;
 
 
-// END DECLARE VARIABLES
-
-
-// BEGIN MAIN PROGRAM
 
 renderCustomCombobox(comboboxInputGender, comboboxListGender, comboboxDataGender, comboboxGender, comboboxDropdownGender);
 
 
-// END MAIN PROGRAM
 
-
-
-// BEGIN FUNCTIONS
-
+// TODO: HÀM XỬ LÝ
+/**
+ * Hàm render combobox  
+ * Author: NTDUNG (21/7/2021)
+ * @param {element} comboboxInput 
+ * @param {element} comboboxList 
+ * @param {element} comboboxData 
+ * @param {element} combobox 
+ * @param {element} comboboxDropdown 
+ */
 function renderCustomCombobox(comboboxInput, comboboxList, comboboxData, combobox, comboboxDropdown) {
-    // RENDER COMBOBOX
-    renderCombobox(comboboxInput, comboboxList, comboboxData);
+
+    // RENDER DROPDOWN
+    renderDropdown(comboboxInput, comboboxList, comboboxData);
 
     var comboboxInputCancelSub = combobox.querySelector('.combobox__input-cancel');
 
-
-    // BEGIN HANDLE EVENTS
+    // Ấn vào dropdown bên dưới combobox thì ẩn dropdown đó đi
     comboboxList.addEventListener('click', function () {
-        hideDropdown(comboboxList, combobox, comboboxDropdown);
+        hideDropdown(combobox);
     });
 
+    // Focus vào input combobox thì show dropdown
     comboboxInput.addEventListener('focus', function () {
-        showDropdown(comboboxList, combobox, comboboxDropdown);
+        showDropdown(combobox);
     });
 
-
+    // Khi input thì rend lại dropdown
     comboboxInput.addEventListener('input', function () {
         renderInput(comboboxInput, comboboxList, comboboxData);
     });
 
+    // Khi ấn vào nút x nhỏ trong combobox thì xoá nội dung trong input và show lại dropdown
     comboboxInputCancelSub.addEventListener('click', function () {
         comboboxInput.value = '';
         comboboxInput.focus();
         renderInput(comboboxInput, comboboxList, comboboxData);
     });
 
-    window.addEventListener('keydown', function (e) {
+    // Khi ấn enter thì blur input của combobox
+    comboboxInput.addEventListener('keydown', function (e) {
         if (e.code == "Enter") {
-            hideDropdown(comboboxList, combobox, comboboxDropdown);
+            hideDropdown(combobox);
             comboboxInput.blur();
             resolveInputValue(comboboxInput, comboboxData, combobox, comboboxDropdown);
         }
     });
 
+    // Khi nhấn vào nút dropdown ở combobox thì ẩn hiện dropdown
     comboboxDropdown.addEventListener('click', function () {
-        toggleDropdown(comboboxList, combobox, comboboxDropdown);
+        toggleDropdown(combobox);
     });
-
-    // FINISH HANDLE EVENTS
 }
 
-function renderCombobox(comboboxInput, comboboxList, comboboxData) {
+/**
+ * Hàm render phần dropdown của combobox
+ * Author: NTDUNG (21/07/2021)
+ * @param {element} comboboxInput 
+ * @param {element} comboboxList 
+ * @param {element} comboboxData 
+ */
+function renderDropdown(comboboxInput, comboboxList, comboboxData) {
     var comboboxListHTML = '';
     for (var i = 0; i < comboboxData.length; i++) {
         if (i == currentValue) {
@@ -92,12 +98,19 @@ function renderCombobox(comboboxInput, comboboxList, comboboxData) {
     comboboxItems.forEach(function (comboboxItem) {
         comboboxItem.addEventListener('click', function () {
             currentValue = comboboxItem.getAttribute('data-id');
-            renderCombobox(comboboxInput, comboboxList, comboboxData);
+            renderDropdown(comboboxInput, comboboxList, comboboxData);
         });
     });
 }
 
-// RENDER BY SEARCHING TEXT
+
+/**
+ * Hàm render ra giá trị khi input được nhập 
+ * Author: NTDUNG (21/07/2021)
+ * @param {element} comboboxInput 
+ * @param {element} comboboxList 
+ * @param {element} comboboxData 
+ */
 function renderInput(comboboxInput, comboboxList, comboboxData) {
     var comboboxListHTML = '';
     var inputValue = comboboxInput.value;
@@ -125,7 +138,15 @@ function renderInput(comboboxInput, comboboxList, comboboxData) {
     });
 }
 
-// RESOLVE INPUT VALUE
+
+/**
+ * Hàm xử lý khi người dùng nhập xong input (cảnh báo đỏ khi không hợp lệ)
+ * Author: NTDUNG (21/07/2021)
+ * @param {element} comboboxInput 
+ * @param {element} comboboxData 
+ * @param {element} combobox 
+ * @param {element} comboboxDropdown 
+ */
 function resolveInputValue(comboboxInput, comboboxData, combobox, comboboxDropdown) {
     var inputValue = comboboxInput.value;
     var check = comboboxData.find(function (data) {
@@ -138,21 +159,32 @@ function resolveInputValue(comboboxInput, comboboxData, combobox, comboboxDropdo
 }
 
 
-// DISPLAY DROPDOWN
-function toggleDropdown(comboboxList, combobox, comboboxDropdown) {
+/**
+ * Ẩn hiện dropdown của combobox 
+ * Author: NTDUNG (21/07/2021)
+ * @param {element} combobox 
+ */
+function toggleDropdown(combobox) {
     combobox.classList.remove('error');
     combobox.classList.toggle('show');
 }
 
-function showDropdown(comboboxList, combobox, comboboxDropdown) {
+/**
+ * Hiện dropdown của combobox
+ * Author: NTDUNG (21/07/2021)
+ * @param {element} combobox 
+ */
+function showDropdown(combobox) {
     combobox.classList.remove('error');
     combobox.classList.add('show');
 }
 
-function hideDropdown(comboboxList, combobox, comboboxDropdown) {
+/**
+ * Ẩn dropdown của combobox
+ * Author: NTDUNG (21/07/2021)
+ * @param {element} combobox 
+ */
+function hideDropdown(combobox) {
     combobox.classList.remove('error');
     combobox.classList.remove('show');
 }
-
-
-// END FUNCTIONS
