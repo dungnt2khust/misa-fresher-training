@@ -1,9 +1,9 @@
 @import url("./base/button.css");
-@import url("./variable/variable.css");
+@import url('base/resetcss.css');
+@import url('base/variable.css');
 @import url("./common/header.css");
 @import url("./common/menu.css");
-@import url("./common/content.css");
-@import url("./variable/resetcss.css");
+@import url("./common/container.css");
 @import url("./common/popup.css");
 @import url("./common/placeholderItalic.css");
 @import url("./common/dropdown.css");
@@ -32,11 +32,9 @@ body {
     src: url('../content/font/GoogleSans-Italic.otf');
 }
 
-.text-red {
-    color: red;
-}
 
-.app {
+
+#app {
     position: fixed;
     top: 0;
     left: 0;
@@ -50,7 +48,7 @@ body {
     overflow-y: hidden;
 }
 
-.wrapper {
+#wrapper {
     display: flex;
     flex: 1;
 }
