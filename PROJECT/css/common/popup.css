@@ -203,3 +203,94 @@
 .slide-label {
     display: block;
 }
+
+.btn-delete {
+    width: 100px;
+    height: 40px;
+    margin-right: 10px;
+    display: none;
+    cursor: pointer;
+}
+
+/* CONFIRM DELETE */
+.popup-overlay--confirm {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.confirm-delete {
+    width: 340px;
+    height: 170px;
+    background-color: #fff;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.confirm-delete__text {
+    font-size: 18px;
+    margin-top: 20px;
+    align-self: center;
+}
+
+.confirm-delete__text::after {
+    content: "";
+    display: block;
+    width: 160px;
+    height: 4px;
+    background-color: #019160;
+    border-radius: 5px;
+    margin: 10px auto;
+}
+
+.confirm-button__wrapper {
+    align-self: flex-end;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+.confirm-button {
+    width: 100px;
+    height: 40px;
+    margin-bottom: 18px;
+    cursor: pointer;
+}
+
+.employee-infor-delete {
+    display: block;
+    font-size: 20px;
+    margin: auto;
+    margin-top: 0;
+}
+
+.confirm-delete-multi {
+    background-color:#fff;
+    height: 300px;
+    width: 380px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.employees-list-delete {
+    list-style: none;
+    display: block;
+    margin: auto;
+    height: 150px;
+    overflow-y: auto;
+}
+
+.employees-item-delete {
+    font-size: 20px;
+    padding: 2px 16px;
+}

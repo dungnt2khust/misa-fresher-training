@@ -1,8 +1,14 @@
 // DOCUMENT READY
 var method;
 var employeeId = '';
+var employeeName, employeeCode;
+var employeesDelete = new Set();
+var employeesName = new Set();
+var employeesCode = new Set();
+
 $(document).ready(function () {
     loadData(); 
+    afterLoadData();
 });
 
 
@@ -14,6 +20,7 @@ $(document).ready(function () {
         $('.popup-overlay--infor')[0].style.display = "block";
         $('.popup-overlay--infor')[0].style.opacity = "1"; 
         method = 'POST';
+        $('.btn-delete').attr('style', 'display: none;');
         getNewEmployeeId();
     }
 
@@ -44,8 +51,79 @@ $(document).ready(function () {
     // Ấn nút Refresh thì load lại dữ liệu
     $('.refresh')[0].onclick = () => {
         loadData();
-    }
+    } 
 
+    // Nhấn nút xoá nhân viên
+    $('.btn-delete').click(function() {
+        hidePopup($('.popup-overlay--infor')[0]);
+        $('#confirm-delete-one').attr('style', 'display: flex');
+        $('.employee-infor-delete')[0].innerText = `${employeeName} - ${employeeCode}`;
+    });
+
+    // Ấn nút cancel khi confirm xoá nhân viên
+    console.log(document.querySelectorAll('.confirm-button__cancel'));
+    document.querySelectorAll('.confirm-button__cancel').forEach((cancelBtn) => {
+        cancelBtn.addEventListener('click',function() {
+            console.log(cancelBtn.parentElement.parentElement.parentElement);
+            cancelBtn.parentElement.parentElement.parentElement.style.display = "none";
+        });
+    });
+    
+
+    // Ấn nút đồng ý khi confirm xoá nhân viên
+    $('.confirm-button__agree').click(function() {
+        $('#confirm-delete-one').attr('style', 'display: none');
+        method = 'DELETE';
+        handleEmployee(method, employeeId);
+    }); 
+
+    // Ấn nút xoá thì bật dialog confirm
+    $('#button-delete').click(function() {
+        console.log(employeesDelete.size);
+        if (employeesDelete.size) {
+            var employeesDeleteHTML = '';
+            for(let item of employeesCode.values()){
+                employeesDeleteHTML += `<li class="employees-item-delete">${item}</li>`;
+            }
+            $('.employees-list-delete')[0].innerHTML = employeesDeleteHTML;
+            $('#confirm-delete-multi').attr('style', 'display: flex');
+        }
+    });
+
+    // Nút xoá nhiều
+    $('#confirm-delete-btn-multi').click(function() {
+        $('#confirm-delete-multi').attr('style', 'display: none');
+        for (let item of employeesDelete.values()) {
+            method = 'DELETEMULTI';
+            handleEmployee(method, item);
+        }
+        employeesDelete.clear();
+        loadData();
+        afterLoadData();
+    });
+
+
+    function afterLoadData() {
+        $('.table-employee__checkbox').change(function(e) {
+
+            if (employeesDelete.has(e.target.getAttribute('employeeid'))) {
+                employeesDelete.delete(e.target.getAttribute('employeeid'));
+                employeesName.delete(e.target.getAttribute('employeename'));
+                employeesCode.delete(e.target.getAttribute('employeecode'));
+            } else {
+                employeesDelete.add(e.target.getAttribute('employeeid'));
+                employeesName.add(e.target.getAttribute('employeename'));
+                employeesCode.add(e.target.getAttribute('employeecode'));
+            }
+
+            if (!employeesDelete.size) {
+                $('#button-delete').attr('style', 'cursor: unset; opacity: 0.6;');
+            } else { 
+                $('#button-delete').attr('style', 'cursor: pointer; opacity: 1;');
+            }
+            console.log(employeesDelete);
+        });
+    }
 
 
 // TODO: HÀM XỬ LÝ
@@ -80,9 +158,7 @@ $(document).ready(function () {
         for (var i = 0; i < datas.length; i++) {
             var tableRow = `<tr data-id=${i} class="table-employee__row">
                                 <td class="table-employee__check">
-                                   <div class="checkbox">
-                                        <i class="fas fa-check checkbox__icon"></i>
-                                    </div>  
+                                    <input employeeid="${datas[i].EmployeeId}" employeename="${datas[i].FullName}" employeecode="${datas[i].EmployeeCode}" type="checkbox" class="table-employee__checkbox"/>
                                 </td>
                                 <td class="table-employee__code">${resolveValue(datas[i].EmployeeCode)}</td>
                                 <td class="table-employee__name">${resolveValue(datas[i].FullName)}</td>
@@ -134,15 +210,20 @@ $(document).ready(function () {
                 $('#employee__joiningdate')[0].value = resolveDate(dataRow.JoinDate);
                 $('#employee__workstatus')[0].innerText = resolveValue(dataRow.WorkStatus);
                 
+                $('.btn-delete').attr('style', 'display: block');
                 
                 employeeId = dataRow.EmployeeId;
+                employeeName = dataRow.FullName;
+                employeeCode = dataRow.EmployeeCode;
+
+                
                 showPopup(e);
             });
         });
     }
 
     /**
-     * Hàm xử lý khi tạo mới hoặc chỉnh sửa một nhân viên
+     * Hàm xử lý khi tạo mới, xoá và sửa nhân viên
      * Author: NTDUNG (21/07/2021)
      */
     function handleEmployee(method, employeeId) {
@@ -181,7 +262,6 @@ $(document).ready(function () {
             "ModifiedDate": null,
             "ModifiedBy": null
         }`;
-// ${resolveValue($('#employee__department')[0].getAttribute('departmentcode'))
 
         switch (method) {
             case 'POST':
@@ -193,13 +273,10 @@ $(document).ready(function () {
                     datatype: 'json'
                 }).done(function(res) {
                     loadData();
-                    // alert('Thêm mới thành công');
                     console.log("Thêm mới thành công");
                 }).fail(function(res) {
                     alert('Thêm mới thất bại');
                 });
-                console.log(employeeInfor);
-                console.log('posting');
                 break;
             case 'PUT':
                 $.ajax({
@@ -210,12 +287,34 @@ $(document).ready(function () {
                     datatype: 'json'
                 }).done(function(res) {
                     loadData();
-                    // alert('Chỉnh sửa thành công');
                 }).fail(function(res) {
                     alert('Chỉnh sửa thất bại');
                 });
                 console.log(employeeInfor);
                 console.log('putting', employeeId);
+                break;
+            case 'DELETE':
+                console.log('delete', employeeId);
+                $.ajax({
+                    url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
+                    type: 'DELETE', 
+                }).done(function(res) {
+                    loadData();
+                }).fail(function(res) {
+                    alert('Xoá thất bại');
+                });
+                break;
+            case 'DELETEMULTI':
+                console.log('delete', employeeId);
+                $.ajax({
+                    url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
+                    type: 'DELETE', 
+                    // async: false
+                }).done(function(res) {
+                    
+                }).fail(function(res) {
+                    alert('Xoá thất bại');
+                });
                 break;
             default:
                 console.log('do nothing');
@@ -247,8 +346,7 @@ $(document).ready(function () {
      * @param {event} e 
      */
     function showPopup(e) {
-        console.log(e.target);
-        if (!e.target.classList.contains('checkbox') && !e.target.classList.contains('checkbox__icon') ) {
+        if (!e.target.classList.contains('table-employee__checkbox')) {
             $('.popup-overlay--infor')[0].style.display = "block";
             $('.popup-overlay--infor')[0].style.opacity = 1;
             $(".popup-infor__input")[0].focus();

@@ -169,7 +169,10 @@
                 align-items: center;
             } 
                 /* 1.2.2.1. BUTTON DELETE */
-                
+                #button-delete {
+                    cursor: unset;
+                    opacity: 0.6;
+                } 
                 /* 1.2.2.2. BUTTON REFRESH */
                 .refresh {
                 }
