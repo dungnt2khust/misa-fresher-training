@@ -5,11 +5,12 @@
 @import url("./common/placeholderItalic.css");
 @import url("./common/dropdown.css");
 @import url("./common/combobox.css");
+@import url("common/checkbox.css");
 @import url("./common/header.css");
 @import url("./common/menu.css");
 @import url("./common/popup.css");
 @import url("./common/container.css");
-
+@import url("common/common.css");
 body {
     font-family: MISAGoogleSan;
     font-size: 13px;
@@ -44,8 +45,6 @@ body {
     flex-direction: column;
     min-height: 700px;
     width: 100%;
-    overflow-x: scroll;
-    overflow-y: hidden;
 }
 
 #wrapper {

@@ -41,6 +41,11 @@ $(document).ready(function () {
         });
     });
 
+    // Ấn nút Refresh thì load lại dữ liệu
+    $('.refresh')[0].onclick = () => {
+        loadData();
+    }
+
 
 
 // TODO: HÀM XỬ LÝ
@@ -50,12 +55,12 @@ $(document).ready(function () {
      * Author: NTDUNG (21/07/2021)
      */
     function loadData() {
+        // $('.refresh img')[0] = "";
         $.ajax({
             url: 'http://cukcuk.manhnv.net/v1/Employees',
             method: 'GET',
             async: false
         }).done(function (res) {
-            console.log('loadagain')
             renderTableEmployee(res);     
             bindEmployeeInfor();
         }).fail(function (res) {
@@ -69,23 +74,26 @@ $(document).ready(function () {
      */
     var tableData;
     function renderTableEmployee(datas) {
-        console.log('rend again')
-        $('tbody').empty();
+        $('tbody')[0].innerHTML = '';
         var tbodyEmployee = $('tbody');
         tableData = datas;
         for (var i = 0; i < datas.length; i++) {
             var tableRow = `<tr data-id=${i} class="table-employee__row">
-                                <td class="table-employee__check"><input type="checkbox" name="" id=""></td>
-                                <td class="table-employee__code">${datas[i].EmployeeCode}</td>
-                                <td class="table-employee__name">${datas[i].FullName}</td>
-                                <td class="table-employee__gender">${datas[i].GenderName}</td>
+                                <td class="table-employee__check">
+                                   <div class="checkbox">
+                                        <i class="fas fa-check checkbox__icon"></i>
+                                    </div>  
+                                </td>
+                                <td class="table-employee__code">${resolveValue(datas[i].EmployeeCode)}</td>
+                                <td class="table-employee__name">${resolveValue(datas[i].FullName)}</td>
+                                <td class="table-employee__gender">${resolveValue(datas[i].GenderName)}</td>
                                 <td class="table-employee__dob text-align-center">${resolveDate(datas[i].DateOfBirth, 'table')}</td>
-                                <td class="table-employee__phone">${datas[i].PhoneNumber}</td>
-                                <td class="table-employee__email" title="${datas[i].Email}">${datas[i].Email}</td>
-                                <td class="table-employee__position">${datas[i].PositionName}</td>
-                                <td class="table-employee__department">${datas[i].DepartmentName}</td>
-                                <td class="table-employee__salary">${datas[i].Salary}</td>
-                                <td class="table-employee__status">${datas[i].WorkStatus}</td>
+                                <td class="table-employee__phone">${resolveValue(datas[i].PhoneNumber)}</td>
+                                <td class="table-employee__email" title="${resolveValue(datas[i].Email)}">${resolveValue(datas[i].Email)}</td>
+                                <td class="table-employee__position">${resolveValue(datas[i].PositionName)}</td>
+                                <td class="table-employee__department">${resolveValue(datas[i].DepartmentName)}</td>
+                                <td class="table-employee__salary">${resolveValue(datas[i].Salary)}</td>
+                                <td class="table-employee__status">${resolveValue(datas[i].WorkStatus)}</td>
                             </tr>`;
             tbodyEmployee.append(tableRow);
         }
@@ -128,7 +136,6 @@ $(document).ready(function () {
                 
                 
                 employeeId = dataRow.EmployeeId;
-                console.log(dataRow)
                 showPopup(e);
             });
         });
@@ -141,8 +148,8 @@ $(document).ready(function () {
     function handleEmployee(method, employeeId) {
         var employeeInfor = `{
             "EmployeeCode": "${$('#employee__code').val()}",
-            "FirstName": null,
-            "LastName": null,
+            "FirstName": "${getFirstName($('#employee__fullname').val())}",
+            "LastName": "${getLastName($('#employee__fullname').val())}",
             "FullName": "${$('#employee__fullname').val()}",
             "Gender": 1,
             "DateOfBirth": "2021-07-20T00:00:00",
@@ -156,14 +163,14 @@ $(document).ready(function () {
             "MartialStatus": null,
             "EducationalBackground": null,
             "QualificationId": null,
-            "DepartmentId": "${$('#employee__department')[0].getAttribute('departmentid')}",
-            "PositionId": "${$('#employee__position')[0].getAttribute('positionid')}",
+            "DepartmentId": "",
+            "PositionId": "",
             "WorkStatus": "${$('#employee__workstatus').val()}",
             "PersonalTaxCode": "${$('#employee__taxcode').val()}",
             "Salary": "${$('#employee__basesalary').val()}",
-            "PositionCode": null,
+            "PositionCode": "",
             "PositionName": "${$('#employee__position').val()}",
-            "DepartmentCode": null,
+            "DepartmentCode": "",
             "DepartmentName": "${$('#employee__department').val()}",
             "QualificationName": null,
             "GenderName": "${$('#employee__gender').val()}",
@@ -174,6 +181,7 @@ $(document).ready(function () {
             "ModifiedDate": null,
             "ModifiedBy": null
         }`;
+// ${resolveValue($('#employee__department')[0].getAttribute('departmentcode'))
 
         switch (method) {
             case 'POST':
@@ -190,7 +198,8 @@ $(document).ready(function () {
                 }).fail(function(res) {
                     alert('Thêm mới thất bại');
                 });
-                
+                console.log(employeeInfor);
+                console.log('posting');
                 break;
             case 'PUT':
                 $.ajax({
@@ -205,7 +214,8 @@ $(document).ready(function () {
                 }).fail(function(res) {
                     alert('Chỉnh sửa thất bại');
                 });
-                
+                console.log(employeeInfor);
+                console.log('putting', employeeId);
                 break;
             default:
                 console.log('do nothing');
@@ -237,8 +247,8 @@ $(document).ready(function () {
      * @param {event} e 
      */
     function showPopup(e) {
-        var checkbox = document.querySelector(".table-employee__row input");
-        if (e.target != checkbox) {
+        console.log(e.target);
+        if (!e.target.classList.contains('checkbox') && !e.target.classList.contains('checkbox__icon') ) {
             $('.popup-overlay--infor')[0].style.display = "block";
             $('.popup-overlay--infor')[0].style.opacity = 1;
             $(".popup-infor__input")[0].focus();
@@ -297,4 +307,22 @@ $(document).ready(function () {
     function convertDateJSON(date) {
         // console.log(date);
         return date;
+    }
+    /**
+     * Lấy ra họ từ tên đầy đủ
+     * Author: NTDUNG (21/07/2021)
+     * @param {string} fullname 
+     * @return string
+     */
+    function getFirstName(fullname) {
+        return fullname.substring(0, fullname.indexOf(' '));
+    }   
+
+    /**
+     * Lấy ra tên đệm và tên từ tên đầy đủ
+     * Author: NTDUNG (21/07/2021)
+     * @param {string} fullname 
+     */
+    function getLastName(fullname) {
+        return fullname.substring(fullname.indexOf(' ') + 1);
     }

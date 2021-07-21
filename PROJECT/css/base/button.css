@@ -19,3 +19,11 @@
 .button:active {
     background-color: #01b075;
 }
+
+#button-delete {
+    margin-right: 10px;
+} 
+
+#button-delete i{
+    margin-right: 10px;
+} 
