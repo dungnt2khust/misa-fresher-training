@@ -39,6 +39,7 @@ body {
         justify-content: space-between;
         align-items: center;
         min-width: 1258px;
+        flex-grow: 1;
         flex-shrink: 0;
     }
 
@@ -90,3 +91,10 @@ body {
                 background-repeat: no-repeat;
                 cursor: pointer;
             }
+        /* 2.2. DROPDOWN RESTAURANT */
+        .dropdown--restaurant {
+            width: 200px;
+            margin: 0;
+            margin-left: 10px;
+            border: 0;
+        }

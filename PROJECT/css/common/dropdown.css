@@ -34,7 +34,7 @@
         list-style: none;
         background-color: #fff;
         position: absolute;
-        top: calc(100% + 1px);
+        top: calc(100% + 2px);
         left: 0;
         right: 0;
         display: none;
@@ -92,27 +92,7 @@
         align-items: center;
         padding-right: 10px;
         width: 100%;
-    }
-
-    /* OTHER DROPDOWNS */
-    .dropdown--restaurant {
-        width: 200px;
-        margin: 0 0 0 10px;
-        border: 0 !important;
-    }
-
-
-    .table-filter__department {
-        padding: 0;
-        width: 200px;
-        margin-top: 0;
-    }
-
-    .table-filter__position {
-        padding: 0;
-        width: 200px;
-        margin-top: 0;
-    }
+    } 
 
 
 

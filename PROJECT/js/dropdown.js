@@ -175,6 +175,7 @@ function renderDropdownAPI(dropdownValue, dropdownList, dropdownData, type) {
 // Xử lý sự kiện click vào dropdown thì ẩn hiện danh sách chọn phía dưới 
 document.querySelectorAll('.dropdown').forEach(function (dropdown) {
     dropdown.addEventListener('click', function () {
+        dropdown.classList.toggle('focus-dropdown');
         dropdown.querySelector('.dropdown-list').classList.toggle('show');
         dropdown.querySelector('.icon-down').classList.toggle('show');
     });
