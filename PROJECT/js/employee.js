@@ -1,4 +1,6 @@
 // DOCUMENT READY
+var method;
+var employeeId = '';
 $(document).ready(function () {
     loadData();
     setTimeout(function() {
@@ -11,14 +13,16 @@ $(document).ready(function () {
 
     // Khi bật nhấn nút tạo mới thì bật form tạo mới và lấy mã nhân viên mới
     $('.button-addemployee')[0].onclick = () => {
-        $('.popup-overlay--create')[0].style.display = "block";
-        $('.popup-overlay--create')[0].style.opacity = "1"; 
+        $('.popup-overlay--infor input').val('');
+        $('.popup-overlay--infor')[0].style.display = "block";
+        $('.popup-overlay--infor')[0].style.opacity = "1"; 
+        method = 'POST';
         getNewEmployeeId();
     }
 
     // Khi nhấn vào nút tạo mới (Lưu) thì gọi đến hàm tạo mới
-    $('#popup-btn-save--create').click(function() {
-        getCreateData();
+    $('#popup-btn-save--infor').click(function() {
+        handleEmployee(method, employeeId);
     });
 
 
@@ -84,75 +88,82 @@ $(document).ready(function () {
         }
     }
 
+    /**
+     * Hàm bắt sự kiện click vào từng dòng dữ liệu và bind lên form chi tiết
+     * Author: NTDUNG (21/07/2021)
+     */
     function bindEmployeeInfor() {
         var employeeItems = document.querySelectorAll('.table-employee__row');
         employeeItems.forEach((employeeItem) => {
             employeeItem.addEventListener('click', function (e) {
-
+                method = 'PUT';
                 // SET VALUE FROM TABLE ROW TO DETAIL FORM
                 var dataRow = tableData[employeeItem.getAttribute('data-id')];
 
-                $('#employee__code--update')[0].value = resolveValue(dataRow.EmployeeCode);
-                $('#employee__fullname--update')[0].value = resolveValue(dataRow.FullName);
-                $('#employee__dob--update')[0].value = resolveDate(dataRow.DateOfBirth, 'date');
-                $('#employee__gender--update')[0].value = resolveValue(dataRow.GenderName);
-                $('#employee__idnumber--update')[0].value = resolveValue(dataRow.IdentifyNumber);
-                $('#employee__iddate--update')[0].value = resolveDate(dataRow.IdentifyDate, 'date');
-                $('#employee__idplace--update')[0].value = resolveValue(dataRow.IdentifyPlace);
-                $('#employee__email--update')[0].value = resolveValue(dataRow.Email);
-                $('#employee__phone--update')[0].value = resolveValue(dataRow.PhoneNumber);
-                $('#employee__position--update')[0].innerText = resolveValue(dataRow.PositionName);
-                $('#employee__department--update')[0].innerText = resolveValue(dataRow.DepartmentName);
-                $('#employee__taxcode--update')[0].value = resolveValue(dataRow.PersonalTaxCode);
-                $('#employee__basesalary--update')[0].value = resolveValue(dataRow.Salary);
-                $('#employee__joiningdate--update')[0].value = resolveDate(dataRow.JoinDate);
-                $('#employee__workstatus--update')[0].innerText = resolveValue(dataRow.WorkStatus);
-
-                showPopupUpdate(e);
+                $('#employee__code')[0].value = resolveValue(dataRow.EmployeeCode);
+                $('#employee__fullname')[0].value = resolveValue(dataRow.FullName);
+                $('#employee__dob')[0].value = resolveDate(dataRow.DateOfBirth, 'date');
+                $('#employee__gender')[0].value = resolveValue(dataRow.GenderName);
+                $('#employee__idnumber')[0].value = resolveValue(dataRow.IdentifyNumber);
+                $('#employee__iddate')[0].value = resolveDate(dataRow.IdentifyDate, 'date');
+                $('#employee__idplace')[0].value = resolveValue(dataRow.IdentifyPlace);
+                $('#employee__email')[0].value = resolveValue(dataRow.Email);
+                $('#employee__phone')[0].value = resolveValue(dataRow.PhoneNumber);
+                $('#employee__position')[0].innerText = resolveValue(dataRow.PositionName);
+                $('#employee__department')[0].innerText = resolveValue(dataRow.DepartmentName);
+                $('#employee__taxcode')[0].value = resolveValue(dataRow.PersonalTaxCode);
+                $('#employee__basesalary')[0].value = resolveValue(dataRow.Salary);
+                $('#employee__joiningdate')[0].value = resolveDate(dataRow.JoinDate);
+                $('#employee__workstatus')[0].innerText = resolveValue(dataRow.WorkStatus);
+                
+                employeeId = dataRow.EmployeeId;
+                showPopup(e);
             });
         });
     }
 
     /**
-     * Hàm tạo mới một nhân viên
+     * Hàm xử lý khi tạo mới hoặc chỉnh sửa một nhân viên
      * Author: NTDUNG (21/07/2021)
      */
-    function createEmployee() {
+    function handleEmployee() {
         var newEmployee = `{
-        "EmployeeCode": "NV0311",
-        "FirstName": null,
-        "LastName": null,
-        "FullName": "Lưu Tiến Đức",
-        "Gender": -1,
-        "DateOfBirth": "2021-07-20T00:00:00",
-        "PhoneNumber": "0666891179",
-        "Email": "email@email.com",
-        "Address": null,
-        "IdentityNumber": "HUNGNN00251",
-        "IdentityDate": null,
-        "IdentityPlace": "Hà Nội",
-        "JoinDate": "2021-07-24T00:00:00",
-        "MartialStatus": null,
-        "EducationalBackground": null,
-        "QualificationId": null,
-        "DepartmentId": null,
-        "PositionId": null,
-        "WorkStatus": 0,
-        "PersonalTaxCode": "8215092",
-        "Salary": 409137336,
-        "PositionCode": null,
-        "PositionName": null,
-        "DepartmentCode": null,
-        "DepartmentName": null,
-        "QualificationName": null,
-        "GenderName": null,
-        "EducationalBackgroundName": null,
-        "MartialStatusName": null,
-        "CreatedDate": "2021-07-20T13:32:19",
-        "CreatedBy": null,
-        "ModifiedDate": null,
-        "ModifiedBy": null
+            "EmployeeCode": "${$('#employee__code').val()}",
+            "FirstName": null,
+            "LastName": null,
+            "FullName": "${$('#employee__fullname').val()}",
+            "Gender": -1,
+            "DateOfBirth": "2021-07-20T00:00:00",
+            "PhoneNumber": "${$('#employee__phone').val()}",
+            "Email": "email@email.com",
+            "Address": null,
+            "IdentityNumber": "${$('#employee__idnumber').val()}",
+            "IdentityDate": "${$('#employee__iddate').val()}",
+            "IdentityPlace": "${$('#employee__idplace').val()}",
+            "JoinDate": "${$('#employee__joiningdate').val()}",
+            "MartialStatus": null,
+            "EducationalBackground": null,
+            "QualificationId": null,
+            "DepartmentId": null,
+            "PositionId": null,
+            "WorkStatus": "${$('#employee__workstatus').val()}",
+            "PersonalTaxCode": "${$('#employee__taxcode').val()}",
+            "Salary": "${$('#employee__basesalary').val()}",
+            "PositionCode": null,
+            "PositionName": "${$('#employee__position').val()}",
+            "DepartmentCode": null,
+            "DepartmentName": "${$('#employee__department').val()}",
+            "QualificationName": null,
+            "GenderName": "${$('#employee__gender').val()}",
+            "EducationalBackgroundName": null,
+            "MartialStatusName": null,
+            "CreatedDate": "${new Date()}",
+            "CreatedBy": "NTDUNG",
+            "ModifiedDate": null,
+            "ModifiedBy": null
         }`;
+
+        console.log(newEmployee, method, employeeId);
     }
 
     /**
@@ -165,8 +176,8 @@ $(document).ready(function () {
             method: 'GET',
             async: false
         }).done(function (res) {
-            $('#employee__code--create').val(res);
-            $('#employee__code--create').focus();
+            $('#employee__code').val(res);
+            $('#employee__code').focus();
         }).fail(function (res) {
             console.log('cannot get new employee id');
         });
@@ -177,13 +188,12 @@ $(document).ready(function () {
      * Author: NTDUNG (21/07/2021)
      * @param {event} e 
      */
-    function showPopupUpdate(e) {
+    function showPopup(e) {
         var checkbox = document.querySelector(".table-employee__row input");
         if (e.target != checkbox) {
-            $('.popup-overlay--update')[0].style.display = "block";
-            $('.popup-overlay--update')[0].style.opacity = 1;
-            var firstInput = document.querySelector(".popup-overlay--update .popup-infor__input");
-            firstInput.focus();
+            $('.popup-overlay--infor')[0].style.display = "block";
+            $('.popup-overlay--infor')[0].style.opacity = 1;
+            $(".popup-infor__input")[0].focus();
         }
     }
 
