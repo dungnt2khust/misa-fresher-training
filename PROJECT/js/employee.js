@@ -2,10 +2,7 @@
 var method;
 var employeeId = '';
 $(document).ready(function () {
-    loadData();
-    setTimeout(function() {
-        bindEmployeeInfor();
-    }, 1000); 
+    loadData(); 
 });
 
 
@@ -23,6 +20,8 @@ $(document).ready(function () {
     // Khi nhấn vào nút tạo mới (Lưu) thì gọi đến hàm tạo mới
     $('#popup-btn-save--infor').click(function() {
         handleEmployee(method, employeeId);
+        $('.popup-overlay--infor')[0].style.display = "none";
+        $('.popup-overlay--infor')[0].style.opacity = "0"; 
     });
 
 
@@ -52,11 +51,13 @@ $(document).ready(function () {
      */
     function loadData() {
         $.ajax({
-            url: 'http://cukcuk.manhnv.net/v1/Employees?fbclid=IwAR0gkgLV9-EEjuO9Kq15v6Ofy4oJFlFF2tBHn4QIFPngEeEE--jOzMKIAUc',
+            url: 'http://cukcuk.manhnv.net/v1/Employees',
             method: 'GET',
             async: false
         }).done(function (res) {
+            console.log('loadagain')
             renderTableEmployee(res);     
+            bindEmployeeInfor();
         }).fail(function (res) {
             alert('fail to load data');
         });
@@ -68,6 +69,8 @@ $(document).ready(function () {
      */
     var tableData;
     function renderTableEmployee(datas) {
+        console.log('rend again')
+        $('tbody').empty();
         var tbodyEmployee = $('tbody');
         tableData = datas;
         for (var i = 0; i < datas.length; i++) {
@@ -109,14 +112,23 @@ $(document).ready(function () {
                 $('#employee__idplace')[0].value = resolveValue(dataRow.IdentifyPlace);
                 $('#employee__email')[0].value = resolveValue(dataRow.Email);
                 $('#employee__phone')[0].value = resolveValue(dataRow.PhoneNumber);
+
                 $('#employee__position')[0].innerText = resolveValue(dataRow.PositionName);
+                $('#employee__position')[0].setAttribute('positionid', dataRow.PositionId);
+                $('#employee__position')[0].setAttribute('positioncode', dataRow.PositionCode);
+
                 $('#employee__department')[0].innerText = resolveValue(dataRow.DepartmentName);
+                $('#employee__department')[0].setAttribute('departmentid', dataRow.DepartmentId);
+                $('#employee__department')[0].setAttribute('departmentcode', dataRow.DepartmentCode);
+
                 $('#employee__taxcode')[0].value = resolveValue(dataRow.PersonalTaxCode);
                 $('#employee__basesalary')[0].value = resolveValue(dataRow.Salary);
                 $('#employee__joiningdate')[0].value = resolveDate(dataRow.JoinDate);
                 $('#employee__workstatus')[0].innerText = resolveValue(dataRow.WorkStatus);
                 
+                
                 employeeId = dataRow.EmployeeId;
+                console.log(dataRow)
                 showPopup(e);
             });
         });
@@ -126,26 +138,26 @@ $(document).ready(function () {
      * Hàm xử lý khi tạo mới hoặc chỉnh sửa một nhân viên
      * Author: NTDUNG (21/07/2021)
      */
-    function handleEmployee() {
-        var newEmployee = `{
+    function handleEmployee(method, employeeId) {
+        var employeeInfor = `{
             "EmployeeCode": "${$('#employee__code').val()}",
             "FirstName": null,
             "LastName": null,
             "FullName": "${$('#employee__fullname').val()}",
-            "Gender": -1,
+            "Gender": 1,
             "DateOfBirth": "2021-07-20T00:00:00",
             "PhoneNumber": "${$('#employee__phone').val()}",
             "Email": "email@email.com",
             "Address": null,
             "IdentityNumber": "${$('#employee__idnumber').val()}",
-            "IdentityDate": "${$('#employee__iddate').val()}",
+            "IdentityDate": "",
             "IdentityPlace": "${$('#employee__idplace').val()}",
-            "JoinDate": "${$('#employee__joiningdate').val()}",
+            "JoinDate": "",
             "MartialStatus": null,
             "EducationalBackground": null,
             "QualificationId": null,
-            "DepartmentId": null,
-            "PositionId": null,
+            "DepartmentId": "${$('#employee__department')[0].getAttribute('departmentid')}",
+            "PositionId": "${$('#employee__position')[0].getAttribute('positionid')}",
             "WorkStatus": "${$('#employee__workstatus').val()}",
             "PersonalTaxCode": "${$('#employee__taxcode').val()}",
             "Salary": "${$('#employee__basesalary').val()}",
@@ -157,13 +169,49 @@ $(document).ready(function () {
             "GenderName": "${$('#employee__gender').val()}",
             "EducationalBackgroundName": null,
             "MartialStatusName": null,
-            "CreatedDate": "${new Date()}",
+            "CreatedDate": "",
             "CreatedBy": "NTDUNG",
             "ModifiedDate": null,
             "ModifiedBy": null
         }`;
 
-        console.log(newEmployee, method, employeeId);
+        switch (method) {
+            case 'POST':
+                $.ajax({
+                    url: 'http://cukcuk.manhnv.net/v1/Employees',
+                    type: 'POST',
+                    data: employeeInfor,
+                    contentType: 'application/json',
+                    datatype: 'json'
+                }).done(function(res) {
+                    loadData();
+                    // alert('Thêm mới thành công');
+                    console.log("Thêm mới thành công");
+                }).fail(function(res) {
+                    alert('Thêm mới thất bại');
+                });
+                
+                break;
+            case 'PUT':
+                $.ajax({
+                    url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
+                    type: 'PUT',
+                    data: employeeInfor,
+                    contentType: 'application/json',
+                    datatype: 'json'
+                }).done(function(res) {
+                    loadData();
+                    // alert('Chỉnh sửa thành công');
+                }).fail(function(res) {
+                    alert('Chỉnh sửa thất bại');
+                });
+                
+                break;
+            default:
+                console.log('do nothing');
+                break;
+        }
+
     }
 
     /**
@@ -238,4 +286,15 @@ $(document).ready(function () {
      */
     function resolveValue(value) {
         return value == null ? '' : value;
+    }
+
+    /**
+     * Hàm xử lý ngày tháng người dùng nhập vào (hoặc ngày tháng tự lấy lúc nhập liệu để chuyển về ngày tháng chuẩn JSON)
+     * Author: NTDUNG (21/07/2021)
+     * @param {string} date
+     * @returns string
+     */
+    function convertDateJSON(date) {
+        // console.log(date);
+        return date;
     }

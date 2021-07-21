@@ -9,6 +9,7 @@
     min-width: 100px;
     white-space: nowrap;
     cursor: pointer;
+    outline: none;
 }
 
 .button:hover {

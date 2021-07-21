@@ -133,7 +133,7 @@ function renderInput(comboboxInput, comboboxList, comboboxData) {
     comboboxItems.forEach(function (comboboxItem) {
         comboboxItem.addEventListener('click', function () {
             currentValue = comboboxItem.getAttribute('data-id');
-            renderCombobox(comboboxInput, comboboxList, comboboxData);
+            renderDropdown(comboboxInput, comboboxList, comboboxData);
         });
     });
 }

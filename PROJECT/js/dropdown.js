@@ -52,8 +52,8 @@ $(document).ready(function () {
         dropdownDataDepartment = res;
 
         // Render các dropdown phòng ban
-        renderDropdownAPI(filterValueDepartment, filterListDepartment, dropdownDataDepartment, "DepartmentName");
-        renderDropdownAPI(dropdownValueDepartment, dropdownListDepartment, dropdownDataDepartment, "DepartmentName");
+        renderDropdownAPI(filterValueDepartment, filterListDepartment, dropdownDataDepartment, "Department");
+        renderDropdownAPI(dropdownValueDepartment, dropdownListDepartment, dropdownDataDepartment, "Department");
     }).fail(function (res) {
         console.log('fail to get department')
     });
@@ -66,8 +66,8 @@ $(document).ready(function () {
         dropdownDataPosition = res;
 
         // Render các dropdown vị trí
-        renderDropdownAPI(filterValuePosition, filterListPosition, dropdownDataPosition, "PositionName");
-        renderDropdownAPI(dropdownValuePosition, dropdownListPosition, dropdownDataPosition, "PositionName");
+        renderDropdownAPI(filterValuePosition, filterListPosition, dropdownDataPosition, "Position");
+        renderDropdownAPI(dropdownValuePosition, dropdownListPosition, dropdownDataPosition, "Position");
     }).fail(function (res) {
         console.log('fail to get position');
     }); 
@@ -135,7 +135,9 @@ function renderDropdown(dropdownValue, dropdownList, dropdownData) {
  * @param {element} type 
  */
 function renderDropdownAPI(dropdownValue, dropdownList, dropdownData, type) {
-
+    var typeName = type + 'Name';
+    var typeId = type + 'Id';
+    var typeCode = type + 'Code';
     renderAPI();
 
     function renderAPI() {
@@ -143,16 +145,16 @@ function renderDropdownAPI(dropdownValue, dropdownList, dropdownData, type) {
         var dropdownListHTML = '';
 
         if (Number.isInteger(currVal)) {
-            dropdownValue.innerText = dropdownData[currVal][type];
+            dropdownValue.innerText = dropdownData[currVal][typeName];
         } else {
             dropdownValue.innerText = '';
         }
 
         for (var i = 0; i < dropdownData.length; i++) {
             if (i != currVal) {
-                dropdownListHTML += `<li data-id=${i} class="dropdown-item"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i][type]} </li>`;
+                dropdownListHTML += `<li data-id=${i} ${typeId}="${dropdownData[i][typeId]}" ${typeCode}="${dropdownData[i][typeCode]}" class="dropdown-item"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i][typeName]} </li>`;
             } else {
-                dropdownListHTML += `<li data-id=${i} class="dropdown-item active"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i][type]} </li>`;
+                dropdownListHTML += `<li data-id=${i} ${typeId}="${dropdownData[i][typeId]}" ${typeCode}="${dropdownData[i][typeCode]}" class="dropdown-item active"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i][typeName]} </li>`;
             }
         }
 
@@ -165,6 +167,8 @@ function renderDropdownAPI(dropdownValue, dropdownList, dropdownData, type) {
                 var dataId = item.getAttribute('data-id');
                 currVal = dataId;
                 dropdownValue.setAttribute('currVal', currVal);
+                dropdownValue.setAttribute(typeId, item.getAttribute(typeId));
+                dropdownValue.setAttribute(typeCode, item.getAttribute(typeCode));
                 renderAPI();
             });
         });
