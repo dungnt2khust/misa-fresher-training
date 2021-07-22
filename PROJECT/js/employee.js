@@ -8,10 +8,23 @@ var employeesCode = new Set();
 
 $(document).ready(function () {
     loadData();
+    setTimeout(function() {
+        toastMessage('info', 'Đã có bản cập nhật mới. Hãy cập nhật để trải niệm', 5000);
+    }, 20000);
 });
 
 
 // TODO: BẮT CÁC SỰ KIỆN
+
+    // 1. Khi focus vào input tìm kiếm thì border xung quanh 
+    document.querySelector('.table-search__input').addEventListener('focus', function() {
+        document.querySelector('.table-search').classList.add('focus-dropdown');
+    });
+
+    // Khi blur thì bỏ đi
+    document.querySelector('.table-search__input').addEventListener('blur', function() {
+        document.querySelector('.table-search').classList.remove('focus-dropdown');
+    });
 
     // Khi bật nhấn nút tạo mới thì bật form tạo mới và lấy mã nhân viên mới
     $('.button-addemployee')[0].onclick = () => {
@@ -50,6 +63,7 @@ $(document).ready(function () {
     // Ấn nút Refresh thì load lại dữ liệu
     $('.refresh')[0].onclick = () => {
         loadData();
+        toastMessage('success', 'Tải dữ liệu thành công', 5000);
     } 
 
     // Nhấn nút xoá nhân viên
@@ -85,6 +99,7 @@ $(document).ready(function () {
             handleEmployee(method, item);
         }
         loadData();
+        toastMessage('success', 'Xoá nhân viên thành công', 5000);
         employeesDelete.clear(); 
         employeesCode.clear();
         employeesName.clear();
@@ -103,7 +118,6 @@ $(document).ready(function () {
                 for(let item of employeesCode.values()){
                     employeesDeleteHTML += `<li class="employees-item-delete">${item}</li>`;
                 }
-                console.log(employeesDeleteHTML)
                 $('.employees-list-delete')[0].innerHTML = employeesDeleteHTML;
                 $('#confirm-delete-multi').attr('style', 'display: flex');
             }
@@ -152,7 +166,7 @@ $(document).ready(function () {
             setCheckboxEvent();
             multipleDelete();
         }).fail(function (res) {
-            alert('fail to load data');
+            toastMessage('error', 'Dữ liệu chưa tải được. Vui lòng liên hệ MISA');
         });
     }
 
@@ -282,10 +296,10 @@ $(document).ready(function () {
                     contentType: 'application/json',
                     datatype: 'json'
                 }).done(function(res) {
+                    toastMessage('success', 'Thêm mới thành công', 5000);
                     loadData();
-                    console.log("Thêm mới thành công");
                 }).fail(function(res) {
-                    alert('Thêm mới thất bại');
+                    toastMessage('error', 'Tạo mới thông tin thất bại. Vui lòng liên hệ MISA');
                 });
                 break;
             case 'PUT':
@@ -296,9 +310,10 @@ $(document).ready(function () {
                     contentType: 'application/json',
                     datatype: 'json'
                 }).done(function(res) {
+                    toastMessage('success', 'Chỉnh sửa thành công', 5000);
                     loadData();
                 }).fail(function(res) {
-                    alert('Chỉnh sửa thất bại');
+                    toastMessage('error', 'Chỉnh sửa thông tin thất bại. Vui lòng liên hệ MISA');
                 }); 
                 break;
             case 'DELETE':
@@ -307,9 +322,10 @@ $(document).ready(function () {
                     url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
                     type: 'DELETE', 
                 }).done(function(res) {
+                    toastMessage('success', 'Xoá thành công', 5000);
                     loadData();
                 }).fail(function(res) {
-                    alert('Xoá thất bại');
+                    toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA');
                 });
                 break;
             case 'DELETEMULTI':
@@ -318,10 +334,10 @@ $(document).ready(function () {
                     url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
                     type: 'DELETE',
                     async: false
-                }).done(function(res) {
-                    
+                }).done(function(res) { 
+
                 }).fail(function(res) {
-                    alert('Xoá thất bại');
+                    toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA');
                 });
                 break;
             default:
@@ -344,7 +360,7 @@ $(document).ready(function () {
             $('#employee__code').val(res);
             $('#employee__code').focus();
         }).fail(function (res) {
-            console.log('cannot get new employee id');
+            toastMessage('warn', 'Không thể thấy mã nhân viên mới. Vui lòng liên hệ MISA');
         });
     }
 

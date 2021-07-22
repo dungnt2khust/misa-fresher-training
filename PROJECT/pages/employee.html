@@ -84,7 +84,7 @@
                 <input class="table-search__input" placeholder="Tìm theo mã, họ tên hoặc số điện thoại" type="text" />
               </div>
               <!-- FILTER DEPARTMENT -->
-              <label class="dropdown table-filter__department" for="dropdown-input">
+              <label tabindex="0" class="dropdown table-filter__department" for="dropdown-input">
                 <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                 <div class="dropdown-header-wrapper">
                   <span currVal="0" class="dropdown-value filter__value--department">
@@ -95,7 +95,7 @@
                 </ul>
               </label>
               <!-- FILTER POSITION -->
-              <label class="dropdown table-filter__position" for="dropdown-input">
+              <label tabindex="1" class="dropdown table-filter__position" for="dropdown-input">
                 <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                 <div class="dropdown-header-wrapper">
                   <span currVal="0" class="dropdown-value filter__value--position">
@@ -208,27 +208,27 @@
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Mã nhân viên (<span class="text-red">*</span>)</span>
-                <input id="employee__code" type="text" class="popup-infor__input" />
+                <input tabindex="1" id="employee__code" type="text" class="popup-infor__input" />
               </div>
               <!-- FULL NAME -->
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Họ và tên (<span class="text-red">*</span>)</span>
-                <input id="employee__fullname" type="text" class="popup-infor__input"
+                <input tabindex="2" id="employee__fullname" type="text" class="popup-infor__input"
                   value="Nguyễn Tiến Dũng" />
               </div>
               <!-- DOB -->
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Ngày sinh </span>
-                <input id="employee__dob" type="date" class="popup-infor__input" />
+                <input tabindex="3" id="employee__dob" type="date" class="popup-infor__input" />
               </div>
               <!-- GENDER -->
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Giới tính </span>
                 <div class="combobox combobox--gender">
-                  <input id="employee__gender" type="text" name=""
+                  <input tabindex="4" id="employee__gender" type="text" name=""
                     class="combobox__input combobox__input--gender">
                   <div class="combobox__input-cancel">
                     <i class="fas fa-times-circle"></i>
@@ -244,31 +244,31 @@
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Số CMTND/ Căn cước (<span class="text-red">*</span>)</span>
-                <input id="employee__idnumber" type="text" class="popup-infor__input" />
+                <input tabindex="5" id="employee__idnumber" type="text" class="popup-infor__input" />
               </div>
               <!-- RELEASE DATE -->
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Ngày cấp </span>
-                <input id="employee__iddate" type="date" class="popup-infor__input" />
+                <input tabindex="6" id="employee__iddate" type="date" class="popup-infor__input" />
               </div>
               <!-- RELEASE PLACE -->
               <div class="popup-infor__item noi-cap">
                 <span class="popup-infor__label">
                   Nơi cấp</span>
-                <input id="employee__idplace" type="text" class="popup-infor__input" />
+                <input tabindex="7" id="employee__idplace" type="text" class="popup-infor__input" />
               </div>
               <!-- EMAIL -->
               <div class="popup-infor__item email">
                 <span class="popup-infor__label ">
                   Email (<span class="text-red">*</span>)</span>
-                <input id="employee__email" type="text" class="popup-infor__input" />
+                <input tabindex="8" id="employee__email" type="text" class="popup-infor__input" />
               </div>
               <!-- PHONE -->
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Số điện thoại (<span class="text-red">*</span>)</span>
-                <input id="employee__phone" type="text" class="popup-infor__input" />
+                <input tabindex="9" id="employee__phone" type="text" class="popup-infor__input" />
               </div>
             </div>
           </div>
@@ -280,7 +280,7 @@
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Vị trí </span>
-                <label class="dropdown dropdown--position" for="dropdown-input">
+                <label tabindex="10" class="dropdown dropdown--position" for="dropdown-input">
                   <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                   <div class="dropdown-header-wrapper">
                     <span id="employee__position" positionid="" class="dropdown-value dropdown-value--position">
@@ -295,7 +295,7 @@
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Phòng ban </span>
-                <label class="dropdown dropdown--department" for="dropdown-input">
+                <label tabindex="11" class="dropdown dropdown--department" for="dropdown-input">
                   <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                   <div class="dropdown-header-wrapper">
                     <span id="employee__department" departmentid="" class="dropdown-value dropdown-value--department">
@@ -310,25 +310,25 @@
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Mã số thuế cá nhân </span>
-                <input id="employee__taxcode" type="text" class="popup-infor__input" />
+                <input tabindex="12" id="employee__taxcode" type="text" class="popup-infor__input" />
               </div>
               <!-- BASE SALARY -->
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Mức lương cơ bản </span>
-                <input id="employee__basesalary" type="text" class="popup-infor__input" />
+                <input tabindex="13" id="employee__basesalary" type="text" class="popup-infor__input" />
               </div>
               <!-- JOINING DATE -->
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Ngày gia nhập công ty </span>
-                <input id="employee__joiningdate" type="date" class="popup-infor__input" />
+                <input tabindex="14" id="employee__joiningdate" type="date" class="popup-infor__input" />
               </div>
               <!-- WORKING STATUS -->
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Tình trạng công việc </span>
-                <label class="dropdown dropdown--workstatus" for="dropdown-input">
+                <label tabindex="15" class="dropdown dropdown--workstatus" for="dropdown-input">
                   <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                   <div class="dropdown-header-wrapper">
                     <span id="employee__workstatus" class="dropdown-value dropdown-value--workstatus">
@@ -372,13 +372,17 @@
         </div>
     </div>
   </div>
+  <div class="toast-message-list"> 
+  </div> 
   <script src="../lib/js/jquery-3.6.0.min.js"></script>
+  <script src="../js/toastMessage.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/setavatar.js"></script>
   <script src="../js/dropdown.js"></script>
   <script src="../js/combobox.js"></script>
   <script src="../js/checkbox.js"></script>
-  <script src="../js/employee.js"></script>
+  <!-- <script src="../js/employee.js"></script> -->
+  <script src="../js/employee-oop.js"></script>
 </body>
 
 </html>
