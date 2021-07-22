@@ -7,8 +7,7 @@ var employeesName = new Set();
 var employeesCode = new Set();
 
 $(document).ready(function () {
-    loadData(); 
-    afterLoadData();
+    loadData();
 });
 
 
@@ -61,49 +60,60 @@ $(document).ready(function () {
     });
 
     // Ấn nút cancel khi confirm xoá nhân viên
-    console.log(document.querySelectorAll('.confirm-button__cancel'));
     document.querySelectorAll('.confirm-button__cancel').forEach((cancelBtn) => {
         cancelBtn.addEventListener('click',function() {
-            console.log(cancelBtn.parentElement.parentElement.parentElement);
             cancelBtn.parentElement.parentElement.parentElement.style.display = "none";
         });
     });
     
 
     // Ấn nút đồng ý khi confirm xoá nhân viên
-    $('.confirm-button__agree').click(function() {
+    $('#confirm-delete-btn-one').click(function() {
         $('#confirm-delete-one').attr('style', 'display: none');
         method = 'DELETE';
         handleEmployee(method, employeeId);
     }); 
 
-    // Ấn nút xoá thì bật dialog confirm
-    $('#button-delete').click(function() {
-        console.log(employeesDelete.size);
-        if (employeesDelete.size) {
-            var employeesDeleteHTML = '';
-            for(let item of employeesCode.values()){
-                employeesDeleteHTML += `<li class="employees-item-delete">${item}</li>`;
-            }
-            $('.employees-list-delete')[0].innerHTML = employeesDeleteHTML;
-            $('#confirm-delete-multi').attr('style', 'display: flex');
-        }
-    });
+    
+    
 
     // Nút xoá nhiều
     $('#confirm-delete-btn-multi').click(function() {
         $('#confirm-delete-multi').attr('style', 'display: none');
+        method = 'DELETEMULTI';
         for (let item of employeesDelete.values()) {
-            method = 'DELETEMULTI';
             handleEmployee(method, item);
         }
-        employeesDelete.clear();
         loadData();
-        afterLoadData();
+        employeesDelete.clear(); 
+        employeesCode.clear();
+        employeesName.clear();
+        $('#button-delete').attr('style', 'cursor: unset; opacity: 0.6;');
     });
 
-
-    function afterLoadData() {
+    /**
+     * Đặt sự kiện click vào nút xoá nhiều
+     * Author: NTDUNG (22/07/2021)
+     */
+    function multipleDelete() {
+        // Ấn nút xoá thì bật dialog confirm
+        $('#button-delete').click(function() {
+            var employeesDeleteHTML = '';
+            if (employeesDelete.size) {
+                for(let item of employeesCode.values()){
+                    employeesDeleteHTML += `<li class="employees-item-delete">${item}</li>`;
+                }
+                console.log(employeesDeleteHTML)
+                $('.employees-list-delete')[0].innerHTML = employeesDeleteHTML;
+                $('#confirm-delete-multi').attr('style', 'display: flex');
+            }
+        });
+    }
+    /**
+     * Đặt sự kiện checkbox click
+     * Author: NTDUNG (22/07/2021)
+     */
+    function setCheckboxEvent() {
         $('.table-employee__checkbox').change(function(e) {
 
             if (employeesDelete.has(e.target.getAttribute('employeeid'))) {
@@ -121,7 +131,6 @@ $(document).ready(function () {
             } else { 
                 $('#button-delete').attr('style', 'cursor: pointer; opacity: 1;');
             }
-            console.log(employeesDelete);
         });
     }
 
@@ -133,7 +142,6 @@ $(document).ready(function () {
      * Author: NTDUNG (21/07/2021)
      */
     function loadData() {
-        // $('.refresh img')[0] = "";
         $.ajax({
             url: 'http://cukcuk.manhnv.net/v1/Employees',
             method: 'GET',
@@ -141,6 +149,8 @@ $(document).ready(function () {
         }).done(function (res) {
             renderTableEmployee(res);     
             bindEmployeeInfor();
+            setCheckboxEvent();
+            multipleDelete();
         }).fail(function (res) {
             alert('fail to load data');
         });
@@ -289,9 +299,7 @@ $(document).ready(function () {
                     loadData();
                 }).fail(function(res) {
                     alert('Chỉnh sửa thất bại');
-                });
-                console.log(employeeInfor);
-                console.log('putting', employeeId);
+                }); 
                 break;
             case 'DELETE':
                 console.log('delete', employeeId);
@@ -305,11 +313,11 @@ $(document).ready(function () {
                 });
                 break;
             case 'DELETEMULTI':
-                console.log('delete', employeeId);
+                console.log('delete multi', employeeId);
                 $.ajax({
                     url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
-                    type: 'DELETE', 
-                    // async: false
+                    type: 'DELETE',
+                    async: false
                 }).done(function(res) {
                     
                 }).fail(function(res) {
