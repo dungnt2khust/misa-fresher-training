@@ -1,0 +1,118 @@
+:root {
+    --toast-success-color: #01B075;
+    --toast-warn-color: #F1C04E;
+    --toast-error-color: #EB5757;
+    --toast-info-color: #4388D9;
+}
+
+.toast-message-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: fixed;
+    top: 0;
+    right: 100px;
+}
+    /* TOAST MESSAGE */
+    .toast-message {
+        margin-top: 20px;
+        display: flex;
+        height: 48px;
+        background-color:#fff;
+        align-items: center;
+        justify-content: space-between;
+        color: #000;
+        font-size: 13px;
+        border-radius: 4px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+        animation: toastMessageFadeIn 0.8s ease;
+        width: fit-content;
+    }
+    .toast-message.toast-message--success {
+        color: var(--toast-success-color);
+    }
+
+    .toast-message.toast-message--error {
+        color: var(--toast-error-color);
+    }
+
+    .toast-message.toast-message--warn {
+        color: var(--toast-warn-color);
+    }
+
+    .toast-message.toast-message--info {
+        color: var(--toast-info-color);
+    }
+        .toast-message__body {
+            display: flex;
+            flex-direction: row;
+        }
+            .toast-message__icon {
+                margin: 0 10px;
+            }
+                .toast-message__icon i {
+                    font-size: 18px;
+                }
+            .toast-message__title {
+                font-size: 13px;
+                font-family: Arial, Helvetica, sans-serif;
+                color: #000 !important;
+            }
+
+        .toast-message__cancel {
+            cursor: pointer;
+            margin: 0 10px;
+        }
+            .toast-message__cancel i {
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+/* BUTTON TOAST */
+.button-wrapper {
+    margin-bottom: 40px;
+}
+    .btn-toast {
+        padding: 6px 16px;
+        color: #fff;
+        font-size: 14px;
+        border: 0;
+        margin-right: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+        .btn-toast:hover {
+            opacity: 0.7;
+        }
+
+        .btn-toast:active {
+            opacity: 0.5;
+        }
+
+        .btn-toast--success {
+            background-color: var(--toast-success-color);
+        }
+
+        .btn-toast--error {
+            background-color: var(--toast-error-color);
+        }
+
+        .btn-toast--warn {
+            background-color: var(--toast-warn-color);
+        }
+
+        .btn-toast--info {
+            background-color: var(--toast-info-color);
+        }
+
+/* ANIMATIONS */
+@keyframes toastMessageFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    } 
+    to {
+        opacity: 1;
+        transform: translateX(0)
+    }
+}

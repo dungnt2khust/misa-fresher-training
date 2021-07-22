@@ -183,4 +183,22 @@ document.querySelectorAll('.dropdown').forEach(function (dropdown) {
         dropdown.querySelector('.dropdown-list').classList.toggle('show');
         dropdown.querySelector('.icon-down').classList.toggle('show');
     });
+
+    dropdown.addEventListener('click', function() {
+        console.log('inside');
+    });
+
+    dropdown.addEventListener('blur', function() {
+        dropdown.classList.toggle('focus-dropdown');
+        dropdown.querySelector('.dropdown-list').classList.toggle('show');
+        dropdown.querySelector('.icon-down').classList.toggle('show');
+    });
+
+    dropdown.addEventListener('keydown', function(e) {
+        if (e.code == "Enter") {
+            dropdown.classList.toggle('focus-dropdown');
+            dropdown.querySelector('.dropdown-list').classList.toggle('show');
+            dropdown.querySelector('.icon-down').classList.toggle('show');
+        }
+    });
 });
