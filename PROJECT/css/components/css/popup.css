@@ -1,3 +1,15 @@
+.wrapper {
+    width: 500px;
+    height: 500px;
+    background-color: wheat;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 40px;
+}
+
 :root {
     --overlay-background: rgba(0, 0, 0, 0.3);
     --popup-color: #fff;
@@ -5,6 +17,9 @@
     --icon-color--error: #EA2B2B;
 }
 
+.popup {
+    display: none;
+}
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -16,7 +31,7 @@
 
 .popup-container {
     position: fixed;
-    width: 360px;
+    width: 400px;
     height: 180px;
     background-color: var(--popup-color);
     border-radius: 4px;
@@ -80,6 +95,9 @@
             .popup.popup--warn .popup-icon i {
                 color: var(--icon-color--warn);
             }
+            .popup.popup--error .popup-icon i {
+                color: var(--icon-color--error);
+            }
         .popup-content {
             font-size: 13px;
             overflow-wrap: anywhere;
@@ -122,4 +140,12 @@
         }
         .popup-btn.popup-btn--negative:hover {
             background-color: #f65454d5;
+        }
+        .popup-btn.popup-btn--warn {
+            color: #fff;
+            background-color: #FFC400;
+            margin-right: 24px;
+        }
+        .popup-btn.popup-btn--warn:hover {
+            background-color: #ffc400c2;
         }

@@ -9,11 +9,16 @@
     <title>Popup</title>
 </head>
 <body>
-    <div class="popup popup--warn">
+    <div class="wrapper">
+        <button id="btn-error" class="popup-btn popup-btn--negative">Popup báo lỗi</button>
+        <button id="btn-warn" class="popup-btn popup-btn--warn">Popup cảnh báo</button>
+        <button id="btn-info" class="popup-btn popup-btn--positive">Popup thông tin</button>
+    </div>
+    <div class="popup">
         <div class="popup-overlay"></div>
         <div class="popup-container">
             <div class="popup-header">
-                <span class="popup-title">Đóng Form thông tin chung</span>
+                <span class="popup-title"></span>
                 <div class="popup-cancel">
                     <img src="../../content/icon/x.svg" alt="">
                 </div>
@@ -23,14 +28,16 @@
                     <i class="fas fa-exclamation-triangle"></i> 
                 </div>
                 <span class="popup-content">
-                    Bạn có chắc muốn đóng form nhập <b>"Thông tin chung của thủ tục 603"</b> hay không?
+                    
                 </span>
             </div>
             <div class="popup-footer">
-                <button class="popup-btn">Tiếp tục nhập</button>
-                <button class="popup-btn popup-btn--positive">Đóng</button>
+                <button id="popup-btn-continue" class="popup-btn"></button>
+                <button id="popup-btn-cancel" class="popup-btn">Đóng</button>
             </div>
         </div>
     </div> 
+    <script src="../../lib/js/jquery-3.6.0.min.js"></script>
+    <script src="./js/popup.js"></script>
 </body>
 </html>
