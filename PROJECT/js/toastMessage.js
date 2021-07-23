@@ -18,8 +18,9 @@ var toastMessageList = $('.toast-message-list');
 /**
  * Hàm để trả về một element toast message 
  * Author: NTDUNG (22/07/2021)
- * @param {string} type 
- * @param {string} content 
+ * @param {string} type: kiểu thông báo muốn hiên thị
+ * @param {string} content: nội dung thông báo muốn hiên thị
+ * @param {number} duration: thời gian thông báo hiện cho đến khi ẩn đi
  * @returns element
  */
 function toastMessage(type, content, duration) {
