@@ -1,12 +1,38 @@
+//#region [Dữ liệu được fix cứng]
+var dropdownDataRestaurant = [
+    "Nhà hàng Biển Đông",
+    "Nhà hàng Biển Tây",
+    "Nhà hàng Biển Bắc",
+    "Nhà hàng Biển Nam",
+];
+
+var dropdownDataWorkStatus = [
+    "Đang đào tạo",
+    "Đang thực tập",
+    "Đang làm việc",
+    "Tạm nghỉ",
+];
+//#endregion
+
 $(document).ready(function () {
+    //#region [Chương trình chính]
     new EmployeePage('EmployeePage');
     setTimeout(function() {
         toastMessage('info', 'Đã có bản cập nhật mới. Hãy cập nhật để trải niệm', 5000);
-    }, 20000);
+    }, 10000);
+    //#endregion
+
+    //#region [Đổ dữ liệu vào các dropdown]
+    var filterDepartment = new Dropdown($('.filter__value--department')[0], $('.filter__list--department')[0], 'Department', 'FILTER', 'http://cukcuk.manhnv.net/api/Department');
+    var filterPosition = new Dropdown($('.filter__value--position')[0], $('.filter__list--position')[0], 'Position', 'FILTER', 'http://cukcuk.manhnv.net/v1/Positions');
+    var dropdownRestaurant = new Dropdown($('.dropdown-value--restaurant')[0], $('.dropdown-list--restaurant')[0], '', 'FIX', '', dropdownDataRestaurant);
+    var filterDepartment = new Dropdown($('.dropdown-value--department')[0], $('.dropdown-list--department')[0], 'Department', 'NORMAL', 'http://cukcuk.manhnv.net/api/Department');
+    var filterPosition = new Dropdown($('.dropdown-value--position')[0], $('.dropdown-list--position')[0], 'Position', 'NORMAL', 'http://cukcuk.manhnv.net/v1/Positions');
+    //#endregion
 });
 
-
 class EmployeePage {
+    //#region [Các thuộc tính của employee]
     PageTitle = null;
     TableData;
     method;
@@ -16,6 +42,8 @@ class EmployeePage {
     employeesDelete = new Set();
     employeesName = new Set();
     employeesCode = new Set();
+    //#endregion
+
     //#region [Hàm khởi tạo]
     constructor (pageTitle) {
         // Tiêu đề trang:
@@ -39,7 +67,7 @@ class EmployeePage {
             document.querySelector('.table-search').classList.add('focus-dropdown');
         });
 
-        // 2. Khi blur thì bỏ đi
+        // 2. Khi blur thì trở lại border bình thường
         document.querySelector('.table-search__input').addEventListener('blur', function() {
             document.querySelector('.table-search').classList.remove('focus-dropdown');
         });
@@ -54,11 +82,15 @@ class EmployeePage {
             this.getNewEmployeeId();
         }
 
-        // 4. Khi nhấn vào nút tạo mới (Lưu) thì gọi đến hàm tạo mới
+        // 4. Khi nhấn vào nút tạo mới (Lưu) thì gọi đến tạo mới hoặc chỉnh sửa
         $('#popup-btn-save--infor').click(() => {
-            this.handleEmployee(this.method, this.employeeId);
             $('.popup-overlay--infor')[0].style.display = "none";
             $('.popup-overlay--infor')[0].style.opacity = "0"; 
+            if (this.method == 'POST') {
+                this.add();
+            } else if(this.method == 'PUT') {
+                this.update();
+            } 
         });
 
         // 5. Ấn vào dấu x thì ẩn form đi
@@ -101,22 +133,13 @@ class EmployeePage {
         // 10. Ấn nút đồng ý khi confirm xoá nhân viên
         $('#confirm-delete-btn-one').click(() => {
             $('#confirm-delete-one').attr('style', 'display: none');
-            this.method = 'DELETE';
-            this.handleEmployee(this.method, this.employeeId);
+            this.delete();
         }); 
 
         // 11. Nút xoá nhiều
         $('#confirm-delete-btn-multi').click(() => {
-            $('#confirm-delete-multi').attr('style', 'display: none');
-            this.method = 'DELETEMULTI';
-            for (let item of this.employeesDelete.values()) {
-                this.handleEmployee(this.method, item);
-            }
-            this.loadData();
-            toastMessage('success', 'Xoá nhân viên thành công', 5000);
-            this.employeesDelete.clear(); 
-            this.employeesCode.clear();
-            this.employeesName.clear();
+            $('#confirm-delete-multi').attr('style', 'display: none'); 
+            this.deleteMulti();  
             $('#button-delete').removeClass('button-enable');
         }); 
     }
@@ -202,7 +225,7 @@ class EmployeePage {
      */
     add() {
         try {
-
+            this.handleEmployee('POST', this.employeeId);
         } catch (error) {
             console.log(error);
         }
@@ -214,7 +237,7 @@ class EmployeePage {
      */
     update() {
         try {
-
+            this.handleEmployee('PUT', this.employeeId);
         } catch (error) {
             console.log(error);
         }
@@ -226,12 +249,31 @@ class EmployeePage {
      */
     delete() {
         try {
-
+            this.handleEmployee('DELETE', this.employeeId);
         } catch (error) {
             console.log(error);
         }
     }
 
+    /**
+     * Xoá nhiều bản ghi 
+     * Author: NTDUNG (23/07/2021)
+     */
+
+    deleteMulti() {
+        try {
+            for (let item of this.employeesDelete.values()) {
+                this.handleEmployee('DELETEMULTI', item);
+            }
+            this.loadData();
+            toastMessage('success', 'Xoá nhân viên thành công', 5000);
+            this.employeesDelete.clear(); 
+            this.employeesCode.clear();
+            this.employeesName.clear();
+        } catch (error) {
+            console.log(error);
+        }
+    }
     /**
      * Hàm bắt sự kiện click vào từng dòng dữ liệu và bind lên form chi tiết
      * Author: NTDUNG (21/07/2021)

@@ -27,6 +27,7 @@
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
         animation: toastMessageFadeIn 0.8s ease;
         width: fit-content;
+        min-width: 300px;
     }
     .toast-message.toast-message--success {
         color: var(--toast-success-color);

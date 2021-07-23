@@ -1,9 +1,3 @@
-// COMBOBOX GENDER
-var comboboxGender = document.querySelector('.combobox--gender');
-var comboboxDropdownGender = document.querySelector('.combobox__dropdown--gender');
-var comboboxListGender = document.querySelector('.combobox__list--gender');
-var comboboxInputGender = document.querySelector('.combobox__input--gender');
-
 // DATA
 var comboboxDataGender = [
     'Nam',
@@ -16,7 +10,7 @@ var currentValue = 0;
 
 
 
-renderCustomCombobox(comboboxInputGender, comboboxListGender, comboboxDataGender, comboboxGender, comboboxDropdownGender);
+renderCustomCombobox($('.combobox__input--gender')[0], $('.combobox__list--gender')[0], comboboxDataGender, $('.combobox--gender')[0], $('.combobox__dropdown--gender')[0]);
 
 
 
@@ -37,29 +31,31 @@ function renderCustomCombobox(comboboxInput, comboboxList, comboboxData, combobo
 
     var comboboxInputCancelSub = combobox.querySelector('.combobox__input-cancel');
 
-    // Ấn vào dropdown bên dưới combobox thì ẩn dropdown đó đi
+    // TODO: Tạo sự kiện cho combobox
+
+    // 1. Ấn vào dropdown bên dưới combobox thì ẩn dropdown đó đi
     comboboxList.addEventListener('click', function () {
         hideDropdown(combobox);
     });
 
-    // Focus vào input combobox thì show dropdown
+    // 2. Focus vào input combobox thì show dropdown
     comboboxInput.addEventListener('focus', function () {
         showDropdown(combobox);
     });
 
-    // Khi input thì rend lại dropdown
+    // 3. Khi input thì rend lại dropdown
     comboboxInput.addEventListener('input', function () {
         renderInput(comboboxInput, comboboxList, comboboxData);
     });
 
-    // Khi ấn vào nút x nhỏ trong combobox thì xoá nội dung trong input và show lại dropdown
+    // 4. Khi ấn vào nút x nhỏ trong combobox thì xoá nội dung trong input và show lại dropdown
     comboboxInputCancelSub.addEventListener('click', function () {
         comboboxInput.value = '';
         comboboxInput.focus();
         renderInput(comboboxInput, comboboxList, comboboxData);
     });
 
-    // Khi ấn enter thì blur input của combobox
+    // 5. Khi ấn enter thì blur input của combobox
     comboboxInput.addEventListener('keydown', function (e) {
         if (e.code == "Enter") {
             hideDropdown(combobox);
@@ -68,10 +64,13 @@ function renderCustomCombobox(comboboxInput, comboboxList, comboboxData, combobo
         }
     });
 
-    // Khi nhấn vào nút dropdown ở combobox thì ẩn hiện dropdown
+    // 6. Khi nhấn vào nút dropdown ở combobox thì ẩn hiện dropdown
     comboboxDropdown.addEventListener('click', function () {
         toggleDropdown(combobox);
     });
+
+    // 7. Tắt tự động hoàn thành (danh sách gợi ý cho input)
+    comboboxInput.setAttribute('autocomplete', 'off');
 }
 
 /**
