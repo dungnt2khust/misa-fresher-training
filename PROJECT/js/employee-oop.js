@@ -12,7 +12,14 @@ var dropdownDataWorkStatus = [
     "Đang làm việc",
     "Tạm nghỉ",
 ];
+
+var comboboxDataGender = [
+    'Nam',
+    'Nữ',
+    'Không xác định'
+];
 //#endregion
+
 
 $(document).ready(function () {
     //#region [Chương trình chính]
@@ -22,6 +29,9 @@ $(document).ready(function () {
     }, 10000);
     //#endregion
 
+    //#region [Đổ dữ liệu vào các combobox]
+    new Combobox($('#combobox-gender')[0], '', 'FIX', '', comboboxDataGender);
+    //#endregion
     //#region [Đổ dữ liệu vào các dropdown]
     var filterDepartment = new Dropdown($('#filter-department')[0], 'Department', 'FILTER', 'http://cukcuk.manhnv.net/api/Department');
     var filterPosition = new Dropdown($('#filter-position')[0], 'Position', 'FILTER', 'http://cukcuk.manhnv.net/v1/Positions');
@@ -307,6 +317,7 @@ class EmployeePage {
                 $('#employee__joiningdate').val(this.resolveDate(dataRow.JoinDate));
                 $('#employee__workstatus').val(this.resolveValue(dataRow.WorkStatus));
                 
+                $('#employee__gender').attr('genderid', dataRow.Gender);
                 $('.btn-delete').attr('style', 'display: block');
                 
                 this.employeeId = dataRow.EmployeeId;
@@ -323,33 +334,34 @@ class EmployeePage {
      * Hàm xử lý khi tạo mới, xoá và sửa nhân viên
      * Author: NTDUNG (21/07/2021)
      */
-    handleEmployee(method, employeeId) {
+    handleEmployee() {
+        console.log($('#employee__gender').attr('genderid'));
         var employeeInfor = `{
             "EmployeeCode": "${$('#employee__code').val()}",
             "FirstName": "${this.getFirstName($('#employee__fullname').val())}",
             "LastName": "${this.getLastName($('#employee__fullname').val())}",
             "FullName": "${$('#employee__fullname').val()}",
-            "Gender": 1,
-            "DateOfBirth": "2021-07-20T00:00:00",
+            "Gender": ${parseInt($('#employee__gender').attr('genderid'))},
+            "DateOfBirth": "${$('#employee__dob').val()}",
             "PhoneNumber": "${$('#employee__phone').val()}",
-            "Email": "email@email.com",
+            "Email": "${$('#employee__email').val()}",
             "Address": null,
             "IdentityNumber": "${$('#employee__idnumber').val()}",
-            "IdentityDate": "",
+            "IdentityDate": "${$('#employee__iddate').val()}",
             "IdentityPlace": "${$('#employee__idplace').val()}",
-            "JoinDate": "",
+            "JoinDate": "${$('#employee__joiningdate').val()}",
             "MartialStatus": null,
             "EducationalBackground": null,
             "QualificationId": null,
-            "DepartmentId": "",
-            "PositionId": "",
+            "DepartmentId": "${$('#employee__department').attr('departmentid')}",
+            "PositionId": "${$('#employee__position').attr('positionid')}",
             "WorkStatus": "${$('#employee__workstatus').val()}",
             "PersonalTaxCode": "${$('#employee__taxcode').val()}",
             "Salary": "${$('#employee__basesalary').val()}",
-            "PositionCode": "",
-            "PositionName": "${$('#employee__position').val()}",
-            "DepartmentCode": "",
-            "DepartmentName": "${$('#employee__department').val()}",
+            "PositionCode": "${$('#employee__position').attr('positioncode')}",
+            "PositionName": "${$('#employee__position').text()}",
+            "DepartmentCode": "${$('#employee__department').attr('departmentcode')}",
+            "DepartmentName": "${$('#employee__department').text()}",
             "QualificationName": null,
             "GenderName": "${$('#employee__gender').val()}",
             "EducationalBackgroundName": null,
@@ -357,64 +369,65 @@ class EmployeePage {
             "CreatedDate": "",
             "CreatedBy": "NTDUNG",
             "ModifiedDate": null,
-            "ModifiedBy": null
+            "ModifiedBy": "NTDUNG"
         }`;
+        console.log(employeeInfor);
 
-        switch (method) {
-            case 'POST':
-                $.ajax({
-                    url: 'http://cukcuk.manhnv.net/v1/Employees',
-                    type: 'POST',
-                    data: employeeInfor,
-                    contentType: 'application/json',
-                    datatype: 'json'
-                }).done((res) => {
-                    toastMessage('success', 'Thêm mới thành công', 5000);
-                    this.loadData();
-                }).fail(function(res) {
-                    toastMessage('error', 'Tạo mới thông tin thất bại. Vui lòng liên hệ MISA');
-                });
-                break;
-            case 'PUT':
-                $.ajax({
-                    url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
-                    type: 'PUT',
-                    data: employeeInfor,
-                    contentType: 'application/json',
-                    datatype: 'json'
-                }).done((res) => {
-                    toastMessage('success', 'Chỉnh sửa thành công', 5000);
-                    this.loadData();
-                }).fail(function(res) {
-                    toastMessage('error', 'Chỉnh sửa thông tin thất bại. Vui lòng liên hệ MISA');
-                }); 
-                break;
-            case 'DELETE':
-                $.ajax({
-                    url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
-                    type: 'DELETE', 
-                }).done((res) => {
-                    toastMessage('success', 'Xoá thành công', 5000);
-                    this.loadData();
-                }).fail(function(res) {
-                    toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA');
-                });
-                break;
-            case 'DELETEMULTI':
-                $.ajax({
-                    url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
-                    type: 'DELETE',
-                    async: false
-                }).done(function(res) { 
+        // switch (method) {
+        //     case 'POST':
+        //         $.ajax({
+        //             url: 'http://cukcuk.manhnv.net/v1/Employees',
+        //             type: 'POST',
+        //             data: employeeInfor,
+        //             contentType: 'application/json',
+        //             datatype: 'json'
+        //         }).done((res) => {
+        //             toastMessage('success', 'Thêm mới thành công', 5000);
+        //             this.loadData();
+        //         }).fail(function(res) {
+        //             toastMessage('error', 'Tạo mới thông tin thất bại. Vui lòng liên hệ MISA');
+        //         });
+        //         break;
+        //     case 'PUT':
+        //         $.ajax({
+        //             url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
+        //             type: 'PUT',
+        //             data: employeeInfor,
+        //             contentType: 'application/json',
+        //             datatype: 'json'
+        //         }).done((res) => {
+        //             toastMessage('success', 'Chỉnh sửa thành công', 5000);
+        //             this.loadData();
+        //         }).fail(function(res) {
+        //             toastMessage('error', 'Chỉnh sửa thông tin thất bại. Vui lòng liên hệ MISA');
+        //         }); 
+        //         break;
+        //     case 'DELETE':
+        //         $.ajax({
+        //             url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
+        //             type: 'DELETE', 
+        //         }).done((res) => {
+        //             toastMessage('success', 'Xoá thành công', 5000);
+        //             this.loadData();
+        //         }).fail(function(res) {
+        //             toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA');
+        //         });
+        //         break;
+        //     case 'DELETEMULTI':
+        //         $.ajax({
+        //             url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
+        //             type: 'DELETE',
+        //             async: false
+        //         }).done(function(res) { 
 
-                }).fail(function(res) {
-                    toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA');
-                });
-                break;
-            default:
-                console.log('do nothing');
-                break;
-        }
+        //         }).fail(function(res) {
+        //             toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA');
+        //         });
+        //         break;
+        //     default:
+        //         console.log('do nothing');
+        //         break;
+        // }
 
     }
 

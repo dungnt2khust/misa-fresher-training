@@ -1,15 +1,3 @@
-// Dữ liệu fix cứng
-var comboboxDataGender = [
-    'Nam',
-    'Nữ',
-    'Khác'
-];
-var currentValue = 0;
-
-$(document).ready(function() {
-    new Combobox($('#combobox-gender')[0], '', 'FIX', '', comboboxDataGender);
-});
-
 class Combobox {
     //#region [Hàm khởi tạo]
     constructor(comboboxElement, combobox, type, url, comboboxData) {
@@ -24,13 +12,21 @@ class Combobox {
         this.type = type;
         this.url = url;
         this.comboboxData = comboboxData;
+        
+        this.comboboxName = combobox + 'Name';
+        this.comboboxId = combobox + 'Id';
+        this.comboboxCode = combobox + 'Code';
+
+        
+        this.currentValue = this.comboboxInput.value == '' ? 0 : parseInt(this.comboboxInput.value);
         // Load dữ liệu vào combobox
-        // this.loadComboboxData();
+        this.loadComboboxData();
         // Tạo sự kiện cho combobox
         this.initComboboxEvents();
     }
     //#endregion
 
+    //#region [Hàm xử lý]
     /**
      * Hàm khởi tạo các sự kiện cho combobox
      * Author: NTDUNG (23/07/2021)
@@ -48,14 +44,26 @@ class Combobox {
 
         // 3. Khi input thì rend lại dropdown
         this.comboboxInput.addEventListener('input', () => {
-            this.renderInput();
+            if (this.type == 'FIX') {
+                this.renderInput();
+            } else if (this.type = 'NORMAL') {
+                this.renderInputAPI();
+            } else if (this.type = 'FILTER') {
+                this.renderInputAPIAll();
+            }
         });
 
         // 4. Khi ấn vào nút x nhỏ trong combobox thì xoá nội dung trong input và show lại dropdown
         this.comboboxInputCancel.addEventListener('click', () => {
             this.comboboxInput.value = '';
             this.comboboxInput.focus();
-            this.renderInput();
+            if (this.type == 'FIX') {
+                this.renderInput();
+            } else if (this.type = 'NORMAL') {
+                this.renderInputAPI();
+            } else if (this.type = 'FILTER') {
+                this.renderInputAPIAll();
+            }
         });
 
         // 5. Khi ấn enter thì blur input của combobox
@@ -70,11 +78,17 @@ class Combobox {
         // 6. Khi nhấn vào nút dropdown ở combobox thì ẩn hiện dropdown
         this.comboboxDropdown.addEventListener('click', () => {
             this.toggleDropdown();
+            this.resolveInputValue();
         });
 
         // 7. Tắt tự động hoàn thành (danh sách gợi ý cho input)
         this.comboboxInput.setAttribute('autocomplete', 'off');
 
+        // 8. Khi blur input thì ẩn dropdown
+        this.comboboxElement.addEventListener('blur', () => {
+            this.hideDropdown();
+            this.resolveInputValue();
+        });
     }
 
     /**
@@ -82,91 +96,274 @@ class Combobox {
      * Author: NTDUNG (23/07/2021)
      */
     loadComboboxData() {
+        try {
+            if (this.type == 'FIX') {
+                this.renderDropdown();
+            } else {
+                $.ajax({
+                    url: this.url,
+                    method: 'GET'
+                }).done ((res) => {
+                    this.comboboxData = res;
+                    if (this.type = 'NORMAL') {
+                        this.renderDropdownAPI();
+                    } else if (this.type = 'FILTER') {
+                        this.renderInputAPIAll();
+                    }
+                }).fail((res) => {
 
+                })
+            }
+        } catch (error) {
+            console.log(error);
+        } 
     }
 
+    /**
+     * Hàm render phần dropdown của combobox (Dữ liệu từ API) chứa lựa chọn tất cả
+     * Author: NTDUNG (23/07/2021)
+     */
+    renderDropdownAPIAll() {
+        try {
+            var comboboxListHTML = '';
+            for (var i = 0; i < this.comboboxData.length; i++) { 
+                if (i == this.currentValue) {
+                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
+                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                                            class="combobox__item combobox__item--active">
+                                            <i class="fas fa-check combobox__check"></i> 
+                                            ${this.comboboxData[i][this.comboboxName]}
+                                        </li>`;
+                } else {
+                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
+                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                                            class="combobox__item">
+                                            <i class="fas fa-check combobox__check"></i> 
+                                            ${this.comboboxData[i][this.comboboxName]}
+                                        </li>`;
+                }
+            }
+            this.comboboxInput.value = this.comboboxData[this.currentValue][this.comboboxName];
+            this.comboboxList.innerHTML = comboboxListHTML;
+
+            var comboboxItems = this.comboboxList.querySelectorAll('li');
+
+            comboboxItems.forEach((comboboxItem) => {
+                comboboxItem.addEventListener('click', () => {
+                    this.currentValue = comboboxItem.getAttribute('data-id');
+                    this.renderDropdownAPI();
+                });
+            });
+        } catch (error) {
+            console.log(error);
+        } 
+    }
 
     /**
-     * Hàm render phần dropdown của combobox
-     * Author: NTDUNG (21/07/2021)
-     * @param {element} comboboxInput 
-     * @param {element} comboboxList 
-     * @param {element} comboboxData 
+     * Hàm render phần dropdown của combobox (Dữ liệu từ API)
+     * Author: NTDUNG (23/07/2021)
      */
-    renderDropdown(comboboxInput, comboboxList, comboboxData) {
+    renderDropdownAPI() {
+        try {
+            var comboboxListHTML = '';
+            for (var i = 0; i < this.comboboxData.length; i++) {
+                if (i == this.currentValue) {
+                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
+                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                                            class="combobox__item combobox__item--active">
+                                            <i class="fas fa-check combobox__check"></i> 
+                                            ${this.comboboxData[i][this.comboboxName]}
+                                        </li>`;
+                } else {
+                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
+                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                                            class="combobox__item">
+                                            <i class="fas fa-check combobox__check"></i> 
+                                            ${this.comboboxData[i][this.comboboxName]}
+                                        </li>`;
+                }
+            }
+            this.comboboxInput.value = this.comboboxData[this.currentValue][this.comboboxName];
+            this.comboboxList.innerHTML = comboboxListHTML;
+
+            var comboboxItems = this.comboboxList.querySelectorAll('li');
+
+            comboboxItems.forEach((comboboxItem) => {
+                comboboxItem.addEventListener('click', () => {
+                    this.currentValue = comboboxItem.getAttribute('data-id');
+                    this.renderDropdownAPI();
+                });
+            });
+        } catch (error) {
+            console.log(error);
+        } 
+    }
+
+    /**
+     * Hàm render phần dropdown của combobox (Dữ liệu fix cứng)
+     * Author: NTDUNG (21/07/2021)
+     */
+    renderDropdown() {
         var comboboxListHTML = '';
-        for (var i = 0; i < comboboxData.length; i++) {
-            if (i == currentValue) {
-                comboboxListHTML += `<li data-id=${i} class="combobox__item combobox__item--active"><i class="fas fa-check combobox__check"></i> ${comboboxData[i]}</li>`;
+        for (var i = 0; i < this.comboboxData.length; i++) {
+            if (i == this.currentValue) {
+                comboboxListHTML += `<li data-id=${i} class="combobox__item combobox__item--active">
+                                        <i class="fas fa-check combobox__check"></i> ${this.comboboxData[i]}
+                                    </li>`;
             } else {
-                comboboxListHTML += `<li data-id=${i} class="combobox__item"><i class="fas fa-check combobox__check"></i> ${comboboxData[i]}</li>`;
+                comboboxListHTML += `<li data-id=${i} class="combobox__item">
+                                        <i class="fas fa-check combobox__check"></i> ${this.comboboxData[i]}
+                                    </li>`;
             }
         }
-        comboboxInput.value = comboboxData[currentValue];
-        comboboxList.innerHTML = comboboxListHTML;
+        this.comboboxInput.value = this.comboboxData[this.currentValue];
+        this.comboboxList.innerHTML = comboboxListHTML;
 
-        var comboboxItems = comboboxList.querySelectorAll('li');
+        var comboboxItems = this.comboboxList.querySelectorAll('li');
 
-        comboboxItems.forEach(function (comboboxItem) {
-            comboboxItem.addEventListener('click', function () {
-                currentValue = comboboxItem.getAttribute('data-id');
-                renderDropdown(comboboxInput, comboboxList, comboboxData);
+        comboboxItems.forEach((comboboxItem) => {
+            comboboxItem.addEventListener('click', () => {
+                this.currentValue = comboboxItem.getAttribute('data-id');
+                this.comboboxInput.setAttribute('genderid', this.currentValue);
+                this.renderDropdown();
             });
         });
     }
 
-
     /**
-     * Hàm render ra giá trị khi input được nhập 
-     * Author: NTDUNG (21/07/2021)
-     * @param {element} comboboxInput 
-     * @param {element} comboboxList 
-     * @param {element} comboboxData 
-     */
-    renderInput(comboboxInput, comboboxList, comboboxData) {
+     * Hàm render ra giá trị khi input được nhập (Dữ liệu từ API) chứa lựa chọn tất cả
+     * Author: NTDUNG (23/07/2021)
+    */
+    renderInputAPIAll() {
         var comboboxListHTML = '';
-        var inputValue = comboboxInput.value;
+        var inputValue = this.comboboxInput.value;
         var inputValueLowercase = inputValue.toLowerCase().trim();
-
-        for (var i = 0; i < comboboxData.length; i++) {
-            var comboboxDataLowerCase = comboboxData[i].toLowerCase().trim();
+        
+        for (var i = 0; i < this.comboboxData.length; i++) {
+            var comboboxDataLowerCase = this.comboboxData[i][this.comboboxName].toLowerCase().trim();
             if (comboboxDataLowerCase.includes(inputValueLowercase)) {
-                if (i == currentValue) {
-                    comboboxListHTML += `<li data-id=${i} class="combobox__item combobox__item--active"><i class="fas fa-check combobox__check"></i> ${comboboxData[i]}</li>`;
+                if (i == this.currentValue) {
+                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
+                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                                            class="combobox__item combobox__item--active">
+                                            <i class="fas fa-check combobox__check"></i> 
+                                            ${this.comboboxData[i][this.comboboxName]}
+                                        </li>`;
                 } else {
-                    comboboxListHTML += `<li data-id=${i} class="combobox__item"><i class="fas fa-check combobox__check"></i> ${comboboxData[i]}</li>`;
+                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
+                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                                            class="combobox__item">
+                                            <i class="fas fa-check combobox__check"></i> 
+                                            ${this.comboboxData[i][this.comboboxName]}
+                                        </li>`;
                 }
             }
         }
-        comboboxList.innerHTML = comboboxListHTML;
+        this.comboboxList.innerHTML = comboboxListHTML;
 
-        var comboboxItems = comboboxList.querySelectorAll('li');
+        var comboboxItems = this.comboboxList.querySelectorAll('li');
 
-        comboboxItems.forEach(function (comboboxItem) {
-            comboboxItem.addEventListener('click', function () {
-                currentValue = comboboxItem.getAttribute('data-id');
-                renderDropdown(comboboxInput, comboboxList, comboboxData);
+        comboboxItems.forEach((comboboxItem) => {
+            comboboxItem.addEventListener('click', () => {
+                this.currentValue = comboboxItem.getAttribute('data-id');
+                this.renderDropdownAPI();
+            });
+        });
+    }
+    /**
+     * Hàm render ra giá trị khi input được nhập (Dữ liệu từ API)
+     * Author: NTDUNG (23/07/2021)
+    */
+    renderInputAPI() {
+        var comboboxListHTML = '';
+        var inputValue = this.comboboxInput.value;
+        var inputValueLowercase = inputValue.toLowerCase().trim();
+        
+        for (var i = 0; i < this.comboboxData.length; i++) {
+            var comboboxDataLowerCase = this.comboboxData[i][this.comboboxName].toLowerCase().trim();
+            if (comboboxDataLowerCase.includes(inputValueLowercase)) {
+                if (i == this.currentValue) {
+                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
+                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                                            class="combobox__item combobox__item--active">
+                                            <i class="fas fa-check combobox__check"></i> 
+                                            ${this.comboboxData[i][this.comboboxName]}
+                                        </li>`;
+                } else {
+                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
+                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                                            class="combobox__item">
+                                            <i class="fas fa-check combobox__check"></i> 
+                                            ${this.comboboxData[i][this.comboboxName]}
+                                        </li>`;
+                }
+            }
+        }
+        this.comboboxList.innerHTML = comboboxListHTML;
+
+        var comboboxItems = this.comboboxList.querySelectorAll('li');
+
+        comboboxItems.forEach((comboboxItem) => {
+            comboboxItem.addEventListener('click', () => {
+                this.currentValue = comboboxItem.getAttribute('data-id');
+                this.renderDropdownAPI();
             });
         });
     }
 
+    /**
+     * Hàm render ra giá trị khi input được nhập (Dữ liệu fix cứng)
+     * Author: NTDUNG (21/07/2021)
+    */
+    renderInput() {
+        var comboboxListHTML = '';
+        var inputValue = this.comboboxInput.value;
+        var inputValueLowercase = inputValue.toLowerCase().trim();
+        
+        for (var i = 0; i < this.comboboxData.length; i++) {
+            var comboboxDataLowerCase = this.comboboxData[i].toLowerCase().trim();
+            if (comboboxDataLowerCase.includes(inputValueLowercase)) {
+                if (i == this.currentValue) {
+                    comboboxListHTML += `<li data-id=${i} class="combobox__item combobox__item--active">
+                                            <i class="fas fa-check combobox__check"></i> ${this.comboboxData[i]} 
+                                        </li>`;
+                } else {
+                    comboboxListHTML += `<li data-id=${i} class="combobox__item">
+                                            <i class="fas fa-check combobox__check"></i> ${this.comboboxData[i]}
+                                        </li>`;
+                }
+            }
+        }
+        this.comboboxList.innerHTML = comboboxListHTML;
+
+        var comboboxItems = this.comboboxList.querySelectorAll('li');
+
+        comboboxItems.forEach((comboboxItem) => {
+            comboboxItem.addEventListener('click', () => {
+                this.currentValue = comboboxItem.getAttribute('data-id');
+                this.renderDropdown();
+            });
+        });
+    } 
+    
 
     /**
      * Hàm xử lý khi người dùng nhập xong input (cảnh báo đỏ khi không hợp lệ)
-     * Author: NTDUNG (21/07/2021)
-     * @param {element} comboboxInput 
-     * @param {element} comboboxData 
-     * @param {element} combobox 
-     * @param {element} comboboxDropdown 
+     * Author: NTDUNG (21/07/2021) 
      */
-    resolveInputValue(comboboxInput, comboboxData, combobox, comboboxDropdown) {
-        var inputValue = comboboxInput.value;
-        var check = comboboxData.find(function (data) {
-            return data == inputValue;
-        });
-
+    resolveInputValue() {
+        var inputValue = this.comboboxInput.value;
+        if (this.type == 'FIX') {
+            var check = this.comboboxData.find(function (data) {
+                return data == inputValue;
+            });
+        } else {
+            var check = this.comboboxData.find((data) => {
+                return data[this.comboboxName] == inputValue;
+            });
+        }
         if (check == undefined) {
-            combobox.classList.add('error');
+            this.comboboxElement.classList.add('error');
         }
     }
 
@@ -197,6 +394,5 @@ class Combobox {
         this.comboboxElement.classList.remove('error');
         this.comboboxElement.classList.remove('show');
     }
-
-    
+    //#endregion 
 }
