@@ -128,15 +128,13 @@ class Combobox {
             var comboboxListHTML = '';
             for (var i = 0; i < this.comboboxData.length; i++) { 
                 if (i == this.currentValue) {
-                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
-                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                    comboboxListHTML += `<li data-id=${i}
                                             class="combobox__item combobox__item--active">
                                             <i class="fas fa-check combobox__check"></i> 
                                             ${this.comboboxData[i][this.comboboxName]}
                                         </li>`;
                 } else {
-                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
-                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                    comboboxListHTML += `<li data-id=${i}
                                             class="combobox__item">
                                             <i class="fas fa-check combobox__check"></i> 
                                             ${this.comboboxData[i][this.comboboxName]}
@@ -168,15 +166,13 @@ class Combobox {
             var comboboxListHTML = '';
             for (var i = 0; i < this.comboboxData.length; i++) {
                 if (i == this.currentValue) {
-                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
-                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                    comboboxListHTML += `<li data-id=${i}  
                                             class="combobox__item combobox__item--active">
                                             <i class="fas fa-check combobox__check"></i> 
                                             ${this.comboboxData[i][this.comboboxName]}
                                         </li>`;
                 } else {
-                    comboboxListHTML += `<li data-id=${i} ${this.comboboxId}="${this.comboboxData[i][this.comboboxId]}" 
-                                            ${this.comboboxCode}="${this.comboboxData[i][this.comboboxCode]}" 
+                    comboboxListHTML += `<li data-id=${i}                                             
                                             class="combobox__item">
                                             <i class="fas fa-check combobox__check"></i> 
                                             ${this.comboboxData[i][this.comboboxName]}
@@ -224,7 +220,6 @@ class Combobox {
         comboboxItems.forEach((comboboxItem) => {
             comboboxItem.addEventListener('click', () => {
                 this.currentValue = comboboxItem.getAttribute('data-id');
-                this.comboboxInput.setAttribute('genderid', this.currentValue);
                 this.renderDropdown();
             });
         });
