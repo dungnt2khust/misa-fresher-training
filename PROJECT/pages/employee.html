@@ -23,8 +23,8 @@
         <div class="logo"></div>
       </div>
       <div class="header-right">
-        <label class="dropdown dropdown--restaurant" for="dropdown-input">
-          <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
+        <!-- DROPDOWN RESTAURANT -->
+        <label id="dropdown-restaurant" class="dropdown dropdown--restaurant" for="dropdown-input">
           <div class="dropdown-header-wrapper">
             <span currVal="0" class="dropdown-value dropdown-value--restaurant">
             </span>
@@ -84,7 +84,7 @@
                 <input class="table-search__input" placeholder="Tìm theo mã, họ tên hoặc số điện thoại" type="text" />
               </div>
               <!-- FILTER DEPARTMENT -->
-              <label tabindex="0" class="dropdown table-filter__department" for="dropdown-input">
+              <label id="filter-department" tabindex="0" class="dropdown table-filter__department" for="dropdown-input">
                 <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                 <div class="dropdown-header-wrapper">
                   <span currVal="0" class="dropdown-value filter__value--department">
@@ -95,7 +95,7 @@
                 </ul>
               </label>
               <!-- FILTER POSITION -->
-              <label tabindex="1" class="dropdown table-filter__position" for="dropdown-input">
+              <label id="filter-position" tabindex="1" class="dropdown table-filter__position" for="dropdown-input">
                 <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                 <div class="dropdown-header-wrapper">
                   <span currVal="0" class="dropdown-value filter__value--position">
@@ -280,7 +280,7 @@
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Vị trí </span>
-                <label tabindex="10" class="dropdown dropdown--position" for="dropdown-input">
+                <label id="dropdown-position" tabindex="10" class="dropdown dropdown--position" for="dropdown-input">
                   <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                   <div class="dropdown-header-wrapper">
                     <span id="employee__position" positionid="" class="dropdown-value dropdown-value--position">
@@ -295,7 +295,7 @@
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Phòng ban </span>
-                <label tabindex="11" class="dropdown dropdown--department" for="dropdown-input">
+                <label id="dropdown-department" tabindex="11" class="dropdown dropdown--department" for="dropdown-input">
                   <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                   <div class="dropdown-header-wrapper">
                     <span id="employee__department" departmentid="" class="dropdown-value dropdown-value--department">
