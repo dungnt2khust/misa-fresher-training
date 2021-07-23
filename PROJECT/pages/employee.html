@@ -24,7 +24,7 @@
       </div>
       <div class="header-right">
         <!-- DROPDOWN RESTAURANT -->
-        <label id="dropdown-restaurant" class="dropdown dropdown--restaurant" for="dropdown-input">
+        <label tabindex="0" id="dropdown-restaurant" class="dropdown dropdown--restaurant" for="dropdown-input">
           <div class="dropdown-header-wrapper">
             <span currVal="0" class="dropdown-value dropdown-value--restaurant">
             </span>
@@ -81,10 +81,10 @@
                 <div class="table-search__icon">
                   <img src="../content/icon/search.png" alt="" />
                 </div>
-                <input class="table-search__input" placeholder="Tìm theo mã, họ tên hoặc số điện thoại" type="text" />
+                <input tabindex="1" class="table-search__input" placeholder="Tìm theo mã, họ tên hoặc số điện thoại" type="text" />
               </div>
               <!-- FILTER DEPARTMENT -->
-              <label id="filter-department" tabindex="0" class="dropdown table-filter__department" for="dropdown-input">
+              <label id="filter-department" tabindex="2" class="dropdown table-filter__department" for="dropdown-input">
                 <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                 <div class="dropdown-header-wrapper">
                   <span currVal="0" class="dropdown-value filter__value--department">
@@ -95,7 +95,7 @@
                 </ul>
               </label>
               <!-- FILTER POSITION -->
-              <label id="filter-position" tabindex="1" class="dropdown table-filter__position" for="dropdown-input">
+              <label id="filter-position" tabindex="3" class="dropdown table-filter__position" for="dropdown-input">
                 <!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
                 <div class="dropdown-header-wrapper">
                   <span currVal="0" class="dropdown-value filter__value--position">
@@ -227,7 +227,7 @@
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Giới tính </span>
-                <div class="combobox combobox--gender">
+                <div id="combobox-gender" class="combobox combobox--gender">
                   <input tabindex="4" id="employee__gender" type="text" name=""
                     class="combobox__input combobox__input--gender">
                   <div class="combobox__input-cancel">
@@ -376,13 +376,10 @@
   </div> 
   <script src="../lib/js/jquery-3.6.0.min.js"></script>
   <script src="../js/toastMessage.js"></script>
-  <script src="../js/main.js"></script>
   <script src="../js/setavatar.js"></script>
-  <!-- <script src="../js/dropdown.js"></script> -->
   <script src="../js/dropdown-oop.js"></script>
-  <script src="../js/combobox.js"></script>
-  <script src="../js/checkbox.js"></script>
-  <!-- <script src="../js/employee.js"></script> -->
+  <script src="../js/combobox-oop.js"></script> 
+  <!-- <script src="../js/combobox.js"></script> -->
   <script src="../js/employee-oop.js"></script>
 </body>
 

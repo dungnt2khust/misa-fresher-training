@@ -28,6 +28,7 @@ class Dropdown {
     }
     //#endregion
 
+    //#region [Hàm xử lý]
     /**
      * Khởi tạo các sự kiện cho dropdown
      * Author: NTDUNG (23/07/2021)
@@ -257,4 +258,5 @@ class Dropdown {
             });
         }
     } 
+    //#endregion
 }
