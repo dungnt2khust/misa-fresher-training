@@ -23,11 +23,11 @@ $(document).ready(function () {
     //#endregion
 
     //#region [Đổ dữ liệu vào các dropdown]
-    var filterDepartment = new Dropdown($('.filter__value--department')[0], $('.filter__list--department')[0], 'Department', 'FILTER', 'http://cukcuk.manhnv.net/api/Department');
-    var filterPosition = new Dropdown($('.filter__value--position')[0], $('.filter__list--position')[0], 'Position', 'FILTER', 'http://cukcuk.manhnv.net/v1/Positions');
-    var dropdownRestaurant = new Dropdown($('.dropdown-value--restaurant')[0], $('.dropdown-list--restaurant')[0], '', 'FIX', '', dropdownDataRestaurant);
-    var filterDepartment = new Dropdown($('.dropdown-value--department')[0], $('.dropdown-list--department')[0], 'Department', 'NORMAL', 'http://cukcuk.manhnv.net/api/Department');
-    var filterPosition = new Dropdown($('.dropdown-value--position')[0], $('.dropdown-list--position')[0], 'Position', 'NORMAL', 'http://cukcuk.manhnv.net/v1/Positions');
+    var filterDepartment = new Dropdown($('#filter-department')[0], 'Department', 'FILTER', 'http://cukcuk.manhnv.net/api/Department');
+    var filterPosition = new Dropdown($('#filter-position')[0], 'Position', 'FILTER', 'http://cukcuk.manhnv.net/v1/Positions');
+    var dropdownRestaurant = new Dropdown($('#dropdown-restaurant')[0], '', 'FIX', '', dropdownDataRestaurant);
+    var dropdownDepartment = new Dropdown($('#dropdown-department')[0], 'Department', 'NORMAL', 'http://cukcuk.manhnv.net/api/Department');
+    var dropdownPosition = new Dropdown($('#dropdown-position')[0], 'Position', 'NORMAL', 'http://cukcuk.manhnv.net/v1/Positions');
     //#endregion
 });
 
