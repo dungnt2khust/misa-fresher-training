@@ -84,9 +84,11 @@ class EmployeePage {
 
         // 3. Khi bật nhấn nút tạo mới thì bật form tạo mới và lấy mã nhân viên mới
         $('.button-addemployee')[0].onclick = () => {
-            $('.popup-overlay--infor input').val('');
-            $('.popup-overlay--infor')[0].style.display = "block";
-            $('.popup-overlay--infor')[0].style.opacity = "1"; 
+            $('.popup-wrapper').show();
+            $('.popup-body input').val('');
+            $('#employee__position').text('Chọn vị trí');
+            $('#employee__department').text('Chọn phòng ban');
+            $('#employee__workstatus').text('Chọn trạng thái');
             this.method = 'POST';
             $('.btn-delete').attr('style', 'display: none;');
             this.getNewEmployeeId();
@@ -94,8 +96,7 @@ class EmployeePage {
 
         // 4. Khi nhấn vào nút tạo mới (Lưu) thì gọi đến tạo mới hoặc chỉnh sửa
         $('#popup-btn-save--infor').click(() => {
-            $('.popup-overlay--infor')[0].style.display = "none";
-            $('.popup-overlay--infor')[0].style.opacity = "0"; 
+            $('.popup-wrapper').hide();
             if (this.method == 'POST') {
                 this.add();
             } else if(this.method == 'PUT') {
@@ -103,41 +104,27 @@ class EmployeePage {
             } 
         });
 
-        // 5. Ấn vào dấu x thì ẩn form đi
-        document.querySelectorAll(".popup-header__cancel").forEach((popupCancel) => {
-            popupCancel.addEventListener('click', () => {
-                var popupOverlay = popupCancel.parentElement.parentElement.parentElement;
-                this.hidePopup(popupOverlay);
-            });
-        });
-
-
-        // 6. Ấn vào nút Huỷ thì ẩn form đi
-        document.querySelectorAll(".popup-btn-cancel").forEach((popupCancel) => {
-            popupCancel.addEventListener('click', () => {
-                var popupOverlay = popupCancel.parentElement.parentElement.parentElement;
-                this.hidePopup(popupOverlay);
-            });
+        $('.popup-btn-cancel').click(() => {
+            $('.popup-wrapper').hide();
         });
 
         // 7. Ấn nút Refresh thì load lại dữ liệu
         $('.refresh')[0].onclick = () => {
             this.loadData();
             toastMessage('success', 'Tải dữ liệu thành công', 5000);
+            showPopup('error', 'Bạn đã gặp lỗi rồi man', 'Lỗi to lắm fix đi', 'Huỷ');
         } 
 
         // 8. Nhấn nút xoá nhân viên
         $('.btn-delete').click(() => {
-            this.hidePopup($('.popup-overlay--infor')[0]);
+            this.hidePopup();
             $('#confirm-delete-one').attr('style', 'display: flex');
             $('.employee-infor-delete')[0].innerText = `${this.employeeName} - ${this.employeeCode}`;
-        });
+        }); 
 
-        // 9. Ấn nút cancel khi confirm xoá nhân viên
-        document.querySelectorAll('.confirm-button__cancel').forEach((cancelBtn) => {
-            cancelBtn.addEventListener('click',function() {
-                cancelBtn.parentElement.parentElement.parentElement.style.display = "none";
-            });
+        // 9. Ấn nút x thì ẩn form đi
+        $('.popup-header__cancel').click(() => {
+            this.hidePopup();
         });
 
         // 10. Ấn nút đồng ý khi confirm xoá nhân viên
@@ -388,15 +375,15 @@ class EmployeePage {
             "MartialStatus": null,
             "EducationalBackground": null,
             "QualificationId": null,
-            "DepartmentId": "${$('#employee__department').attr('departmentid')}",
-            "PositionId": "${$('#employee__position').attr('positionid')}",
+            "DepartmentId": "",
+            "PositionId": "",
             "WorkStatus": "",
             "PersonalTaxCode": "${$('#employee__taxcode').val()}",
             "Salary": "${$('#employee__basesalary').val()}",
-            "PositionCode": "${$('#employee__position').attr('positioncode')}",
-            "PositionName": "${$('#employee__position').text()}",
-            "DepartmentCode": "${$('#employee__department').attr('departmentcode')}",
-            "DepartmentName": "${$('#employee__department').text()}",
+            "PositionCode": "",
+            "PositionName": "",
+            "DepartmentCode": "",
+            "DepartmentName": "",
             "QualificationName": null,
             "GenderName": "${$('#employee__gender').val()}",
             "EducationalBackgroundName": null,
@@ -490,8 +477,7 @@ class EmployeePage {
      */
     showPopup(e) {
         if (!e.target.classList.contains('table-employee__checkbox')) {
-            $('.popup-overlay--infor')[0].style.display = "block";
-            $('.popup-overlay--infor')[0].style.opacity = 1;
+            $(".popup-wrapper")[0].style.display = 'block';
             $(".popup-infor__input")[0].focus();
         }
     }
@@ -499,11 +485,9 @@ class EmployeePage {
     /**
      * Hàm ẩn form
      * Author: NTDUNG (21/07/2021)
-     * @param {element} popupOverlay 
      */
-    hidePopup(popupOverlay) {
-        popupOverlay.style.display = "none";
-        popupOverlay.style.opacity = 0;
+    hidePopup() {
+        $('.popup-wrapper').hide();
     }
 
     /**

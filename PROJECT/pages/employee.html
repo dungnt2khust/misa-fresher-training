@@ -173,8 +173,9 @@
       </div>
     </div>
   </div>
-  <div class="popup-overlay popup-overlay--infor">
-    <div class="popup">
+  <div class="popup-wrapper">
+    <div class="popup-overlay-info"></div>
+    <div class="popup-form-info">
       <div class="popup-header">
         <span class="popup-header__label"> THÔNG TIN NHÂN VIÊN</span>
         <div class="popup-header__cancel"></div>
@@ -374,11 +375,36 @@
   </div>
   <div class="toast-message-list"> 
   </div> 
+  <div class="popup-lib">
+    <div class="popup-overlay-lib"></div>
+    <div class="popup-container-lib">
+      <div class="popup-header-lib">
+          <span class="popup-title-lib"></span>
+          <div class="popup-cancel-lib">
+              <img src="../../content/icon/x.svg" alt="">
+          </div>
+      </div>
+      <div class="popup-body-lib">
+          <div class="popup-icon-lib">
+              <i class="fas fa-exclamation-triangle"></i> 
+          </div>
+          <span class="popup-content-lib">
+              
+          </span>
+      </div>
+      <div class="popup-footer-lib">
+          <button id="popup-btn-continue-lib" class="popup-btn-lib"></button>
+          <button id="popup-btn-cancel-lib" class="popup-btn-lib">Đóng</button>
+      </div>
+    </div>
+  </div> 
+
   <script src="../lib/js/jquery-3.6.0.min.js"></script>
   <script src="../js/toastMessage.js"></script>
   <script src="../js/setavatar.js"></script>
   <script src="../js/dropdown-oop.js"></script>
   <script src="../js/combobox-oop.js"></script> 
+  <script src="../js/popup.js"></script>
   <script src="../js/employee-oop.js"></script>
 </body>
 
