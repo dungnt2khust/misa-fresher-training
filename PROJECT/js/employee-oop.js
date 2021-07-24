@@ -43,6 +43,7 @@ $(document).ready(function () {
 
 class EmployeePage {
     //#region [Các thuộc tính của employee]
+    popupShow = false;
     PageTitle = null;
     TableData;
     method;
@@ -104,43 +105,69 @@ class EmployeePage {
             } 
         });
 
+        // 5. Ấn vào cancel để ẩn popup
         $('.popup-btn-cancel').click(() => {
+            // Ẩn form đi
             $('.popup-wrapper').hide();
+            // Hiên popup thông báo
+            showPopup('warn', 'Đóng Form thông tin chung', 'Bạn có chắc muốn đóng Form và huỷ việc nhập thông tin', 'Tiếp tục nhập');
+            // khi click tiếp tục thì sẽ hiện form lại
+            this.setEvents();
+            $('#popup-btn-continue-lib').click(() => {
+                $('.popup-wrapper').show();
+            });
+        });
+
+        // 6. Ấn nút x thì ẩn form đi
+        $('.popup-header__cancel').click(() => {
+            // Ẩn form đi
+            $('.popup-wrapper').hide();
+            // Hiên popup thông báo
+            showPopup('warn', 'Đóng Form thông tin chung', 'Bạn có chắc muốn đóng Form và huỷ việc nhập thông tin', 'Tiếp tục nhập');
+            // khi click tiếp tục thì sẽ hiện form lại
+            this.setEvents();
+            $('#popup-btn-continue-lib').click(() => {
+                $('.popup-wrapper').show();
+            });
         });
 
         // 7. Ấn nút Refresh thì load lại dữ liệu
         $('.refresh')[0].onclick = () => {
             this.loadData();
             toastMessage('success', 'Tải dữ liệu thành công', 5000);
-            showPopup('error', 'Bạn đã gặp lỗi rồi man', 'Lỗi to lắm fix đi', 'Huỷ');
+            showPopup('info','Load dữ liệu thành công', 'Dữ liệu của bạn đã được hiển thị', 'Huỷ');
         } 
 
         // 8. Nhấn nút xoá nhân viên
         $('.btn-delete').click(() => {
+            // Ẩn form đi
             this.hidePopup();
-            $('#confirm-delete-one').attr('style', 'display: flex');
-            $('.employee-infor-delete')[0].innerText = `${this.employeeName} - ${this.employeeCode}`;
+            // Hiện popup cảnh báo
+            showPopup('error', 'Xác nhận xoá thông tin', `Bạn có chắc muốn xoá nhân viên <b>${this.employeeName} - ${this.employeeCode}</b>`, 'Tiếp tục xoá');
+            // Clear sự kiện của nút tiếp tục và đặt sự kiện mới
+            this.setEvents();
+            $('#popup-btn-continue-lib').click(() => {
+                this.delete();
+                $('.popup-wrapper').hide();
+            });
         }); 
 
-        // 9. Ấn nút x thì ẩn form đi
-        $('.popup-header__cancel').click(() => {
-            this.hidePopup();
+        // 9. Nhấn nút xoá nhiều
+        $('#button-delete').click(() => {
+            showPopup('error', 'Xác nhận xoá thông tin', 'Bạn có chắc muộn xoá những thông tin được check này không?', 'Tiếp tục xoá');
+            this.setEvents();
+            $('#popup-btn-continue-lib').click(() => {
+                this.deleteMulti();
+            });
         });
 
-        // 10. Ấn nút đồng ý khi confirm xoá nhân viên
-        $('#confirm-delete-btn-one').click(() => {
-            $('#confirm-delete-one').attr('style', 'display: none');
-            this.delete();
-        }); 
-
-        // 11. Nút xoá nhiều
-        $('#confirm-delete-btn-multi').click(() => {
-            $('#confirm-delete-multi').attr('style', 'display: none'); 
-            this.deleteMulti();  
-            $('#button-delete').removeClass('button-enable');
-        }); 
+         
     }
 
+    /**
+     * Khởi tạo những sự kiện được cập nhật sau khi dữ liệu thay đổi
+     * Author: NTDUNG (23/07/2021)
+     */
     terminatorEvents() {        
         // 13. Sự kiện khi checkbox thay đổi
         $('.table-employee__checkbox').change((e) => {
@@ -550,6 +577,26 @@ class EmployeePage {
      */
     getLastName(fullname) {
         return fullname.substring(fullname.indexOf(' ') + 1);
+    }
+
+    /**
+     * Khởi tạo lại event cho các popup
+     * Author: NTDUNG (24/07/2021)
+     */
+    setEvents() {
+        $('#popup-btn-continue-lib').unbind();
+        $('#popup-btn-cancel-lib').unbind();
+        $('#popup-btn-continue-lib').click(function() {
+            $('.popup-lib').hide();
+            $('.popup-lib').removeClass('popup--error-lib', 'popup--warn-lib', 'popup--info-lib');
+        });
+        $('#popup-btn-cancel-lib').click(function() {
+            $('.popup-lib').hide();
+            $('.popup-lib').removeClass('popup--error-lib', 'popup--warn-lib', 'popup--info-lib');
+        });
+        $('.popup-overlay-lib').click(function() {
+            $('.popup-lib').hide();
+        });
     }
     //#endregion
 }
