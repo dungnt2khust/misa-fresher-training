@@ -1,67 +1,54 @@
-// DECLARE VARIABLES
-var avatar = document.querySelector(".popup-avatar__img");
-var inputFile = document.querySelector("#avatar-upload");
-var buttonSetAvatar = document.querySelector(".btn-setavatar");
-var buttonSetAvatarDemo = document.querySelector(".btn-setavatardemo");
-var avatarPath = document.querySelector(".avatar-path");
-
-// SLIDE
-var slideHorizontal = document.querySelector("#slide-horizontal");
-var slideVertical = document.querySelector("#slide-vertical");
-var slideScale = document.querySelector("#slide-scale");
-
-var slideX, slideY, slideZ;
-
-inputFile.addEventListener("change", () => {
-    setAvatar();
+$(document).ready(function() {
+    new Avatar();
 });
-
-slideHorizontal.addEventListener('input', () => {
-    console.log('changed horizontal');
-    slideX = slideHorizontal.value;
-    setAvatar();
-}, false);
-
-slideVertical.addEventListener('input', () => {
-    console.log('changed vertical');
-    slideY = slideVertical.value;
-    setAvatar();
-}, false);
-
-slideScale.addEventListener('input', () => {
-    console.log('changed scale');
-    slideZ = slideScale.value;
-    setAvatar();
-}, false);
-
-buttonSetAvatar.onclick = () => {
-    setAvatar();
-}
-
-function setAvatar() {
-    var pathFile = inputFile.value;
-    console.log(pathFile);
-    var realPath = '../../content/img/Avatar/' + pathFile.substr(12);
-    avatar.style.backgroundImage = `url('${realPath}')`;
-
-    var positionX = slideX === undefined ? 0 : slideX - 50;
-    var positionY = slideY === undefined ? 0 : slideY - 50;
-    var scale = slideZ === undefined ? 100 : slideZ;
-
-    if (scale < 50) {
-        avatar.style.backgroundSize = `${scale * 2}%`;
-        avatar.style.backgroundPosition = "center";
-    } else if (scale > 50) {
-        avatar.style.backgroundSize = `${scale * 2}%`;
-        avatar.style.backgroundPosition = "center";
-    } else {
-        avatar.style.backgroundSize = '100%';
-        avatar.style.backgroundPosition = "center";
+class Avatar {
+    horizontal = '50';
+    vertical = '50';
+    scale = '50';
+    constructor() {
+        this.initEvents();
     }
 
-    avatar.style.backgroundPosition = `${positionX}px ${positionY}px`;
+    //#region [Hàm xử lý]
+    /**
+     * Khởi tạo các sự kiện khi đặt ảnh đại diện
+     */
+    initEvents() {
+        // 1. Sự kiện thay đổi ảnh ở input
+        $('#avatar-upload').on('input', () => {
+            // Đổi thành đường dẫn tương đối
+            var realPath = '../content/img/Avatar/' + $('#avatar-upload').val().substring(12);
+            console.log(realPath);
+            // Đặt ảnh đại diện
+            $('.popup-avatar__img').attr('style', `background-image: url('${realPath}')`);
+        });
 
-    // console.log(positionX, positionY, scale);
+        // 2. Sự kiện thay thay đổi horizontal
+        $('#slide-horizontal').on('input', () => {
+            this.horizontal = $('#slide-horizontal').val();
+            this.setAvatar();
+        });
+
+        // 3. Sự kiện thay thay đổi vertical
+        $('#slide-vertical').on('input', () => {
+            this.vertical = $('#slide-vertical').val();
+            this.setAvatar();
+        });
+
+        // 2. Sự kiện thay thay đổi scale
+        $('#slide-scale').on('input', () => {
+            this.scale = $('#slide-scale').val();
+            this.setAvatar();
+        });
+    }
+
+    setAvatar() {
+        $('.popup-avatar__img')[0].style.backgroundPosition = `${this.horizontal - 50}px ${this.vertical - 50}px`;
+        $('.popup-avatar__img')[0].style.backgroundSize = `${this.scale*2}%`;
+        var avatar = $('.popup-avatar__img')[0];
+    }
+
+   //#endregion
 }
 
 
