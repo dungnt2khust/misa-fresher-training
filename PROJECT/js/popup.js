@@ -1,27 +1,3 @@
-$('#btn-error-lib').click(function() {
-    showPopup('error', 'Đóng Form thông tin chung', 
-    'Bạn có chắc muốn đóng form nhập <b>"Thông tin chung của thủ tục 603"</b> hay không?',
-    'Huỷ');
-});
-
-// $('#btn-warn-lib').click(function() {
-//     showPopup('warn', 'Đóng Form thông tin chung', 
-//     'Bạn có chắc muốn đóng form nhập <b>"Thông tin chung của thủ tục 603"</b> hay không?',
-//     'Tiếp tục điền');
-// });
-$('#btn-warn-lib').click(function() {
-    showPopup('warn', 'Đóng Form thông tin chung', 
-    '<b>"Thông tin chung của thủ tục 603"</b>?',
-    'Tiếp tục điền');
-});
-
-$('#btn-info-lib').click(function() {
-    showPopup('info', 'Đóng Form thông tin chung', 
-    'Bạn có chắc muốn đóng form nhập <b>"Thông tin chung của thủ tục 603"</b> hay không?',
-    '');
-});
-
-
 function showPopup(type, title, content, ctnBtn) {
     // ĐỔ DỮ LIỆU VÀO POPUP
     $('.popup-title-lib').text(title);
