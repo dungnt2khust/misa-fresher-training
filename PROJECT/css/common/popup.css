@@ -289,3 +289,16 @@
     font-size: 20px;
     padding: 2px 16px;
 }
+
+#input-salary {
+    position: absolute;
+    bottom: 20px;
+    right: 18px;
+    transform: translateY(50%);
+    font-style: italic;
+}
+
+#employee__basesalary {
+    padding-right: 40px;
+    text-align: right;
+}

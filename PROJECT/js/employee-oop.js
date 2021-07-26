@@ -81,6 +81,13 @@ class EmployeePage {
 
         // 3. Khi bật nhấn nút tạo mới thì bật form tạo mới và lấy mã nhân viên mới
         $('.button-addemployee')[0].onclick = () => {
+            // Reset form information
+            $('#employee__department').attr('departmentid', '');
+            $('#employee__department').attr('departmentcode', '');
+            $('#employee__position').attr('positionid', '');
+            $('#employee__position').attr('positioncode', '');
+
+            
             $('.popup-wrapper').show();
             $('.popup-body input').val('');
             $('#employee__position').text('Chọn vị trí');
@@ -93,10 +100,11 @@ class EmployeePage {
 
         // 4. Khi nhấn vào nút tạo mới (Lưu) thì gọi đến tạo mới hoặc chỉnh sửa
         $('#popup-btn-save--infor').click(() => {
-            $('.popup-wrapper').hide();
-            if (this.method == 'POST') {
+            if (this.method == 'POST' && this.validateForm()) {
+                $('.popup-wrapper').hide();
                 this.add();
-            } else if(this.method == 'PUT') {
+            } else if(this.method == 'PUT' && this.validateForm()) { 
+                $('.popup-wrapper').hide();
                 this.update();
             } 
         });
@@ -156,6 +164,33 @@ class EmployeePage {
                 this.deleteMulti();
             });
         });   
+
+        // 10. Sự kiện thay đổi các input bắt buộc
+        $('input[required]').on('change', () => {
+            this.validateForm();
+        });
+
+        // 11. Sự kiện nhập dữ liệu lương 
+        $('#employee__basesalary').on('input', () => {
+            // Xoá các dấu chấm ngăn cách
+            var salaryString = $('#employee__basesalary').val().replaceAll('.', '');
+            // Gán giá trị không có dấu chấm vào realValue
+            $('#employee__basesalary').attr('realValue', salaryString);
+            // Khi chuỗi là rỗng thì chuyển chuỗi thành có phân cách dấu chấm và gán lại cho input
+            if (salaryString != '') {
+                $('#employee__basesalary').val(parseInt(salaryString).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'));
+            }
+            
+        });
+
+        // 12. Sự kiện khi ấn phím trong lúc đang nhập lương (chỉ nhập số, xoá đi, sang trái, sang phải)
+        $('#employee__basesalary').on('keydown', (e) => {
+            if (e.code != "Backspace" && e.code != "ArrowRight" && e.code != "ArrowLeft") {
+                if (!(e.key < 48 || e.key > 57)) {
+                    e.preventDefault();
+                }
+            } 
+        });
     }
 
     /**
@@ -204,6 +239,19 @@ class EmployeePage {
                             switch (fieldName) {
                                 case 'DateOfBirth':
                                     tableData.text(this.resolveDate(res[i][fieldName], 'TABLE'))
+                                    break;
+                                case 'Email':
+                                case 'DepartmentName':
+                                    tableData.attr('title', res[i][fieldName]);
+                                    tableData.text(res[i][fieldName]);
+                                    break;
+                                case 'Salary':
+                                    if (res[i][fieldName]) {
+                                        var number = res[i][fieldName].toLocaleString(); 
+                                        tableData.text(number);
+                                    } else {
+                                        tableData.text('');
+                                    }
                                     break;
                                 default:  
                                     tableData.text(res[i][fieldName]);
@@ -271,6 +319,7 @@ class EmployeePage {
             }
             this.loadData();
             toastMessage('success', 'Xoá nhân viên thành công', 5000);
+            toastMessage('info', 'Đang tải lại dữ liệu', 5000);
             this.employeesDelete.clear(); 
         } catch (error) {
             console.log(error);
@@ -283,7 +332,12 @@ class EmployeePage {
     bindEmployeeInfor() {
         $('.table-employee__row').each((index, employeeItem) => {
             employeeItem.addEventListener('click', (e) => {
+                // Đổi phương thức thành PUT
                 this.method = 'PUT';
+                // Đặt lại trạng thái ban đầu cho form
+                this.resetForm();
+
+                // Lấy dữ liệu của dòng và bind vào form
                 var dataRow = this.TableData[employeeItem.getAttribute('data-id')];
 
                 $('#employee__dob').val(this.resolveDate(dataRow.DateOfBirth, 'INPUT'));
@@ -297,8 +351,8 @@ class EmployeePage {
                 $('#employee__email').val(this.resolveValue(dataRow.Email));
                 $('#employee__phone').val(this.resolveValue(dataRow.PhoneNumber));
                 $('#employee__taxcode').val(this.resolveValue(dataRow.PersonalTaxCode));
-                $('#employee__basesalary').val(this.resolveValue(dataRow.Salary));
-                
+                $('#employee__basesalary').val(this.resolveSalary(this.resolveValue(dataRow.Salary)));
+                $('#employee__basesalary').attr('realValue', this.resolveValue(dataRow.Salary));
                 // Bind dropdown and combobox
                 this.resolveDropdownAPI(this.dropdownDepartment, dataRow);
                 
@@ -334,6 +388,7 @@ class EmployeePage {
                 $('.popup-infor').attr('modifieddate', dataRow.ModifiedDate);
                 $('.popup-infor').attr('modifiedby', dataRow.ModifiedBy);
                 
+                // Bind dữ liệu để sử dụng khi toast cảnh báo
                 this.employeeId = dataRow.EmployeeId;
                 this.employeeName = dataRow.FullName;
                 this.employeeCode = dataRow.EmployeeCode;
@@ -366,61 +421,26 @@ class EmployeePage {
             "MartialStatus": null,
             "EducationalBackground": null,
             "QualificationId": null,
-            "DepartmentId": "${$('#employee__department').attr('departmentid')}",
-            "PositionId": "${$('#employee__position').attr('positionid')}",
-            "WorkStatus": ${this.validateNum($('#employee__workstatus').text())},
+            "DepartmentId": ${this.validateUndefined($('#employee__department').attr('departmentid'))},
+            "PositionId": ${this.validateUndefined($('#employee__position').attr('positionid'))},
+            "WorkStatus": ${this.validateNum($('#employee__workstatus').text(), 'workstatus')},
             "PersonalTaxCode": "${$('#employee__taxcode').val()}",
-            "Salary": ${this.validateNum($('#employee__basesalary').val())},
-            "PositionCode": "${$('#employee__position').attr('positioncode')}",
-            "PositionName": "${$('#employee__position').text()}",
-            "DepartmentCode": "${$('#employee__department').attr('departmentcode')}",
-            "DepartmentName": "${$('#employee__department').text()}",
+            "Salary": ${this.validateNum($('#employee__basesalary').attr('realValue'))},
+            "PositionCode": ${this.validateUndefined($('#employee__position').attr('positioncode'))},
+            "PositionName": ${this.validateUndefined($('#employee__position').text())},
+            "DepartmentCode": ${this.validateUndefined($('#employee__department').attr('departmentcode'))},
+            "DepartmentName": ${this.validateUndefined($('#employee__department').text())},
             "QualificationName": null,
-            "GenderName": "${$('#employee__gender').val()}",
+            "GenderName": ${this.validateUndefined($('#employee__gender').val())},
             "EducationalBackgroundName": null,
             "MartialStatusName": null,
             "CreatedDate": "${this.modifiedBy(method).createdDate}",
             "CreatedBy": "${this.modifiedBy(method).createdBy}",
             "ModifiedDate": "${this.modifiedBy(method).modifiedDate}",
             "ModifiedBy": "${this.modifiedBy(method).modifiedBy}"
-        }`;
-        // var employeeInfor = `{
-        //     "EmployeeCode": "${$('#employee__code').val()}",
-        //     "FirstName": "${this.getFirstName($('#employee__fullname').val())}",
-        //     "LastName": "${this.getLastName($('#employee__fullname').val())}",
-        //     "FullName": "${$('#employee__fullname').val()}",
-        //     "Gender": 1,
-        //     "DateOfBirth": "",
-        //     "PhoneNumber": "${$('#employee__phone').val()}",
-        //     "Email": "${$('#employee__email').val()}",
-        //     "Address": null,
-        //     "IdentityNumber": "${$('#employee__idnumber').val()}",
-        //     "IdentityDate": "",
-        //     "IdentityPlace": "${$('#employee__idplace').val()}",
-        //     "JoinDate": "",
-        //     "MartialStatus": null,
-        //     "EducationalBackground": null,
-        //     "QualificationId": null,
-        //     "DepartmentId": "",
-        //     "PositionId": "",
-        //     "WorkStatus": "",
-        //     "PersonalTaxCode": "${$('#employee__taxcode').val()}",
-        //     "Salary": "${$('#employee__basesalary').val()}",
-        //     "PositionCode": "",
-        //     "PositionName": "",
-        //     "DepartmentCode": "",
-        //     "DepartmentName": "",
-        //     "QualificationName": null,
-        //     "GenderName": "${$('#employee__gender').val()}",
-        //     "EducationalBackgroundName": null,
-        //     "MartialStatusName": null,
-        //     "CreatedDate": "",
-        //     "CreatedBy": "NTDUNG",
-        //     "ModifiedDate": null,
-        //     "ModifiedBy": "NTDUNG"
-        // }`;
+        }`; 
 
-        console.log(JSON.parse(employeeInfor));
+        console.log(employeeInfor);
 
         switch (method) {
             case 'POST':
@@ -432,6 +452,7 @@ class EmployeePage {
                     datatype: 'json'
                 }).done((res) => {
                     toastMessage('success', 'Thêm mới thành công', 5000);
+                    toastMessage('info', 'Đang tải lại dữ liệu', 5000);
                     this.loadData();
                 }).fail(function(res) {
                     toastMessage('error', 'Tạo mới thông tin thất bại. Vui lòng liên hệ MISA');
@@ -446,6 +467,7 @@ class EmployeePage {
                     datatype: 'json'
                 }).done((res) => {
                     toastMessage('success', 'Chỉnh sửa thành công', 5000);
+                    toastMessage('info', 'Đang tải lại dữ liệu', 5000);
                     this.loadData();
                 }).fail(function(res) {
                     toastMessage('error', 'Chỉnh sửa thông tin thất bại. Vui lòng liên hệ MISA');
@@ -457,6 +479,7 @@ class EmployeePage {
                     type: 'DELETE', 
                 }).done((res) => {
                     toastMessage('success', 'Xoá thành công', 5000);
+                    toastMessage('info', 'Đang tải lại dữ liệu', 5000);
                     this.loadData();
                 }).fail(function(res) {
                     toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA');
@@ -552,12 +575,25 @@ class EmployeePage {
     }
 
     /**
+     * Validate undefined value
+     * Author: NTDUNG (26/07/2021)
+     * @param {undefined, empty string} value
+     */
+    validateUndefined(value) {
+        if (value == undefined || value == '') {
+            return null;
+        }  else if (value.includes('Chọn')) {
+            return null;
+        }
+        return `"${value}"`;
+    }
+    /**
      * Validate dữ liệu chuyển sang số
      * Author: NTDUNG (24/07/2021)
      * @param {number, string} value
      */
-    validateNum(value) { 
-        return (value == '' ) || (value == undefined) ? null : parseInt(value);
+    validateNum(value, test) { 
+        return (value == '' ) || (value == undefined) || (value.includes('Chọn')) ? null : parseInt(value);
     }
 
 
@@ -618,9 +654,46 @@ class EmployeePage {
      * Author: NTDUNG (24/07/2021)
      */
     validateForm() {
-
+        var valid = true;
+        $('input[required]').each((index, item) => {
+            if (item.value.trim() == '')  { 
+                valid = false;
+                item.classList.add('invalid-input');
+                switch (item.id) {
+                    case 'employee__code':
+                        toastMessage('error', 'Bạn phải nhập Mã nhân viên', 5000);
+                        break;
+                    case 'employee__fullname':
+                        toastMessage('error', 'Bạn phải nhập Họ và tên', 5000);
+                        break;
+                    case 'employee__idnumber':
+                        toastMessage('error', 'Bạn phải nhập Số CMT/CCCD', 5000);
+                        break;
+                    case 'employee__email':
+                        toastMessage('error', 'Bạn phải nhập Địa chỉ Email', 5000);
+                        break;
+                    case 'employee__phone':
+                        toastMessage('error', 'Bạn phải nhập Số điện thoại', 5000);
+                        break; 
+                    default:
+                        toastMessage('error', 'Bạn phải nhập trường bắt buộc này', 5000);
+                }
+            } else {
+                item.classList.remove('invalid-input');
+            }
+        });
+        return valid;
     }
 
+    /**
+     * đặt lại trạng thái bình thường cho form
+     * Author: NTDUNG(26/07/2021)
+     */
+    resetForm() {
+        $('input[required]').each((index, item) => {
+            item.classList.remove('invalid-input');
+        });
+    }
     /**
      * Get new date JSON
      * Author: NTDUNG (24/07/2021)
@@ -633,8 +706,11 @@ class EmployeePage {
         month = month < 10 ? '0' + month : month;
         var year = date.getFullYear();
         var hour = date.getHours();
+        hour = hour < 10 ? '0' + hour : hour;
         var min = date.getMinutes();
+        min = min < 10 ? '0' + min : min;
         var second = date.getSeconds();
+        second = second < 10 ? '0' + second : second;
         return `${year}-${month}-${day}T${hour}:${min}:${second}`;
     }
 
@@ -708,6 +784,16 @@ class EmployeePage {
             $(`#employee__${dropdown.dropdown.toLowerCase()}`).attr('currVal', dropdown.dropdownData.length);
             dropdown.renderDropdown();
         }
+    }
+
+    /**
+     * Resolve salary
+     * Author: NTDUNG (26/07/2021)
+     * @param {number} value
+     */
+    resolveSalary(value) {
+        if (value == '') return value;
+        return value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
     }
     //#endregion
 }

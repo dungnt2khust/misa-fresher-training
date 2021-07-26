@@ -209,13 +209,13 @@
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Mã nhân viên (<span class="text-red">*</span>)</span>
-                <input tabindex="1" id="employee__code" type="text" class="popup-infor__input" />
+                <input required tabindex="1" id="employee__code" type="text" class="popup-infor__input" />
               </div>
               <!-- FULL NAME -->
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Họ và tên (<span class="text-red">*</span>)</span>
-                <input tabindex="2" id="employee__fullname" type="text" class="popup-infor__input"
+                <input required tabindex="2" id="employee__fullname" type="text" class="popup-infor__input"
                   value="Nguyễn Tiến Dũng" />
               </div>
               <!-- DOB -->
@@ -245,7 +245,7 @@
               <div class="popup-infor__item">
                 <span class="popup-infor__label">
                   Số CMTND/ Căn cước (<span class="text-red">*</span>)</span>
-                <input tabindex="5" id="employee__idnumber" type="text" class="popup-infor__input" />
+                <input required tabindex="5" id="employee__idnumber" type="text" class="popup-infor__input" />
               </div>
               <!-- RELEASE DATE -->
               <div class="popup-infor__item">
@@ -263,13 +263,13 @@
               <div class="popup-infor__item email">
                 <span class="popup-infor__label ">
                   Email (<span class="text-red">*</span>)</span>
-                <input tabindex="8" id="employee__email" type="text" class="popup-infor__input" />
+                <input required tabindex="8" id="employee__email" type="text" class="popup-infor__input" />
               </div>
               <!-- PHONE -->
               <div class="popup-infor__item">
-                <span class="popup-infor__label">
+                <span required class="popup-infor__label">
                   Số điện thoại (<span class="text-red">*</span>)</span>
-                <input tabindex="9" id="employee__phone" type="text" class="popup-infor__input" />
+                <input required tabindex="9" id="employee__phone" type="text" class="popup-infor__input" />
               </div>
             </div>
           </div>
@@ -314,10 +314,11 @@
                 <input tabindex="12" id="employee__taxcode" type="text" class="popup-infor__input" />
               </div>
               <!-- BASE SALARY -->
-              <div class="popup-infor__item">
+              <div class="popup-infor__item" style="position: relative;">
                 <span class="popup-infor__label">
                   Mức lương cơ bản </span>
                 <input tabindex="13" id="employee__basesalary" type="text" class="popup-infor__input" />
+                <span id="input-salary">VNĐ</span>
               </div>
               <!-- JOINING DATE -->
               <div class="popup-infor__item">
