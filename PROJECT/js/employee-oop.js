@@ -7,15 +7,12 @@ var dropdownDataRestaurant = [
 ];
 
 var dropdownDataWorkStatus = [
-    "Đang đào tạo",
-    "Đang thực tập",
-    "Đang làm việc",
-    "Tạm nghỉ",
+    0, 1, 2, 3, 4 
 ];
 
 var comboboxDataGender = [
-    'Nam',
     'Nữ',
+    'Nam',
     'Không xác định'
 ];
 //#endregion
@@ -29,16 +26,6 @@ $(document).ready(function () {
     }, 10000);
     //#endregion
 
-    //#region [Đổ dữ liệu vào các combobox]
-    new Combobox($('#combobox-gender')[0], '', 'FIX', '', comboboxDataGender);
-    //#endregion
-    //#region [Đổ dữ liệu vào các dropdown]
-    var filterDepartment = new Dropdown($('#filter-department')[0], 'Department', 'FILTER', 'http://cukcuk.manhnv.net/api/Department');
-    var filterPosition = new Dropdown($('#filter-position')[0], 'Position', 'FILTER', 'http://cukcuk.manhnv.net/v1/Positions');
-    var dropdownRestaurant = new Dropdown($('#dropdown-restaurant')[0], '', 'FIX', '', dropdownDataRestaurant);
-    var dropdownDepartment = new Dropdown($('#dropdown-department')[0], 'Department', 'NORMAL', 'http://cukcuk.manhnv.net/api/Department');
-    var dropdownPosition = new Dropdown($('#dropdown-position')[0], 'Position', 'NORMAL', 'http://cukcuk.manhnv.net/v1/Positions');
-    //#endregion
 });
 
 class EmployeePage {
@@ -51,8 +38,6 @@ class EmployeePage {
     employeeName;
     employeeCode;
     employeesDelete = new Set();
-    employeesName = new Set();
-    employeesCode = new Set();
     //#endregion
 
     //#region [Hàm khởi tạo]
@@ -63,6 +48,17 @@ class EmployeePage {
         this.loadData();
         // Khởi tạo các sự kiện cho thành phần
         this.initEvents();
+
+        // Đổ dữ liệu vào dropdown
+        this.filterDepartment = new Dropdown($('#filter-department')[0], 'Department', 'FILTER', 'http://cukcuk.manhnv.net/api/Department');
+        this.filterPosition = new Dropdown($('#filter-position')[0], 'Position', 'FILTER', 'http://cukcuk.manhnv.net/v1/Positions');
+        this.dropdownRestaurant = new Dropdown($('#dropdown-restaurant')[0], '', 'FIX', '', dropdownDataRestaurant);
+        this.dropdownPosition = new Dropdown($('#dropdown-position')[0], 'Position', 'NORMAL', 'http://cukcuk.manhnv.net/v1/Positions');
+        this.dropdownWorkstatus = new Dropdown($('#dropdown-workstatus')[0], 'WorkStatus', 'FIX', '', dropdownDataWorkStatus);
+        this.dropdownDepartment = new Dropdown($('#dropdown-department')[0], 'Department', 'NORMAL', 'http://cukcuk.manhnv.net/api/Department');
+
+        // Đổ dữ liệu vào combobox
+        this.comboboxGender = new Combobox($('#combobox-gender')[0], '', 'FIX', '', comboboxDataGender);
     }
     //#endregion
 
@@ -159,9 +155,7 @@ class EmployeePage {
             $('#popup-btn-continue-lib').click(() => {
                 this.deleteMulti();
             });
-        });
-
-         
+        });   
     }
 
     /**
@@ -173,32 +167,16 @@ class EmployeePage {
         $('.table-employee__checkbox').change((e) => {
             if (this.employeesDelete.has(e.target.getAttribute('employeeid'))) {
                 this.employeesDelete.delete(e.target.getAttribute('employeeid'));
-                this.employeesName.delete(e.target.getAttribute('employeename'));
-                this.employeesCode.delete(e.target.getAttribute('employeecode'));
             } else {
                 this.employeesDelete.add(e.target.getAttribute('employeeid'));
-                this.employeesName.add(e.target.getAttribute('employeename'));
-                this.employeesCode.add(e.target.getAttribute('employeecode'));
             }
-
+            console.log(this.employeesDelete);
             if (!this.employeesDelete.size) {
                 $('#button-delete').removeClass('button-enable');
             } else {
                 $('#button-delete').addClass('button-enable');
             }
-        });
-
-        // 12. Ấn nút xoá thì bật dialog confirm
-        $('#button-delete').click(() => {
-            var employeesDeleteHTML = '';
-            if (this.employeesDelete.size) {
-                for(let item of this.employeesCode.values()){
-                    employeesDeleteHTML += `<li class="employees-item-delete">${item}</li>`;
-                }
-                $('.employees-list-delete')[0].innerHTML = employeesDeleteHTML;
-                $('#confirm-delete-multi').attr('style', 'display: flex');
-            }
-        });
+        }); 
     }
         
 
@@ -216,22 +194,24 @@ class EmployeePage {
                 var tbodyEmployee = $('tbody');
                 this.TableData = res;
                 for (var i = 0; i < res.length; i++) {
-                    var tableRow = `<tr data-id=${i} class="table-employee__row">
-                                        <td class="table-employee__check">
-                                            <input employeeid="${res[i].EmployeeId}" employeename="${res[i].FullName}" employeecode="${res[i].EmployeeCode}" type="checkbox" class="table-employee__checkbox"/>
-                                        </td>
-                                        <td class="table-employee__code">${this.resolveValue(res[i].EmployeeCode)}</td>
-                                        <td class="table-employee__name">${this.resolveValue(res[i].FullName)}</td>
-                                        <td class="table-employee__gender">${this.resolveValue(res[i].GenderName)}</td>
-                                        <td class="table-employee__dob text-align-center">${this.resolveDate(res[i].DateOfBirth, 'table')}</td>
-                                        <td class="table-employee__phone">${this.resolveValue(res[i].PhoneNumber)}</td>
-                                        <td class="table-employee__email" title="${this.resolveValue(res[i].Email)}">${this.resolveValue(res[i].Email)}</td>
-                                        <td class="table-employee__position">${this.resolveValue(res[i].PositionName)}</td>
-                                        <td class="table-employee__department">${this.resolveValue(res[i].DepartmentName)}</td>
-                                        <td class="table-employee__salary">${this.resolveValue(res[i].Salary)}</td>
-                                        <td class="table-employee__status">${this.resolveValue(res[i].WorkStatus)}</td>
-                                    </tr>`;
-                    tbodyEmployee.append(tableRow);
+                    var tableRow = $(`<tr data-id=${i} class="table-employee__row"></tr>`);
+                    $('.table-employee__header').each((index, item) => {
+                        var fieldName = item.getAttribute('fieldName');
+                        var tableData = $(`<td fieldName=${fieldName}></td>`);
+                        if (fieldName == undefined) {
+                            tableData.append(`<input employeeid=${res[i].EmployeeId} type="checkbox" class="table-employee__checkbox"/>`);
+                        } else {
+                            switch (fieldName) {
+                                case 'DateOfBirth':
+                                    tableData.text(this.resolveDate(res[i][fieldName], 'TABLE'))
+                                    break;
+                                default:  
+                                    tableData.text(res[i][fieldName]);
+                            }
+                        }
+                        tableRow.append(tableData);
+                    });
+                    tbodyEmployee.append(tableRow) ;
                 } 
                 this.bindEmployeeInfor();
                 this.terminatorEvents();
@@ -292,8 +272,6 @@ class EmployeePage {
             this.loadData();
             toastMessage('success', 'Xoá nhân viên thành công', 5000);
             this.employeesDelete.clear(); 
-            this.employeesCode.clear();
-            this.employeesName.clear();
         } catch (error) {
             console.log(error);
         }
@@ -308,31 +286,53 @@ class EmployeePage {
                 this.method = 'PUT';
                 var dataRow = this.TableData[employeeItem.getAttribute('data-id')];
 
+                $('#employee__dob').val(this.resolveDate(dataRow.DateOfBirth, 'INPUT'));
+                $('#employee__iddate').val(this.resolveDate(dataRow.IdentityDate, 'INPUT'));
+                $('#employee__joiningdate').val(this.resolveDate(dataRow.JoinDate, 'INPUT'));
+
                 $('#employee__code').val(this.resolveValue(dataRow.EmployeeCode));
                 $('#employee__fullname').val(this.resolveValue(dataRow.FullName));
-                $('#employee__dob').val(this.resolveDate(dataRow.DateOfBirth, 'date'));
-                $('#employee__gender').val(this.resolveValue(dataRow.GenderName));
-                $('#employee__idnumber').val(this.resolveValue(dataRow.IdentifyNumber));
-                $('#employee__iddate').val(this.resolveDate(dataRow.IdentifyDate, 'date'));
-                $('#employee__idplace').val(this.resolveValue(dataRow.IdentifyPlace));
+                $('#employee__idnumber').val(this.resolveValue(dataRow.IdentityNumber));
+                $('#employee__idplace').val(this.resolveValue(dataRow.IdentityPlace));
                 $('#employee__email').val(this.resolveValue(dataRow.Email));
                 $('#employee__phone').val(this.resolveValue(dataRow.PhoneNumber));
-
-                $('#employee__position').text(this.resolveValue(dataRow.PositionName));
-                $('#employee__position').attr('positionid', dataRow.PositionId);
-                $('#employee__position').attr('positioncode', dataRow.PositionCode);
-
-                $('#employee__department').text(this.resolveValue(dataRow.DepartmentName));
-                $('#employee__department').attr('departmentid', dataRow.DepartmentId);
-                $('#employee__department').attr('departmentcode', dataRow.DepartmentCode);
-
                 $('#employee__taxcode').val(this.resolveValue(dataRow.PersonalTaxCode));
                 $('#employee__basesalary').val(this.resolveValue(dataRow.Salary));
-                $('#employee__joiningdate').val(this.resolveDate(dataRow.JoinDate));
-                $('#employee__workstatus').val(this.resolveValue(dataRow.WorkStatus));
                 
-                $('#employee__gender').attr('genderid', dataRow.Gender);
+                // Bind dropdown and combobox
+                this.resolveDropdownAPI(this.dropdownDepartment, dataRow);
+                
+                this.resolveDropdownAPI(this.dropdownPosition, dataRow);
+                
+                this.resolveDropdown(this.dropdownWorkstatus, dataRow);
+
+                // GENDER 
+                var checkGender = false;
+                this.comboboxGender.comboboxData.forEach((data, index) => {
+
+                    if (data == dataRow.GenderName) {
+                        this.comboboxGender.currentValue = index;
+                        this.comboboxGender.renderDropdown();
+                        checkGender = true;
+                    } 
+                });
+                if (checkGender == false) {
+                    this.comboboxGender.currentValue = this.comboboxGender.comboboxData.length;
+                    this.comboboxGender.renderDropdown();
+                }
+                console.log(dataRow)
+
                 $('.btn-delete').attr('style', 'display: block');
+
+                // Bind các trường dữ liệu khác vào popup infor
+                $('#employee__department').attr('departmentid', this.resolveValue(dataRow.DepartmentId));
+                $('#employee__department').attr('departmentcode', this.resolveValue(dataRow.DepartmentCode));
+                $('#employee__position').attr('positionid', this.resolveValue(dataRow.PositionId));
+                $('#employee__position').attr('positioncode', this.resolveValue(dataRow.PositionCode));
+                $('.popup-infor').attr('createddate', dataRow.CreatedDate);
+                $('.popup-infor').attr('createby', dataRow.CreateBy);
+                $('.popup-infor').attr('modifieddate', dataRow.ModifiedDate);
+                $('.popup-infor').attr('modifiedby', dataRow.ModifiedBy);
                 
                 this.employeeId = dataRow.EmployeeId;
                 this.employeeName = dataRow.FullName;
@@ -349,33 +349,67 @@ class EmployeePage {
      * Author: NTDUNG (21/07/2021)
      */
     handleEmployee(method, employeeId) {
-        console.log($('#employee__gender').attr('genderid'));
+        var employeeInfor = `{
+            "EmployeeCode": "${$('#employee__code').val()}",
+            "FirstName": "${this.getFirstName($('#employee__fullname').val())}",
+            "LastName": "${this.getLastName($('#employee__fullname').val())}",
+            "FullName": "${$('#employee__fullname').val()}",
+            "Gender": ${this.validateNum($('#employee__gender').attr('genderid'))},
+            "DateOfBirth": "${this.validateDate($('#employee__dob').val())}",
+            "PhoneNumber": "${$('#employee__phone').val()}",
+            "Email": "${$('#employee__email').val()}",
+            "Address": null,
+            "IdentityNumber": "${$('#employee__idnumber').val()}",
+            "IdentityDate": "${this.validateDate($('#employee__iddate').val())}",
+            "IdentityPlace": "${$('#employee__idplace').val()}",
+            "JoinDate": "${this.validateDate($('#employee__joiningdate').val())}",
+            "MartialStatus": null,
+            "EducationalBackground": null,
+            "QualificationId": null,
+            "DepartmentId": "${$('#employee__department').attr('departmentid')}",
+            "PositionId": "${$('#employee__position').attr('positionid')}",
+            "WorkStatus": ${this.validateNum($('#employee__workstatus').text())},
+            "PersonalTaxCode": "${$('#employee__taxcode').val()}",
+            "Salary": ${this.validateNum($('#employee__basesalary').val())},
+            "PositionCode": "${$('#employee__position').attr('positioncode')}",
+            "PositionName": "${$('#employee__position').text()}",
+            "DepartmentCode": "${$('#employee__department').attr('departmentcode')}",
+            "DepartmentName": "${$('#employee__department').text()}",
+            "QualificationName": null,
+            "GenderName": "${$('#employee__gender').val()}",
+            "EducationalBackgroundName": null,
+            "MartialStatusName": null,
+            "CreatedDate": "${this.modifiedBy(method).createdDate}",
+            "CreatedBy": "${this.modifiedBy(method).createdBy}",
+            "ModifiedDate": "${this.modifiedBy(method).modifiedDate}",
+            "ModifiedBy": "${this.modifiedBy(method).modifiedBy}"
+        }`;
         // var employeeInfor = `{
         //     "EmployeeCode": "${$('#employee__code').val()}",
         //     "FirstName": "${this.getFirstName($('#employee__fullname').val())}",
         //     "LastName": "${this.getLastName($('#employee__fullname').val())}",
         //     "FullName": "${$('#employee__fullname').val()}",
-        //     "Gender": ${parseInt($('#employee__gender').attr('genderid'))},
-        //     "DateOfBirth": "${$('#employee__dob').val()}",
+        //     "Gender": 1,
+        //     "DateOfBirth": "",
         //     "PhoneNumber": "${$('#employee__phone').val()}",
         //     "Email": "${$('#employee__email').val()}",
         //     "Address": null,
         //     "IdentityNumber": "${$('#employee__idnumber').val()}",
-        //     "IdentityDate": "${$('#employee__iddate').val()}",
+        //     "IdentityDate": "",
         //     "IdentityPlace": "${$('#employee__idplace').val()}",
-        //     "JoinDate": "${$('#employee__joiningdate').val()}",
+        //     "JoinDate": "",
         //     "MartialStatus": null,
         //     "EducationalBackground": null,
         //     "QualificationId": null,
-        //     "DepartmentId": "${$('#employee__department').attr('departmentid')}",
-        //     "PositionId": "${$('#employee__position').attr('positionid')}",
-        //     "WorkStatus": "${$('#employee__workstatus').val()}",
+        //     "DepartmentId": "",
+        //     "PositionId": "",
+        //     "WorkStatus": "",
         //     "PersonalTaxCode": "${$('#employee__taxcode').val()}",
         //     "Salary": "${$('#employee__basesalary').val()}",
-        //     "PositionCode": "${$('#employee__position').attr('positioncode')}",
-        //     "PositionName": "${$('#employee__position').text()}",
-        //     "DepartmentCode": "${$('#employee__department').attr('departmentcode')}",
-        //     "DepartmentName": "${$('#employee__department').text()}",
+        //     "PositionCode": "",
+        //     "PositionName": "",
+        //     "DepartmentCode": "",
+        //     "DepartmentName": "",
         //     "QualificationName": null,
         //     "GenderName": "${$('#employee__gender').val()}",
         //     "EducationalBackgroundName": null,
@@ -385,42 +419,8 @@ class EmployeePage {
         //     "ModifiedDate": null,
         //     "ModifiedBy": "NTDUNG"
         // }`;
-        var employeeInfor = `{
-            "EmployeeCode": "${$('#employee__code').val()}",
-            "FirstName": "${this.getFirstName($('#employee__fullname').val())}",
-            "LastName": "${this.getLastName($('#employee__fullname').val())}",
-            "FullName": "${$('#employee__fullname').val()}",
-            "Gender": 1,
-            "DateOfBirth": "",
-            "PhoneNumber": "${$('#employee__phone').val()}",
-            "Email": "${$('#employee__email').val()}",
-            "Address": null,
-            "IdentityNumber": "${$('#employee__idnumber').val()}",
-            "IdentityDate": "",
-            "IdentityPlace": "${$('#employee__idplace').val()}",
-            "JoinDate": "",
-            "MartialStatus": null,
-            "EducationalBackground": null,
-            "QualificationId": null,
-            "DepartmentId": "",
-            "PositionId": "",
-            "WorkStatus": "",
-            "PersonalTaxCode": "${$('#employee__taxcode').val()}",
-            "Salary": "${$('#employee__basesalary').val()}",
-            "PositionCode": "",
-            "PositionName": "",
-            "DepartmentCode": "",
-            "DepartmentName": "",
-            "QualificationName": null,
-            "GenderName": "${$('#employee__gender').val()}",
-            "EducationalBackgroundName": null,
-            "MartialStatusName": null,
-            "CreatedDate": "",
-            "CreatedBy": "NTDUNG",
-            "ModifiedDate": null,
-            "ModifiedBy": "NTDUNG"
-        }`;
-        console.log(employeeInfor);
+
+        console.log(JSON.parse(employeeInfor));
 
         switch (method) {
             case 'POST':
@@ -519,30 +519,31 @@ class EmployeePage {
 
     /**
      * Hàm xử lý dữ liệu ngày tháng
-     * @param {date} date 
-     * @param {string} type
+     * Author: NTDUNG (24/07/2021)
+     * @param {date} dateValue
      * @returns string
      */
-    resolveDate(date, type) {
-        var dateOfBirth = new Date(date);
-        var date = dateOfBirth.getDate();
-        date = date < 10 ? '0' + date : date;
-        var month = dateOfBirth.getMonth() + 1;
+    resolveDate(dateValue, type) {
+        var date = new Date(dateValue);
+        var day = date.getDate();
+        day = day < 10 ? '0' + day : day;
+        var month = date.getMonth() + 1;
         month = month < 10 ? '0' + month : month;
-        var year = dateOfBirth.getFullYear(); 
+        var year = date.getFullYear(); 
+
         if (Number.isNaN(date)) {
             return '';
         } else {
-            if (type == 'table') {
-                return `${date}/${month}/${year}`; 
-            } else if (type == 'date') {
-                return `${year}-${month}-${date}`;
-            }
+            if (type == 'TABLE')
+                return `${day}/${month}/${year}`;
+            else if (type == 'INPUT')  
+                return `${year}-${month}-${day}`;
         }
     }
 
     /**
-     * Hàm xử lý các dữ liệu lấy về (khác ngày tháng) 
+     * Hàm xử lý các dữ liệu lấy về (khác ngày tháng)  
+     * Author: NTDUNG (24/07/2021)
      * @param {number, string} value 
      * @returns number, string
      */
@@ -551,14 +552,27 @@ class EmployeePage {
     }
 
     /**
+     * Validate dữ liệu chuyển sang số
+     * Author: NTDUNG (24/07/2021)
+     * @param {number, string} value
+     */
+    validateNum(value) { 
+        return (value == '' ) || (value == undefined) ? null : parseInt(value);
+    }
+
+
+    /**
      * Hàm xử lý ngày tháng người dùng nhập vào (hoặc ngày tháng tự lấy lúc nhập liệu để chuyển về ngày tháng chuẩn JSON)
      * Author: NTDUNG (21/07/2021)
      * @param {string} date
      * @returns string
      */
-    convertDateJSON(date) {
-        // console.log(date);
-        return date;
+    validateDate(date) {
+        // Nếu ngày đã là JSON rồi thì không cần format
+        if (date.length > 10) {
+            return date;
+        }
+        return date == "" ? "" : date + 'T00:00:00';
     }
     /**
      * Lấy ra họ từ tên đầy đủ
@@ -597,6 +611,103 @@ class EmployeePage {
         $('.popup-overlay-lib').click(function() {
             $('.popup-lib').hide();
         });
+    }
+
+    /**
+     * Validate form
+     * Author: NTDUNG (24/07/2021)
+     */
+    validateForm() {
+
+    }
+
+    /**
+     * Get new date JSON
+     * Author: NTDUNG (24/07/2021)
+     */
+    getNewDateJSON() {
+        var date = new Date();
+        var day = date.getDate();
+        day = day < 10 ? '0' + day : day;
+        var month = date.getMonth() + 1;
+        month = month < 10 ? '0' + month : month;
+        var year = date.getFullYear();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        var second = date.getSeconds();
+        return `${year}-${month}-${day}T${hour}:${min}:${second}`;
+    }
+
+    /**
+     * Hàm xử lý thông tin chỉnh sửa và tạo mới
+     * Author: NTDUNG (26/07/2021)
+     * @param {method} method 
+     * @returns object
+     */
+    modifiedBy(method) {
+        var result = {
+            createdBy: '',
+            createdDate: '',
+            modifiedBy: '',
+            modifiedDate: ''
+        }
+        if (method == 'POST') {
+            result.modifiedBy = "";
+            result.modifiedDate = "";
+            result.createdBy = 'NTDUNG';
+            result.createdDate = this.getNewDateJSON();
+        } else if (method == 'PUT') {
+            result.createdBy = $('.popup-infor').attr('createdby');
+            result.createdDate = $('.popup-infor').attr('createddate');
+            result.modifiedBy = 'NTDUNG';
+            result.modifiedDate = this.getNewDateJSON();
+            result.createdBy = result.createdBy == undefined ? '' : result.createdBy;
+        } 
+        return result;
+    }
+
+    /**
+     * Hàm xử lý dữ liệu dropdown (được đổ dữ liệu từ API) khi click vào từng dòng
+     * Author: NTDUNG (26/07/2021)
+     * @param {element} dropdown 
+     * @param {array} dataRow 
+     */
+    resolveDropdownAPI(dropdown, dataRow) {
+        var findValue = false;
+        var dropdownName = dropdown.dropdown + 'Name';
+        dropdown.dropdownData.forEach((data, index) => {
+            if (data[dropdownName] == dataRow[dropdownName]) {
+                $(`#employee__${dropdown.dropdown.toLowerCase()}`).attr('currVal', index);
+                dropdown.renderDropdownAPI();
+                findValue = true;
+            }
+        });
+        if (findValue == false) {
+            $(`#employee__${dropdown.dropdown.toLowerCase()}`).attr('currVal', dropdown.dropdownData.length);
+            dropdown.renderDropdownAPI();
+        }
+    }
+
+    /**
+     * Hàm xử lý dữ liệu dropdown (được đổ dữ liệu Fix cứng) khi click vào từng dòng
+     * Author: NTDUNG (26/07/2021)
+     * @param {element} dropdown 
+     * @param {array} dataRow 
+     */
+    resolveDropdown(dropdown, dataRow) {
+        var findValue = false;
+        var dropdownName = dropdown.dropdown;
+        dropdown.dropdownData.forEach((data, index) => {
+            if (data == dataRow[dropdownName]) {
+                $(`#employee__${dropdown.dropdown.toLowerCase()}`).attr('currVal', index);
+                dropdown.renderDropdown();
+                findValue = true;
+            }
+        });
+        if (findValue == false) {
+            $(`#employee__${dropdown.dropdown.toLowerCase()}`).attr('currVal', dropdown.dropdownData.length);
+            dropdown.renderDropdown();
+        }
     }
     //#endregion
 }
