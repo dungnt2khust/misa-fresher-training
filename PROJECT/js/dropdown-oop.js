@@ -71,7 +71,7 @@ class Dropdown {
     loadDataDropdown() { 
         try {
             if (this.type == 'FIX') {
-                this.renderDropdown(this.dropdownValue, this.dropdownList, this.dropdownData);
+                this.renderDropdown();
             } else {
                 $.ajax({
                     url: this.url,
@@ -82,7 +82,7 @@ class Dropdown {
                     if (this.type == 'FILTER') {
                         this.renderDropdownAPIAll(this.dropdownValue, this.dropdownList, this.dropdownData);
                     } else if (this.type == 'NORMAL') {
-                        this.renderDropdownAPI(this.dropdownValue, this.dropdownList, this.dropdownData);
+                        this.renderDropdownAPI();
                     }
                     toastMessage('success', `Lấy dữ liệu ${this.dropdown} thành công`, 5000);
                 }).fail(function (res) {
@@ -161,102 +161,77 @@ class Dropdown {
     /******************************************************************
      * Hàm bao đóng để render ra nhiều dropdown (Không chứa tất cả vị trí) khác nhau (Rend từ API)
      * Author: NTDUNG (21/07/2021) 
-     * @param {element} dropdownValue: là element để in ra thông tin hiện tại của dropdown
-     * @param {element} dropdownList: là element để in ra các lựa chọn của người dùng 
-     * @param {array} dropdownData: là dữ liệu để đổ vào dropdown
-     */
-    renderDropdownAPI(dropdownValue, dropdownList, dropdownData) {
-        try {
-            var dropdownName = this.dropdown + 'Name';
-            var dropdownId = this.dropdown + 'Id';
-            var dropdownCode = this.dropdown + 'Code'; 
-            renderAPI();   
-        } catch (error) {
-            console.log(error) ;
+     */   
+    renderDropdownAPI() {
+        var dropdownName = this.dropdown + 'Name';
+        var dropdownId = this.dropdown + 'Id';
+        var dropdownCode = this.dropdown + 'Code'; 
+        var currVal = parseInt(this.dropdownValue.getAttribute('currVal'));
+        var dropdownListHTML = '';
+        if (Number.isInteger(currVal)) {
+            this.dropdownValue.innerText = this.dropdownData[currVal] == undefined ? '' : this.dropdownData[currVal][dropdownName];
         }
-        
-        function renderAPI() {
-            var currVal = parseInt(dropdownValue.getAttribute('currVal'));
-            var dropdownListHTML = '';
-            if (Number.isInteger(currVal)) {
-                dropdownValue.innerText = dropdownData[currVal][dropdownName];
-            }
-            else {
-                dropdownValue.innerText = '';
-            }
-            for (var i = 0; i < dropdownData.length; i++) {
-                if (i != currVal) {
-                    dropdownListHTML += `<li data-id=${i} ${dropdownId}="${dropdownData[i][dropdownId]}" ${dropdownCode}="${dropdownData[i][dropdownCode]}" class="dropdown-item"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i][dropdownName]} </li>`;
-                } else {
-                    dropdownListHTML += `<li data-id=${i} ${dropdownId}="${dropdownData[i][dropdownId]}" ${dropdownCode}="${dropdownData[i][dropdownCode]}" class="dropdown-item active"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i][dropdownName]} </li>`;
-                } 
-            }
+        else {
+            this.dropdownValue.innerText = '';
+        }
+        for (var i = 0; i < this.dropdownData.length; i++) {
+            if (i != currVal) {
+                dropdownListHTML += `<li data-id=${i} ${dropdownId}="${this.dropdownData[i][dropdownId]}" ${dropdownCode}="${this.dropdownData[i][dropdownCode]}" class="dropdown-item"><i class="fas fa-check dropdown-icon"></i> ${this.dropdownData[i][dropdownName]} </li>`;
+            } else {
+                dropdownListHTML += `<li data-id=${i} ${dropdownId}="${this.dropdownData[i][dropdownId]}" ${dropdownCode}="${this.dropdownData[i][dropdownCode]}" class="dropdown-item active"><i class="fas fa-check dropdown-icon"></i> ${this.dropdownData[i][dropdownName]} </li>`;
+            } 
+        }
 
-            dropdownList.innerHTML = dropdownListHTML;
+        this.dropdownList.innerHTML = dropdownListHTML;
 
-            var items = dropdownList.querySelectorAll('.dropdown-item');
+        var items = this.dropdownList.querySelectorAll('.dropdown-item');
 
-            items.forEach((item) => {
-                item.addEventListener('click', () => {
-                    var dataId = item.getAttribute('data-id');
-                    currVal = dataId;
-                    dropdownValue.setAttribute('currVal', currVal);
-                    dropdownValue.setAttribute(dropdownId, item.getAttribute(dropdownCode));
-                    dropdownValue.setAttribute(dropdownId, item.getAttribute(dropdownCode));
-                
-                    renderAPI();
-                });
+        items.forEach((item) => {
+            item.addEventListener('click', () => {
+                var dataId = item.getAttribute('data-id');
+                currVal = dataId;
+                this.dropdownValue.setAttribute('currVal', currVal); 
+                this.dropdownValue.setAttribute(dropdownId, item.getAttribute(dropdownId)); 
+                this.dropdownValue.setAttribute(dropdownCode, item.getAttribute(dropdownCode)); 
+                this.renderDropdownAPI();
             });
-        }
+        });
     }
+    
 
     /*******************************************************************************
      * Hàm bao đóng để render cho nhiều dropdown khác nhau (fix cứng dữ liệu)
      * Author: NTDUNG (21/07/2021) 
-     * @param {element} dropdownValue: là element để in ra thông tin hiện tại của dropdown
-     * @param {element} dropdownList: là element để in ra các lựa chọn của người dùng 
-     * @param {array} dropdownData: là dữ liệu để đổ vào dropdown
-     */
-    renderDropdown(dropdownValue, dropdownList, dropdownData) {
-        try { 
-            render();
-        } catch (error) {
-            console.log(error) ;
+     */ 
+    renderDropdown() {
+        var currVal = parseInt(this.dropdownValue.getAttribute('currVal'));
+        var dropdownListHTML = '';
+        if (Number.isInteger(currVal)) {
+            this.dropdownValue.innerText = this.dropdownData[currVal] == undefined ? '' : this.dropdownData[currVal];
+        } else {
+            this.dropdownValue.innerText = '';
         }
-
-        /*******************************
-         * Hàm render dropdown
-         * Author: NTDUNG (21/7/20212)
-         */
-        function render() {
-            var currVal = parseInt(dropdownValue.getAttribute('currVal'));
-            var dropdownListHTML = '';
-            if (Number.isInteger(currVal)) {
-                dropdownValue.innerText = dropdownData[currVal];
+        for (var i = 0; i < this.dropdownData.length; i++) {
+            if (i != currVal) {
+                dropdownListHTML += `<li data-id=${i} class="dropdown-item"><i class="fas fa-check dropdown-icon"></i> ${this.dropdownData[i]} </li>`;
             } else {
-                dropdownValue.innerText = '';
+                dropdownListHTML += `<li data-id=${i} class="dropdown-item active"><i class="fas fa-check dropdown-icon"></i> ${this.dropdownData[i]} </li>`;
             }
-            for (var i = 0; i < dropdownData.length; i++) {
-                if (i != currVal) {
-                    dropdownListHTML += `<li data-id=${i} class="dropdown-item"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i]} </li>`;
-                } else {
-                    dropdownListHTML += `<li data-id=${i} class="dropdown-item active"><i class="fas fa-check dropdown-icon"></i> ${dropdownData[i]} </li>`;
-                }
-            }
-
-            dropdownList.innerHTML = dropdownListHTML;
-
-            var items = dropdownList.querySelectorAll('.dropdown-item');
-
-            items.forEach((item) => {
-                item.addEventListener('click', () => {
-                    var dataId = item.getAttribute('data-id');
-                    currVal = dataId;
-                    dropdownValue.setAttribute('currVal', currVal);
-                    render();
-                });
-            });
         }
-    } 
+
+        this.dropdownList.innerHTML = dropdownListHTML;
+
+        var items = this.dropdownList.querySelectorAll('.dropdown-item');
+
+        items.forEach((item) => {
+            item.addEventListener('click', () => {
+                var dataId = item.getAttribute('data-id');
+                currVal = dataId;
+                this.dropdownValue.setAttribute('currVal', currVal);
+                this.renderDropdown();
+            });
+        });
+    }
+    
     //#endregion
 }

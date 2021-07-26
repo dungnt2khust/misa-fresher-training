@@ -220,58 +220,66 @@
                 top: 0;
                 z-index: 10;
                 background: #fff;
+                height: 40px;
+                font-size: 15px;
+                padding: 0 4px;
+                text-align: left;
             }
                 /* 2.1.1.2. TABLE EMPLOYEE HEADER */
-                .table-employee__header {
-                    background-color: #ffffff;
-                    border-bottom: 1px solid #bbb;
-                    text-align: start;
-                    height: 40px;
-                    padding-left: 10px;
-                    white-space: nowrap;
+                th {
+                    /* white-space: nowrap; */
+                } 
+                th:nth-child(1) {
+                    width: 40px;
+                    text-align: center;
                 }
-                .table-employee__header:nth-child(1) {
-                    width: 30px;
+                tr td:nth-child(1) {
+                    text-align: center;
                 }
-
-                .table-employee__header:nth-child(2) {
-                    width: 90px;
-                }
-
-                .table-employee__header:nth-child(3) {
-                    width: 124px;
-                }
-
-                .table-employee__header:nth-child(4) {
-                    width: 62px;
-                }
-
-                .table-employee__header:nth-child(5) {
+                td[fieldName="EmployeeCode"],
+                th[fieldName="EmployeeCode"] {
                     width: 100px;
                 }
 
-                .table-employee__header:nth-child(6) {
+                td[fieldName="GenderName"],
+                th[fieldName="GenderName"] {
                     width: 100px;
                 }
 
-                .table-employee__header:nth-child(7) {
-                    width: 200px;
+                td[fieldName="DateOfBirth"],
+                th[fieldName="DateOfBirth"] {
+                    width: 100px;
+                }
+                td[fieldName="PhoneNumber"],
+                th[fieldName="PhoneNumber"] {
+                    width: 100px;
+                }
+                td[fieldName="PositionName"],
+                th[fieldName="PositionName"] {
+                    width: 100px;
+                }
+                td[fieldName="DepartmentName"],
+                th[fieldName="DepartmentName"] {
+                    width: 100px;
                 }
 
-                .table-employee__header:nth-child(8) {
-                    width: 130px;
+                td[fieldName="WorkStatus"],
+                th[fieldName="WorkStatus"] {
+                    text-align: right;
+                    padding: 20px;
                 }
-
-                .table-employee__header:nth-child(9) {
-                    width: 130px;
+                
+                td[fieldName="Salary"],
+                th[fieldName="Salary"] {
+                    text-align: right;
                 }
-
-                .table-employee__header:nth-child(10) {
-                    width: 130px;
+                td[fieldName="Email"],
+                th[fieldName="Email"] {
+                    padding-right: 20px;
                 }
-
-                .table-employee__header:nth-child(11) {
-                    width: 120px;
+                td[fieldName="DateOfBirth"],
+                th[fieldName="DateOfBirth"] {
+                    text-align: center;
                 }
 
             /* 2.1.2. TABLE EMPLOYEE BODY */
@@ -290,36 +298,10 @@
 
                 .table-employee__row td {
                     border-bottom: 1px solid #bbb;
-                    padding-left: 10px;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                }
-                .table-employee__code {}
-
-                .table-employee__name {}
-
-                .table-employee__gender {}
-
-                .table-employee__dob {}
-
-                .table-employee__phone {}
-
-                .table-employee__email {}
-
-                .table-employee__position {}
-
-                .table-employee__department {}
-
-                .table-employee__salary {
-                    text-align: right;
-                    padding-right: 20px;
-                }
-
-                .table-employee__status {
-                    text-align: right;
-                    padding-right: 10px;
-                }
+                } 
                     .table-employee__checkbox {
                         height: 20px;
                         width: 20px;

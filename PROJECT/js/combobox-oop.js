@@ -212,7 +212,8 @@ class Combobox {
                                     </li>`;
             }
         }
-        this.comboboxInput.value = this.comboboxData[this.currentValue];
+        var currentVal = this.comboboxData[this.currentValue];
+        this.comboboxInput.value = currentVal == undefined ? '' : currentVal; 
         this.comboboxList.innerHTML = comboboxListHTML;
 
         var comboboxItems = this.comboboxList.querySelectorAll('li');
@@ -220,6 +221,7 @@ class Combobox {
         comboboxItems.forEach((comboboxItem) => {
             comboboxItem.addEventListener('click', () => {
                 this.currentValue = comboboxItem.getAttribute('data-id');
+                this.comboboxInput.setAttribute('genderid', this.currentValue);
                 this.renderDropdown();
             });
         });
