@@ -161,16 +161,70 @@ class EmployeePage {
             showPopup('error', 'Xác nhận xoá thông tin', 'Bạn có chắc muộn xoá những thông tin được check này không?', 'Tiếp tục xoá');
             this.setEvents();
             $('#popup-btn-continue-lib').click(() => {
-                this.deleteMulti();
+                setTimeout(() => {
+                    this.deleteMulti();
+                }, 1); 
             });
         });   
 
-        // 10. Sự kiện thay đổi các input bắt buộc
-        $('input[required]').on('change', () => {
-            this.validateForm();
+        // 10. Sự kiện thay đổi email
+        $('#employee__email').on('change', () => {
+            if ($('#employee__email').val() != '' && !this.validateEmail($('#employee__email').val())) {
+                $('#employee__email').addClass('invalid-input');
+                toastMessage('error', 'Địa chỉ Email không hợp lệ', 5000);
+            } else if ($('#employee__email').val() == '') {
+                $('#employee__email').addClass('invalid-input');
+                toastMessage('error', ' Bạn phải nhập Địa chỉ Email', 5000);
+            } else {
+                $('#employee__email').removeClass('invalid-input');
+            }
         });
 
-        // 11. Sự kiện nhập dữ liệu lương 
+        // 11. Sự kiện thay đổi số điện thoại
+        $('#employee__phone').on('change', () => {
+            if ($('#employee__phone').val() != '' && !this.validatePhone($('#employee__phone').val())) {
+                $('#employee__phone').addClass('invalid-input');
+                toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
+            } else if ($('#employee__phone').val() == '') {
+                $('#employee__phone').addClass('invalid-input');
+                toastMessage('error', 'Bạn phải số điện thoại', 5000);
+            } else {
+                $('#employee__phone').removeClass('invalid-input');
+            }
+        });
+
+        // 12. Sự kiện thay đổi các input bắt buộc
+        $('input[required]').each((index, item) => {
+            console.log(item)
+            item.addEventListener('change', () => {
+                if (item.value == '') {
+                    item.classList.add('invalid-input');
+                    switch (item.id) {
+                    case 'employee__code':
+                        toastMessage('error', 'Bạn phải nhập Mã nhân viên', 5000);
+                        break;
+                    case 'employee__fullname':
+                        toastMessage('error', 'Bạn phải nhập Họ và tên', 5000);
+                        break;
+                    case 'employee__idnumber':
+                        toastMessage('error', 'Bạn phải nhập Số CMT/CCCD', 5000);
+                        break;
+                    case 'employee__email':
+                        toastMessage('error', 'Bạn phải nhập Địa chỉ Email', 5000);
+                        break;
+                    case 'employee__phone':
+                        toastMessage('error', 'Bạn phải nhập Số điện thoại', 5000);
+                        break; 
+                    default:
+                        toastMessage('error', 'Bạn phải nhập trường bắt buộc này', 5000);
+                } 
+                } else {
+                    item.classList.remove('invalid-input');
+                }
+            });
+        })
+
+        // 13. Sự kiện nhập dữ liệu lương 
         $('#employee__basesalary').on('input', () => {
             // Xoá các dấu chấm ngăn cách
             var salaryString = $('#employee__basesalary').val().replaceAll('.', '');
@@ -183,7 +237,7 @@ class EmployeePage {
             
         });
 
-        // 12. Sự kiện khi ấn phím trong lúc đang nhập lương (chỉ nhập số, xoá đi, sang trái, sang phải)
+        // 14. Sự kiện khi ấn phím trong lúc đang nhập lương (chỉ nhập số, xoá đi, sang trái, sang phải)
         $('#employee__basesalary').on('keydown', (e) => {
             if (e.code != "Backspace" && e.code != "ArrowRight" && e.code != "ArrowLeft") {
                 if (!(e.key < 48 || e.key > 57)) {
@@ -200,10 +254,10 @@ class EmployeePage {
     terminatorEvents() {        
         // 13. Sự kiện khi checkbox thay đổi
         $('.table-employee__checkbox').change((e) => {
-            if (this.employeesDelete.has(e.target.getAttribute('employeeid'))) {
-                this.employeesDelete.delete(e.target.getAttribute('employeeid'));
+            if (this.employeesDelete.has(e.target.getAttribute('data-id'))) {
+                this.employeesDelete.delete(e.target.getAttribute('data-id'));
             } else {
-                this.employeesDelete.add(e.target.getAttribute('employeeid'));
+                this.employeesDelete.add(e.target.getAttribute('data-id'));
             }
             if (!this.employeesDelete.size) {
                 $('#button-delete').removeClass('button-enable');
@@ -223,6 +277,7 @@ class EmployeePage {
             $.ajax({
                 url: 'http://cukcuk.manhnv.net/v1/Employees',
                 method: 'GET',
+                async: false
             }).done((res) => {
                 $('tbody')[0].innerHTML = '';
                 var tbodyEmployee = $('tbody');
@@ -233,7 +288,7 @@ class EmployeePage {
                         var fieldName = item.getAttribute('fieldName');
                         var tableData = $(`<td fieldName=${fieldName}></td>`);
                         if (fieldName == undefined) {
-                            tableData.append(`<input employeeid=${res[i].EmployeeId} type="checkbox" class="table-employee__checkbox"/>`);
+                            tableData.append(`<input data-id=${i} type="checkbox" class="table-employee__checkbox"/>`);
                         } else {
                             switch (fieldName) {
                                 case 'DateOfBirth':
@@ -277,6 +332,7 @@ class EmployeePage {
     add() {
         try {
             this.handleEmployee('POST', this.employeeId);
+            toastMessage('warn', 'Đang thêm mới. Vui lòng đợi trong giây lát...', 5000);
         } catch (error) {
             console.log(error);
         }
@@ -289,6 +345,7 @@ class EmployeePage {
     update() {
         try {
             this.handleEmployee('PUT', this.employeeId);
+            toastMessage('warn', 'Đang chỉnh sửa. Vui lòng đợi trong giây lát...', 5000);
         } catch (error) {
             console.log(error);
         }
@@ -301,6 +358,7 @@ class EmployeePage {
     delete() {
         try {
             this.handleEmployee('DELETE', this.employeeId);
+            toastMessage('warn', 'Đang xoá. Vui lòng đợi trong giây lát...', 5000);
         } catch (error) {
             console.log(error);
         }
@@ -312,13 +370,12 @@ class EmployeePage {
      */
 
     deleteMulti() {
+        toastMessage('warn', 'Đang xoá. Vui lòng đợi trong giây lát...', 5000);
         try {
             for (let item of this.employeesDelete.values()) {
-                this.handleEmployee('DELETEMULTI', item);
+                this.handleEmployee('DELETEMULTI', this.TableData[item]);
             }
             this.loadData();
-            toastMessage('success', 'Xoá nhân viên thành công', 5000);
-            toastMessage('info', 'Đang tải lại dữ liệu', 5000);
             this.employeesDelete.clear(); 
         } catch (error) {
             console.log(error);
@@ -449,10 +506,9 @@ class EmployeePage {
                     datatype: 'json'
                 }).done((res) => {
                     toastMessage('success', 'Thêm mới thành công', 5000);
-                    toastMessage('info', 'Đang tải lại dữ liệu', 5000);
                     this.loadData();
                 }).fail(function(res) {
-                    toastMessage('error', 'Tạo mới thông tin thất bại. Vui lòng liên hệ MISA');
+                    toastMessage('error', 'Tạo mới thông tin thất bại. Vui lòng liên hệ MISA', 5000);
                 });
                 break;
             case 'PUT':
@@ -464,10 +520,9 @@ class EmployeePage {
                     datatype: 'json'
                 }).done((res) => {
                     toastMessage('success', 'Chỉnh sửa thành công', 5000);
-                    toastMessage('info', 'Đang tải lại dữ liệu', 5000);
                     this.loadData();
                 }).fail(function(res) {
-                    toastMessage('error', 'Chỉnh sửa thông tin thất bại. Vui lòng liên hệ MISA');
+                    toastMessage('error', 'Chỉnh sửa thông tin thất bại. Vui lòng liên hệ MISA', 5000);
                 }); 
                 break;
             case 'DELETE':
@@ -475,22 +530,21 @@ class EmployeePage {
                     url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
                     type: 'DELETE', 
                 }).done((res) => {
-                    toastMessage('success', 'Xoá thành công', 5000);
-                    toastMessage('info', 'Đang tải lại dữ liệu', 5000);
+                    toastMessage('success', `Đã xoá nhân viên ${this.employeeName} - ${this.employeeCode}`, 5000);
                     this.loadData();
                 }).fail(function(res) {
-                    toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA');
+                    toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA', 5000);
                 });
                 break;
             case 'DELETEMULTI':
                 $.ajax({
-                    url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId}`,
+                    url: `http://cukcuk.manhnv.net/v1/Employees/${employeeId['EmployeeId']}`,
                     type: 'DELETE',
                     async: false
                 }).done(function(res) { 
-
+                    toastMessage('success', `Đã xoá nhân viên ${employeeId['FullName']} - ${employeeId['EmployeeCode']}`, 5000);
                 }).fail(function(res) {
-                    toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA');
+                    toastMessage('error', 'Xoá thông tin thất bại. Vui lòng liên hệ MISA', 5000);
                 });
                 break;
             default:
@@ -677,7 +731,10 @@ class EmployeePage {
                 
         $('input[required]').each((index, item) => { 
             if (item.value.trim() == '')  { 
-                valid = false;
+                if (valid == true) {
+                    valid = false;
+                    item.focus();
+                }
                 item.classList.add('invalid-input');
                 switch (item.id) {
                     case 'employee__code':
