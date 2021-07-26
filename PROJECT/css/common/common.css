@@ -9,3 +9,6 @@
 .text-red {
     color: red;
 }
+.invalid-input {
+    border: 1px solid red;
+}

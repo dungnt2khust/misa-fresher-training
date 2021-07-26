@@ -93,12 +93,13 @@ class EmployeePage {
 
         // 4. Khi nhấn vào nút tạo mới (Lưu) thì gọi đến tạo mới hoặc chỉnh sửa
         $('#popup-btn-save--infor').click(() => {
-            $('.popup-wrapper').hide();
-            if (this.method == 'POST') {
-                this.add();
-            } else if(this.method == 'PUT') {
-                this.update();
-            } 
+            // $('.popup-wrapper').hide();
+            // if (this.method == 'POST') {
+            //     this.add();
+            // } else if(this.method == 'PUT') {
+            //     this.update();
+            // } 
+            this.validateForm();
         });
 
         // 5. Ấn vào cancel để ẩn popup
@@ -156,6 +157,11 @@ class EmployeePage {
                 this.deleteMulti();
             });
         });   
+
+        // 10. Sự kiện thay đổi các input bắt buộc
+        $('input[required]').on('change', () => {
+            this.validateForm();
+        });
     }
 
     /**
@@ -283,7 +289,12 @@ class EmployeePage {
     bindEmployeeInfor() {
         $('.table-employee__row').each((index, employeeItem) => {
             employeeItem.addEventListener('click', (e) => {
+                // Đổi phương thức thành PUT
                 this.method = 'PUT';
+                // Đặt lại trạng thái ban đầu cho form
+                this.resetForm();
+
+                // Lấy dữ liệu của dòng và bind vào form
                 var dataRow = this.TableData[employeeItem.getAttribute('data-id')];
 
                 $('#employee__dob').val(this.resolveDate(dataRow.DateOfBirth, 'INPUT'));
@@ -334,6 +345,7 @@ class EmployeePage {
                 $('.popup-infor').attr('modifieddate', dataRow.ModifiedDate);
                 $('.popup-infor').attr('modifiedby', dataRow.ModifiedBy);
                 
+                // Bind dữ liệu để sử dụng khi toast cảnh báo
                 this.employeeId = dataRow.EmployeeId;
                 this.employeeName = dataRow.FullName;
                 this.employeeCode = dataRow.EmployeeCode;
@@ -618,9 +630,45 @@ class EmployeePage {
      * Author: NTDUNG (24/07/2021)
      */
     validateForm() {
-
+        $('input[required]').each((index, item) => {
+            console.log(item.value);
+            if (item.value.trim() == '')  {
+                item.classList.add('invalid-input');
+                console.log(item.id);
+                switch (item.id) {
+                    case 'employee__code':
+                        toastMessage('error', 'Bạn phải nhập Mã nhân viên', 5000);
+                        break;
+                    case 'employee__fullname':
+                        toastMessage('error', 'Bạn phải nhập Họ và tên', 5000);
+                        break;
+                    case 'employee__idnumber':
+                        toastMessage('error', 'Bạn phải nhập Số CMT/CCCD', 5000);
+                        break;
+                    case 'employee__email':
+                        toastMessage('error', 'Bạn phải nhập Địa chỉ Email', 5000);
+                        break;
+                    case 'employee__phone':
+                        toastMessage('error', 'Bạn phải nhập Số điện thoại', 5000);
+                        break; 
+                    default:
+                        toastMessage('error', 'Bạn phải nhập trường bắt buộc này', 5000);
+                }
+            } else {
+                item.classList.remove('invalid-input');
+            }
+        });
     }
 
+    /**
+     * đặt lại trạng thái bình thường cho form
+     * Author: NTDUNG(26/07/2021)
+     */
+    resetForm() {
+        $('input[required]').each((index, item) => {
+            item.classList.remove('invalid-input');
+        });
+    }
     /**
      * Get new date JSON
      * Author: NTDUNG (24/07/2021)
