@@ -49,13 +49,13 @@ class EmployeePage {
         // Khởi tạo các sự kiện cho thành phần
         this.initEvents();
 
-        // Đổ dữ liệu vào dropdown
-        this.filterDepartment = new Dropdown($('#filter-department')[0], 'Department', 'FILTER', 'http://cukcuk.manhnv.net/api/Department');
-        this.filterPosition = new Dropdown($('#filter-position')[0], 'Position', 'FILTER', 'http://cukcuk.manhnv.net/v1/Positions');
+        // Đổ dữ liệu vào dropdown (đổ dữ liệu filter cuối cùng và hiện thông báo khi load dữ liệu lỗi)
         this.dropdownRestaurant = new Dropdown($('#dropdown-restaurant')[0], '', 'FIX', '', dropdownDataRestaurant);
         this.dropdownPosition = new Dropdown($('#dropdown-position')[0], 'Position', 'NORMAL', 'http://cukcuk.manhnv.net/v1/Positions');
         this.dropdownWorkstatus = new Dropdown($('#dropdown-workstatus')[0], 'WorkStatus', 'FIX', '', dropdownDataWorkStatus);
         this.dropdownDepartment = new Dropdown($('#dropdown-department')[0], 'Department', 'NORMAL', 'http://cukcuk.manhnv.net/api/Department');
+        this.filterPosition = new Dropdown($('#filter-position')[0], 'Position', 'FILTER', 'http://cukcuk.manhnv.net/v1/Positions');
+        this.filterDepartment = new Dropdown($('#filter-department')[0], 'Department', 'FILTER', 'http://cukcuk.manhnv.net/api/Department');
 
         // Đổ dữ liệu vào combobox
         this.comboboxGender = new Combobox($('#combobox-gender')[0], '', 'FIX', '', comboboxDataGender);
@@ -205,7 +205,6 @@ class EmployeePage {
             } else {
                 this.employeesDelete.add(e.target.getAttribute('employeeid'));
             }
-            console.log(this.employeesDelete);
             if (!this.employeesDelete.size) {
                 $('#button-delete').removeClass('button-enable');
             } else {
@@ -374,7 +373,6 @@ class EmployeePage {
                     this.comboboxGender.currentValue = this.comboboxGender.comboboxData.length;
                     this.comboboxGender.renderDropdown();
                 }
-                console.log(dataRow)
 
                 $('.btn-delete').attr('style', 'display: block');
 
@@ -440,7 +438,6 @@ class EmployeePage {
             "ModifiedBy": "${this.modifiedBy(method).modifiedBy}"
         }`; 
 
-        console.log(employeeInfor);
 
         switch (method) {
             case 'POST':
@@ -650,12 +647,35 @@ class EmployeePage {
     }
 
     /**
+     * Validate Email 
+     * Author: NTDUNG (26/07/2021);
+     * @param {string} value
+     * @returns {boolean}
+     */
+    validateEmail(value) {
+        const email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return email.test(value);
+    }
+
+    /**
+     * Validate PhoneNumber
+     * Author: NTDUNG (26/07/2021)
+     * @param {string} value
+     * @returns {boolean}
+     */ 
+    validatePhone(value) {
+        const phone = /^\D*(\d\D*){9,14}$/; 
+        return phone.test(value);
+    }
+
+    /**
      * Validate form
      * Author: NTDUNG (24/07/2021)
      */
     validateForm() {
-        var valid = true;
-        $('input[required]').each((index, item) => {
+        var valid = true; 
+                
+        $('input[required]').each((index, item) => { 
             if (item.value.trim() == '')  { 
                 valid = false;
                 item.classList.add('invalid-input');
@@ -679,7 +699,29 @@ class EmployeePage {
                         toastMessage('error', 'Bạn phải nhập trường bắt buộc này', 5000);
                 }
             } else {
-                item.classList.remove('invalid-input');
+                switch (item.id) {  
+                    case 'employee__email':
+                        if (!this.validateEmail(item.value)){
+                            toastMessage('error', 'Địa chỉ Email không hợp lệ', 5000);
+                            item.classList.add('invalid-input');
+                            valid = false;
+                        } else {
+                            item.classList.remove('invalid-input');
+                        }
+                        break;
+                    case 'employee__phone':
+                        if (!this.validatePhone(item.value)) {
+                            toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
+                            item.classList.add('invalid-input');
+                            valid = false;
+                        } else {
+                            item.classList.remove('invalid-input');
+                        }
+                        break; 
+                    default:
+                        item.classList.remove('invalid-input');
+                } 
+                
             }
         });
         return valid;

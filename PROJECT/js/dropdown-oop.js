@@ -81,13 +81,15 @@ class Dropdown {
                     this.dropdownData = res;
                     if (this.type == 'FILTER') {
                         this.renderDropdownAPIAll(this.dropdownValue, this.dropdownList, this.dropdownData);
+                        toastMessage('success', `Lấy dữ liệu ${this.dropdown} thành công`, 5000);
                     } else if (this.type == 'NORMAL') {
                         this.renderDropdownAPI();
                     }
-                    toastMessage('success', `Lấy dữ liệu ${this.dropdown} thành công`, 5000);
                 }).fail(function (res) {
                     console.log('fail to get department');
-                    toastMessage('error', `Lấy dữ liệu ${this.dropdown} thất bại`, 5000);
+                    if (this.type == "FILTER") {
+                        toastMessage('error', `Lấy dữ liệu ${this.dropdown} thất bại`, 5000);
+                    }
                 });
             }  
         } catch (error) {
