@@ -86,7 +86,7 @@ class EmployeePage {
             $('#employee__department').attr('departmentcode', '');
             $('#employee__position').attr('positionid', '');
             $('#employee__position').attr('positioncode', '');
-
+            this.resetForm();
             
             $('.popup-wrapper').show();
             $('.popup-body input').val('');
@@ -167,33 +167,7 @@ class EmployeePage {
             });
         });   
 
-        // 10. Sự kiện thay đổi email
-        $('#employee__email').on('change', () => {
-            if ($('#employee__email').val() != '' && !this.validateEmail($('#employee__email').val())) {
-                $('#employee__email').addClass('invalid-input');
-                toastMessage('error', 'Địa chỉ Email không hợp lệ', 5000);
-            } else if ($('#employee__email').val() == '') {
-                $('#employee__email').addClass('invalid-input');
-                toastMessage('error', ' Bạn phải nhập Địa chỉ Email', 5000);
-            } else {
-                $('#employee__email').removeClass('invalid-input');
-            }
-        });
-
-        // 11. Sự kiện thay đổi số điện thoại
-        $('#employee__phone').on('change', () => {
-            if ($('#employee__phone').val() != '' && !this.validatePhone($('#employee__phone').val())) {
-                $('#employee__phone').addClass('invalid-input');
-                toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
-            } else if ($('#employee__phone').val() == '') {
-                $('#employee__phone').addClass('invalid-input');
-                toastMessage('error', 'Bạn phải số điện thoại', 5000);
-            } else {
-                $('#employee__phone').removeClass('invalid-input');
-            }
-        });
-
-        // 12. Sự kiện thay đổi các input bắt buộc
+        // 10. Sự kiện thay đổi các input bắt buộc
         $('input[required]').each((index, item) => {
             console.log(item)
             item.addEventListener('change', () => {
@@ -219,12 +193,33 @@ class EmployeePage {
                         toastMessage('error', 'Bạn phải nhập trường bắt buộc này', 5000);
                 } 
                 } else {
-                    item.classList.remove('invalid-input');
+                    switch (item.id) {  
+                        case 'employee__email':
+                            if (!this.validateEmail(item.value)){
+                                toastMessage('error', 'Địa chỉ Email không hợp lệ', 5000);
+                                item.classList.add('invalid-input');
+                                valid = false;
+                            } else {
+                                item.classList.remove('invalid-input');
+                            }
+                            break;
+                        case 'employee__phone':
+                            if (!this.validatePhone(item.value)) {
+                                toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
+                                item.classList.add('invalid-input');
+                                valid = false;
+                            } else {
+                                item.classList.remove('invalid-input');
+                            }
+                            break; 
+                        default:
+                            item.classList.remove('invalid-input');
+                    } 
                 }
             });
         })
 
-        // 13. Sự kiện nhập dữ liệu lương 
+        // 11 Sự kiện nhập dữ liệu lương 
         $('#employee__basesalary').on('input', () => {
             // Xoá các dấu chấm ngăn cách
             var salaryString = $('#employee__basesalary').val().replaceAll('.', '');
@@ -237,7 +232,7 @@ class EmployeePage {
             
         });
 
-        // 14. Sự kiện khi ấn phím trong lúc đang nhập lương (chỉ nhập số, xoá đi, sang trái, sang phải)
+        // 12. Sự kiện khi ấn phím trong lúc đang nhập lương (chỉ nhập số, xoá đi, sang trái, sang phải)
         $('#employee__basesalary').on('keydown', (e) => {
             if (e.code != "Backspace" && e.code != "ArrowRight" && e.code != "ArrowLeft") {
                 if (!(e.key < 48 || e.key > 57)) {
