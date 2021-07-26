@@ -238,7 +238,8 @@
                 }
                 td[fieldName="EmployeeCode"],
                 th[fieldName="EmployeeCode"] {
-                    width: 100px;
+                    padding-left: 5px;
+                    /* width: 100px; */
                 }
 
                 td[fieldName="GenderName"],
@@ -272,6 +273,7 @@
                 td[fieldName="Salary"],
                 th[fieldName="Salary"] {
                     text-align: right;
+
                 }
                 td[fieldName="Email"],
                 th[fieldName="Email"] {
