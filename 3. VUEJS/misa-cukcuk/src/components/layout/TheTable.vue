@@ -1,6 +1,6 @@
 <template lang="">
     <div class="table-wrapper">
-       <table class="table-employee">
+    <table class="table-employee">
             <thead class="table-employee__head">
             <tr>
                 <th class="table-employee__header">#</th>
@@ -17,12 +17,22 @@
             </tr>
             </thead>
             <tbody class="table-employee__body">
-                <tr v-for="(employee, index) in employees" :key="index">
-                    
+                <tr v-for="(employee, index) in employees" :key="index" class="table-employee__row">
+                    <td><input type="checkbox" name="" id="" class="table-employee__checkbox"></td>
+                    <td fieldName="EmployeeCode">{{employee.EmployeeCode}}</td>
+                    <td fieldName="FullName">{{employee.FullName}}</td>
+                    <td fieldName="GenderName">{{employee.GenderName}}</td>
+                    <td fieldName="DateOfBirth">{{employee.DateOfBirth}}</td>
+                    <td fieldName="PhoneNumber">{{employee.PhoneNumber}}</td>
+                    <td fieldName="Email">{{employee.Email}}</td>
+                    <td fieldName="PositionName">{{employee.PositionName}}</td>
+                    <td fieldName="DepartmentName">{{employee.DepartmentName}}</td>
+                    <td fieldName="Salary">{{employee.Salary}}</td>
+                    <td fieldName="WorkStatus">{{employee.WorkStatus}}</td>
                 </tr>
             </tbody>
-        </table> 
-    </div>
+        </table>    
+    </div> 
 </template>
 <script>
 import axios from 'axios'
@@ -35,8 +45,9 @@ export default {
         }
     },
     created() {
+        const vm = this;
         axios.get('http://cukcuk.manhnv.net/v1/Employees').then(res => {
-            this.employees = res; 
+            vm.employees = res.data;
         }).catch(res => {
             console.log(res.data);
         });

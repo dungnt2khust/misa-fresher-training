@@ -51,11 +51,13 @@
         </div> 
         <div class="container__main">
             <TheTable/>
+            <ThePagination/>
         </div>
     </div>
 </template>
 <script>
 import TheTable from './TheTable.vue'
+import ThePagination from './ThePagination.vue'
 // import VueAxios from 'vue-axios'
 
 export default {
@@ -66,7 +68,8 @@ export default {
         }
     }, 
     components: {
-        TheTable
+        TheTable,
+        ThePagination
     }
 }
 </script>
