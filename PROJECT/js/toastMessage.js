@@ -24,7 +24,7 @@ var toastMessageList = $('.toast-message-list');
  * @returns element
  */
 function toastMessage(type, content, duration) {
-    toastMessageList.append(`
+    var toastMessageItem = $(`
         <div class="toast-message toast-message--${type}">
             <div class="toast-message__body">
                 <div class="toast-message__icon">
@@ -37,10 +37,10 @@ function toastMessage(type, content, duration) {
             </div>
         </div>
     `);
-    var toastList = toastMessageList[0].querySelectorAll('.toast-message');
+    toastMessageList.append(toastMessageItem);
     
     setTimeout(function() {
-        toastList[toastList.length - 1].remove();
+        toastMessageItem.fadeOut(700);
     }, duration);
     addIconToastMessage();
     setCancelEvent();
