@@ -34,6 +34,7 @@ class EmployeePage {
     PageTitle = null;
     TableData;
     method;
+    validForm;
     employeeId;
     employeeName;
     employeeCode;
@@ -86,7 +87,7 @@ class EmployeePage {
             $('#employee__department').attr('departmentcode', '');
             $('#employee__position').attr('positionid', '');
             $('#employee__position').attr('positioncode', '');
-
+            this.resetForm();
             
             $('.popup-wrapper').show();
             $('.popup-body input').val('');
@@ -136,11 +137,14 @@ class EmployeePage {
         });
 
         // 7. Ấn nút Refresh thì load lại dữ liệu
-        $('.refresh')[0].onclick = () => {
-            this.loadData();
-            toastMessage('success', 'Tải dữ liệu thành công', 5000);
-            showPopup('info','Load dữ liệu thành công', 'Dữ liệu của bạn đã được hiển thị', 'Huỷ');
-        } 
+        $('.refresh').click(() => {
+            toastMessage('warn', 'Đang tải lại dữ liệu. Vui lòng đợi trong giây lát...', 5000);
+            setTimeout(() => {
+                this.loadData();
+                toastMessage('success', 'Tải dữ liệu thành công', 5000);
+                showPopup('info','Load dữ liệu thành công', 'Dữ liệu của bạn đã được hiển thị', 'Huỷ');
+            }, 1);
+        });
 
         // 8. Nhấn nút xoá nhân viên
         $('.btn-delete').click(() => {
@@ -161,70 +165,22 @@ class EmployeePage {
             showPopup('error', 'Xác nhận xoá thông tin', 'Bạn có chắc muộn xoá những thông tin được check này không?', 'Tiếp tục xoá');
             this.setEvents();
             $('#popup-btn-continue-lib').click(() => {
+                toastMessage('warn', 'Đang xoá. Vui lòng đợi trong giây lát...', 5000);
                 setTimeout(() => {
                     this.deleteMulti();
                 }, 1); 
             });
         });   
 
-        // 10. Sự kiện thay đổi email
-        $('#employee__email').on('change', () => {
-            if ($('#employee__email').val() != '' && !this.validateEmail($('#employee__email').val())) {
-                $('#employee__email').addClass('invalid-input');
-                toastMessage('error', 'Địa chỉ Email không hợp lệ', 5000);
-            } else if ($('#employee__email').val() == '') {
-                $('#employee__email').addClass('invalid-input');
-                toastMessage('error', ' Bạn phải nhập Địa chỉ Email', 5000);
-            } else {
-                $('#employee__email').removeClass('invalid-input');
-            }
-        });
-
-        // 11. Sự kiện thay đổi số điện thoại
-        $('#employee__phone').on('change', () => {
-            if ($('#employee__phone').val() != '' && !this.validatePhone($('#employee__phone').val())) {
-                $('#employee__phone').addClass('invalid-input');
-                toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
-            } else if ($('#employee__phone').val() == '') {
-                $('#employee__phone').addClass('invalid-input');
-                toastMessage('error', 'Bạn phải số điện thoại', 5000);
-            } else {
-                $('#employee__phone').removeClass('invalid-input');
-            }
-        });
-
-        // 12. Sự kiện thay đổi các input bắt buộc
+        // 10. Sự kiện thay đổi các input bắt buộc
         $('input[required]').each((index, item) => {
-            console.log(item)
-            item.addEventListener('change', () => {
-                if (item.value == '') {
-                    item.classList.add('invalid-input');
-                    switch (item.id) {
-                    case 'employee__code':
-                        toastMessage('error', 'Bạn phải nhập Mã nhân viên', 5000);
-                        break;
-                    case 'employee__fullname':
-                        toastMessage('error', 'Bạn phải nhập Họ và tên', 5000);
-                        break;
-                    case 'employee__idnumber':
-                        toastMessage('error', 'Bạn phải nhập Số CMT/CCCD', 5000);
-                        break;
-                    case 'employee__email':
-                        toastMessage('error', 'Bạn phải nhập Địa chỉ Email', 5000);
-                        break;
-                    case 'employee__phone':
-                        toastMessage('error', 'Bạn phải nhập Số điện thoại', 5000);
-                        break; 
-                    default:
-                        toastMessage('error', 'Bạn phải nhập trường bắt buộc này', 5000);
-                } 
-                } else {
-                    item.classList.remove('invalid-input');
-                }
+            item.addEventListener('blur', (e) => {
+                if (e.relatedTarget != $('#popup-btn-save--infor')[0])
+                    this.validateInput(item, this.validForm);
             });
-        })
+        });
 
-        // 13. Sự kiện nhập dữ liệu lương 
+        // 11 Sự kiện nhập dữ liệu lương 
         $('#employee__basesalary').on('input', () => {
             // Xoá các dấu chấm ngăn cách
             var salaryString = $('#employee__basesalary').val().replaceAll('.', '');
@@ -237,7 +193,7 @@ class EmployeePage {
             
         });
 
-        // 14. Sự kiện khi ấn phím trong lúc đang nhập lương (chỉ nhập số, xoá đi, sang trái, sang phải)
+        // 12. Sự kiện khi ấn phím trong lúc đang nhập lương (chỉ nhập số, xoá đi, sang trái, sang phải)
         $('#employee__basesalary').on('keydown', (e) => {
             if (e.code != "Backspace" && e.code != "ArrowRight" && e.code != "ArrowLeft") {
                 if (!(e.key < 48 || e.key > 57)) {
@@ -370,13 +326,14 @@ class EmployeePage {
      */
 
     deleteMulti() {
-        toastMessage('warn', 'Đang xoá. Vui lòng đợi trong giây lát...', 5000);
         try {
             for (let item of this.employeesDelete.values()) {
                 this.handleEmployee('DELETEMULTI', this.TableData[item]);
             }
+            $('#button-delete').removeClass('button-enable');
             this.loadData();
             this.employeesDelete.clear(); 
+
         } catch (error) {
             console.log(error);
         }
@@ -457,6 +414,8 @@ class EmployeePage {
     /**
      * Hàm xử lý khi tạo mới, xoá và sửa nhân viên
      * Author: NTDUNG (21/07/2021)
+     * @param {string} method
+     * @param {string} employeeId
      */
     handleEmployee(method, employeeId) {
         var employeeInfor = `{
@@ -727,61 +686,18 @@ class EmployeePage {
      * Author: NTDUNG (24/07/2021)
      */
     validateForm() {
-        var valid = true; 
-                
+        this.validForm = true;        
+        // Kiểm tra các input bắt buộc
         $('input[required]').each((index, item) => { 
-            if (item.value.trim() == '')  { 
-                if (valid == true) {
-                    valid = false;
-                    item.focus();
-                }
-                item.classList.add('invalid-input');
-                switch (item.id) {
-                    case 'employee__code':
-                        toastMessage('error', 'Bạn phải nhập Mã nhân viên', 5000);
-                        break;
-                    case 'employee__fullname':
-                        toastMessage('error', 'Bạn phải nhập Họ và tên', 5000);
-                        break;
-                    case 'employee__idnumber':
-                        toastMessage('error', 'Bạn phải nhập Số CMT/CCCD', 5000);
-                        break;
-                    case 'employee__email':
-                        toastMessage('error', 'Bạn phải nhập Địa chỉ Email', 5000);
-                        break;
-                    case 'employee__phone':
-                        toastMessage('error', 'Bạn phải nhập Số điện thoại', 5000);
-                        break; 
-                    default:
-                        toastMessage('error', 'Bạn phải nhập trường bắt buộc này', 5000);
-                }
-            } else {
-                switch (item.id) {  
-                    case 'employee__email':
-                        if (!this.validateEmail(item.value)){
-                            toastMessage('error', 'Địa chỉ Email không hợp lệ', 5000);
-                            item.classList.add('invalid-input');
-                            valid = false;
-                        } else {
-                            item.classList.remove('invalid-input');
-                        }
-                        break;
-                    case 'employee__phone':
-                        if (!this.validatePhone(item.value)) {
-                            toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
-                            item.classList.add('invalid-input');
-                            valid = false;
-                        } else {
-                            item.classList.remove('invalid-input');
-                        }
-                        break; 
-                    default:
-                        item.classList.remove('invalid-input');
-                } 
-                
-            }
+            this.validateInput(item, this.validForm);
         });
-        return valid;
+        // // Đặt lại sự kiện thay đổi các input bắt buộc
+        // $('input[required]').each((index, item) => {
+        //     item.addEventListener('blur', () => {
+        //         this.validateInput(item, this.validForm);
+        //     });
+        // });
+        return this.validForm;
     }
 
     /**
@@ -840,6 +756,61 @@ class EmployeePage {
         } 
         return result;
     }
+
+    /**
+     * Validate input
+     * Author: NTDUNG (27/07/2021)
+     * @param {element} item
+     */
+    validateInput(item) {
+        if (item.value == '') {
+            this.validForm = false;
+            item.classList.add('invalid-input');
+            switch (item.id) {
+            case 'employee__code':
+                toastMessage('error', 'Bạn phải nhập Mã nhân viên', 5000);
+                break;
+            case 'employee__fullname':
+                toastMessage('error', 'Bạn phải nhập Họ và tên', 5000);
+                break;
+            case 'employee__idnumber':
+                toastMessage('error', 'Bạn phải nhập Số CMT/CCCD', 5000);
+                break;
+            case 'employee__email':
+                toastMessage('error', 'Bạn phải nhập Địa chỉ Email', 5000);
+                break;
+            case 'employee__phone':
+                toastMessage('error', 'Bạn phải nhập Số điện thoại', 5000);
+                break; 
+            default:
+                toastMessage('error', 'Bạn phải nhập trường bắt buộc này', 5000);
+        } 
+        } else {
+            switch (item.id) {  
+                case 'employee__email':
+                    if (!this.validateEmail(item.value)){
+                        toastMessage('error', 'Địa chỉ Email không hợp lệ', 5000);
+                        item.classList.add('invalid-input');
+                        this.validForm = false;
+                    } else {
+                        item.classList.remove('invalid-input');
+                    }
+                    break;
+                case 'employee__phone':
+                    if (!this.validatePhone(item.value)) {
+                        toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
+                        item.classList.add('invalid-input');
+                        this.validForm = false;
+                    } else {
+                        item.classList.remove('invalid-input');
+                    }
+                    break; 
+                default:
+                    item.classList.remove('invalid-input');
+            } 
+        } 
+    }
+                
 
     /**
      * Hàm xử lý dữ liệu dropdown (được đổ dữ liệu từ API) khi click vào từng dòng
