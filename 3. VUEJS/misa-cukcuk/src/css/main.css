@@ -1,0 +1,69 @@
+@import url("./base/button.css");
+@import url('base/resetcss.css');
+@import url('base/variable.css');
+@import url("base/customizeScrollbar.css");
+/*
+@import url("./common/placeholderItalic.css");
+@import url("./common/dropdown.css");
+@import url("./common/combobox.css");
+@import url("common/toastMessage.css");
+@import url("common/checkbox.css");
+*/
+@import url("./common/header.css");
+@import url("./common/menu.css");
+@import url("./common/container.css");
+/*
+@import url("../css/common/popupDialog.css");
+@import url("./common/popup.css");
+@import url("common/common.css"); */ 
+body {
+    font-family: MISAGoogleSan;
+    font-size: 13px;
+    background-color: var(--primary-color);
+    height: 100vh;
+}
+
+@font-face {
+    font-family: MISAGoogleSan;
+    src: url('../assets/font/GoogleSans-Regular.otf');
+}
+
+@font-face {
+    font-family: MISAGoogleSan-Bold;
+    src: url('../assets/font/GoogleSans-Bold.otf');
+}
+
+@font-face {
+    font-family: MISAGoogleSan-Italic;
+    src: url('../assets/font/GoogleSans-Italic.otf');
+}
+
+
+
+#app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 700px;
+    width: 100%;
+}
+
+#wrapper {
+    display: flex;
+    flex: 1;
+}
+
+.show {
+    
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+
+    opacity: 1;
+
+}

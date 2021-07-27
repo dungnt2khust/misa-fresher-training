@@ -1,0 +1,18 @@
+:root {
+    --menu-width: 226px;
+    --top-header-height: 48px;
+    --primary-color: #fff;
+    --text-color: #fff;
+    --border-color: #ccc;
+    --dropdown-hover-color: #e9ebee;
+    --dropdown-select-color: #019160;
+    --menu-item-default-color: #019160;
+    --menu-item-hover-color: #a7a5a5;
+    --menu-item-height: 44px;
+    --menu-item-mini-width: 52px;
+    --pagination-active-color: #019160;
+    --button-normal-default-color: #01B075;
+    --underline-label-color: #01B075;
+    --table-row-hover: #18c78d8c;
+    --table-row-focus: #0191628c;
+}

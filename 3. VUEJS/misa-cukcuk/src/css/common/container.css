@@ -1,0 +1,395 @@
+#container {
+    flex: 1;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--container-color);
+}
+    /* 1. CONTAINER HEADER */
+    .container__header {
+        height: 120px;
+        display: flex;
+        justify-content: space-between;
+        padding: 16px;
+    }
+        /* 1.1. CONTAINER HEADER LEFT */
+        .container__header-left {
+            /* width: 700px; */
+        }
+            /* 1.1.1. TABLE NAME */
+            .table-name {
+                font-size: 22px;
+                font-weight: 600;
+            }
+
+            /* 1.1.2. TABLE FILTER */
+            .table-filter {
+                margin-top: 16px;
+                height: var(--top-header-height);
+                display: flex;
+                justify-content: space-between;
+            }
+
+            /* 1.1.2.(+) TABLE FILTER DEPARTMENT */
+            .table-filter__department {
+                min-width: 200px;
+                padding: 0;
+                height: 40px;
+                border: 1px solid #bbb;
+                border-radius: 4px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                user-select: none;
+                position: relative;
+                cursor: pointer;
+                margin-right: 6px;
+                margin-top: 0;
+            }
+            .table-filter__department.show {
+                border: 1px solid #019160;
+            }
+            .table-filter__department.show .department-list {
+                display: block;
+            }
+                /* 1.1.2.(+).1. DEPARTMENT LIST */
+                .department-list {
+                    z-index: 11;
+                    background-color: #fff;
+                    display: none;
+                    list-style: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                }
+                    /* 1.1.2.(+).1.1. DEPARTMENT LIST ITEM*/
+                    .department-list__item {
+                        height: 40px;
+                        line-height: 40px;
+                        position: relative;
+                        padding-left: 30px;
+                    }
+
+                    .department-list__item.active .check-item {
+                        display: inline;
+                    }
+                    .department-list__item.active {
+                        background-color: #019160;
+                        color: #fff;
+                    }
+                    .department-list__item:hover {
+                        background-color: #E9EBEE;
+                        color: #000;
+                    }
+                        /* CHECK ITEM */
+                        .check-item {
+                            display: none;
+                            position: absolute;
+                            top: 50%;
+                            left: 10px;
+                            transform: translate(0, -50%);
+                        }
+            /* 1.1.2.(+). TABLE FILTER POSITION */
+            .table-filter__position {
+                min-width: 200px;
+                height: 40px;
+                border: 1px solid #bbb;
+                border-radius: 4px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                user-select: none;
+                position: relative;
+                cursor: pointer;
+                margin-top: 0;
+            }
+            .table-filter__position.show {
+                border: 1px solid #019160;
+            }
+            .table-filter__position.show .department-list {
+                display: block;
+            }
+
+            /* 1.1.3. TABLE SEARCH */
+            .table-search {
+                height: 40px;
+                min-width: 380px;
+                display: flex;
+                align-items: center;
+                border: 1px solid #bbb;
+                border-radius: 4px;
+                font-size: 14px;
+                margin-right: 7px;
+                background-color: var(--primary-color);
+            }
+                /* 1.1.3.1. TABLE SEARCH INPUT */
+                .table-search__input {
+                    flex: 1;
+                    height: 100%;
+                    border: transparent;
+                    border-radius: 4px;
+                    outline: none;
+                }
+                    /* 1.1.3.1.1. TABLE SEARCH ICON img*/
+                    .table-search__icon img {
+                        padding-left: 16px;
+                        padding-right: 8px;
+                    }
+
+
+        /* 1.2. CONTAINER HEADER RIGHT */
+        .container__header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+            /* 1.2.1 BUTTON ADD EMPLOYEE */
+            .button-addemployee {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+                /* 1.2.1.1. BUTTON IMG */
+                .button__img {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 8px;
+                }
+                /* 1.2.1.2. BUTTON NAME */
+                .button__name {
+                    font-size: 14px;
+                }
+            /* 1.2.2. BUTTON F5 DELETE */
+            .button-f5-delete {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            } 
+                /* 1.2.2.1. BUTTON DELETE */
+                #button-delete {
+                    cursor: unset;
+                    opacity: 0.6;
+                } 
+                #button-delete.button-enable {
+                    cursor: pointer;
+                    opacity: 1;
+                } 
+                /* 1.2.2.2. BUTTON REFRESH */
+                .refresh {
+                }
+                .refresh img {
+                    padding: 10px 12px;
+                    border: 1px solid #bbb;
+                    margin-top: 4px;
+                    border-radius: 4px;
+                    background-color: var(--primary-color);
+                }
+
+                .refresh img:hover {
+                    background-color: #eee;
+                    cursor: pointer;
+                }
+
+    /* 2. CONTAINER MAIN */
+    .container__main {
+        height: calc(100vh - var(--top-header-height) - 120px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+        /* 2.2. TABLE EMPLOYEE*/
+        .table-wrapper {
+            height: calc(100% - 65px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .table-employee {
+            table-layout: fixed;
+            width: 100%;
+            border-spacing: 0;
+            padding: 0 16px;
+        }
+            /* 2.1.1. TABLE EMPLOYEE HEAD */
+            .table-employee__head {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                background: #fff;
+                height: 40px;
+                font-size: 15px;
+                padding: 0 4px;
+                text-align: left;
+            }
+                /* 2.1.1.2. TABLE EMPLOYEE HEADER */
+                th {
+                    /* white-space: nowrap; */
+                } 
+                th:nth-child(1) {
+                    width: 40px;
+                    text-align: center;
+                }
+                tr td:nth-child(1) {
+                    text-align: center;
+                }
+                td[fieldName="EmployeeCode"],
+                th[fieldName="EmployeeCode"] {
+                    padding-left: 5px;
+                    /* width: 100px; */
+                }
+
+                td[fieldName="GenderName"],
+                th[fieldName="GenderName"] {
+                    width: 100px;
+                }
+
+                td[fieldName="DateOfBirth"],
+                th[fieldName="DateOfBirth"] {
+                    width: 100px;
+                }
+                td[fieldName="PhoneNumber"],
+                th[fieldName="PhoneNumber"] {
+                    width: 100px;
+                }
+                td[fieldName="PositionName"],
+                th[fieldName="PositionName"] {
+                    width: 100px;
+                }
+                td[fieldName="DepartmentName"],
+                th[fieldName="DepartmentName"] {
+                    width: 100px;
+                }
+
+                td[fieldName="WorkStatus"],
+                th[fieldName="WorkStatus"] {
+                    text-align: right;
+                    padding: 20px;
+                }
+                
+                td[fieldName="Salary"],
+                th[fieldName="Salary"] {
+                    text-align: right;
+
+                }
+                td[fieldName="Email"],
+                th[fieldName="Email"] {
+                    padding-right: 20px;
+                }
+                td[fieldName="DateOfBirth"],
+                th[fieldName="DateOfBirth"] {
+                    text-align: center;
+                }
+
+            /* 2.1.2. TABLE EMPLOYEE BODY */
+            .table-employee__body {
+                cursor: pointer;
+            }
+                /* 2.1.2.1. TABLE EMPLOYEE ROW */
+                .table-employee__row {
+                    height: calc((100vh - 272px) / 10);
+                    background-color: var(--primary-color);
+                }
+
+                .table-employee__row:hover {
+                    background-color: var(--table-row-hover) !important;
+                }
+
+                .table-employee__row td {
+                    border-bottom: 1px solid #bbb;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                } 
+                    .table-employee__checkbox {
+                        height: 20px;
+                        width: 20px;
+                        background: var(--checkbox-color) !important;
+                        cursor: pointer;
+                    }
+
+                    .table-employee__checkbox:checked {
+                        background-color: var(--checkbox-color);
+                    }
+
+
+        /* 2.3. PAGINATION */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: var(--pagination-height);
+            padding: 20px;
+        }
+            /* 2.2.1. PAGINATION TEXT */
+            .pagination__text {
+                font-size: 14px;
+                font-family: Arial, Helvetica, sans-serif;
+                flex-basis: 30%;
+            }
+
+            .pagination__text:nth-child(3) {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            /* 2.2.2. PAGINATION LIST */
+            .pagination__list {
+                list-style: none;
+                display: flex;
+                flex-basis: 30%;
+                justify-content: center;
+            }
+                /* 2.2.2.1. PAGINATION ITEM */
+                .pagination__item {
+                    width: 30px;
+                    height: 30px;
+                    font-size: 15px;
+                    font-family: Arial, Helvetica, sans-serif;
+                    background-color: var(--pagination-item-color);
+                    margin: 0 4px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .pagination__item.active {
+                    background-color: var(--pagination-active-color);
+                    color: var(--text-color);
+                }
+                .pagination__item:hover {
+                    color: #000;
+                    background-color: #fff;
+                    border: 1px solid #bbb;
+                }
+                .pagination__item:nth-child(1) .pagination__item-icon {
+                    width: 100%;
+                    height: 100%;
+                    background-image: url('../../assets/icon/btn-firstpage.svg');
+                }
+                    /* 2.2.2.1.1. PAGINATION ITEM IMG */
+                    .pagination__item-img {
+                        width: 16px;
+                        height: 16px;
+                    }
+
+                
+
+        
+            /* 2.2.3. NUMBER EMPLOYEE */
+            .input__number-wrapper {
+                flex-basis: 30%;
+                display: flex;
+                justify-content: flex-end;
+            }
+                /* 2.2.3.1. NUMBER EMPLOYEE INPUT */
+                .input__number {
+                    outline: none;
+                    width: 40px;
+                    margin-left: 10px;
+                    border: 0;
+                }
