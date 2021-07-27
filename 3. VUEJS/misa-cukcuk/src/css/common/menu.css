@@ -30,7 +30,7 @@
         .menu__item:nth-child(1) .menu__item-icon {
             width: 20px;
             height: 20px;
-            background-image: url('../../content/icon/dashboard.png');
+            background-image: url('../../assets/icon/dashboard.png');
             background-size: contain;
             margin-right: 10px;
         }
@@ -38,7 +38,7 @@
         .menu__item:nth-child(2) .menu__item-icon {
             width: 20px;
             height: 20px;
-            background-image: url('../../content/icon/report.png');
+            background-image: url('../../assets/icon/report.png');
             background-size: contain;
             margin-right: 10px;
         }
@@ -46,7 +46,7 @@
         .menu__item:nth-child(3) .menu__item-icon {
             width: 20px;
             height: 20px;
-            background-image: url('../../content/icon/document-online.png');
+            background-image: url('../../assets/icon/document-online.png');
             background-size: contain;
             margin-right: 10px;
         }
@@ -54,7 +54,7 @@
         .menu__item:nth-child(4) .menu__item-icon {
             width: 20px;
             height: 20px;
-            background-image: url('../../content/icon/dic-employee.png');
+            background-image: url('../../assets/icon/dic-employee.png');
             background-size: contain;
             margin-right: 10px;
         }
@@ -62,7 +62,7 @@
         .menu__item:nth-child(5) .menu__item-icon {
             width: 20px;
             height: 20px;
-            background-image: url('../../content/icon/dic-employee.png');
+            background-image: url('../../assets/icon/dic-employee.png');
             background-size: contain;
             margin-right: 10px;
         }
@@ -70,7 +70,7 @@
         .menu__item:nth-child(6) .menu__item-icon {
             width: 20px;
             height: 20px;
-            background-image: url('../../content/icon/setting.png');
+            background-image: url('../../assets/icon/setting.png');
             background-size: contain;
             margin-right: 10px;
         }
