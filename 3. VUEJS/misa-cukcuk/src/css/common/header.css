@@ -1,0 +1,100 @@
+body {
+    min-width: 1200px;
+}
+
+#header {
+    height: var(--top-header-height);
+    display: flex;
+    width: 100%;
+}
+    /* 1. HEADER LEFT */
+    .header-left {
+        display: flex;
+        align-items: center;
+        min-width: var(--menu-width);
+        border-right: 1px solid var(--border-color);
+    }
+        /* 1.1. TOGGLE */
+        .toggle {
+            width: 24px;
+            height: 24px;
+            margin: 12px 10px 12px 16px;
+            background-image: url('../../content/img/toggle.png');
+            background-size: contain;
+            cursor: pointer;
+        }
+        /* 1.2. LOGO */
+        .logo {
+            height: 24px;
+            width: 100px;
+            background-image: url('../../content/cukcuk-logo.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            cursor: pointer;
+        }
+
+    /* 2. HEADER RIGHT */
+    .header-right {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-width: 1258px;
+        flex-grow: 1;
+        flex-shrink: 0;
+    }
+
+        /* 2.1. ACCOUNT */
+        .account {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+            /* 2.2. ACCOUNT NOTIFY */
+            .account__notify {
+                width: 20px;
+                height: 20px;
+                display: flex;
+                justify-content: center;
+                cursor: pointer;
+            }
+                /* 2.2.1. ACCOUNT NOTIFY i */
+                .account__notify i {
+                    font-size: 20px;
+                    font-weight: 100;
+                }
+            
+            /* 2.3. ACCOUNT AVATAR */
+            .account__avatar {
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                margin: 0 16px;
+                background: url('../../content/icon/avatar-default.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                cursor: pointer;
+            }
+
+            /* 2.4. ACCOUNT NAME */
+            .account__name {
+                white-space: nowrap;
+            }
+
+            /* 2.5. ACCOUNT OPTION */
+            .account__option {
+                margin: 0 16px;
+                width: 16px;
+                height: 16px;
+                background-color: red;
+                background: url('../../content/icon/option.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                cursor: pointer;
+            }
+        /* 2.2. DROPDOWN RESTAURANT */
+        .dropdown--restaurant {
+            width: 200px;
+            margin: 0;
+            margin-left: 10px;
+            border: 0;
+        }

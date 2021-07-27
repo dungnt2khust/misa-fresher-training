@@ -1,0 +1,14 @@
+.text-align-right {
+    text-align: right;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.text-red {
+    color: red;
+}
+.invalid-input {
+    border: 1px solid red !important;
+}

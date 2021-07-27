@@ -1,0 +1,29 @@
+.button {
+    height: 40px;
+    border-radius: 4px;
+    color: #fff;
+    padding: 0 24px;
+    text-align: center;
+    background-color: #019160;;
+    border: 0;
+    min-width: 100px;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+}
+
+.button:hover {
+    background-color: #2fbe8e;
+}
+
+.button:active {
+    background-color: #01b075;
+}
+
+#button-delete {
+    margin-right: 10px;
+} 
+
+#button-delete i{
+    margin-right: 10px;
+} 
