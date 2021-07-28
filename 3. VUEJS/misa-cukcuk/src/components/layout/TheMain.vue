@@ -2,8 +2,7 @@
     <div id="main">
         <TheHeader/>
         <TheWrapper 
-            :employees="employees"
-            @employeeRowClick="employeeRowClick($event)"/>
+            :employees="employees"/>
     </div>
 </template>
 <script>
@@ -16,9 +15,6 @@ export default {
         employees: Array
     },
     methods: {
-        employeeRowClick(event) {
-            this.$emit('employeeRowClick', event);
-        }
     },
     components: {
         TheHeader,

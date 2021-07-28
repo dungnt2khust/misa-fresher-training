@@ -44,7 +44,7 @@ export default {
          * Author: NTDUNG (28/07/2021)
          */
         hideDropdown() {
-            this.dropdownShow = !this.dropdownShow;
+            this.dropdownShow = false;
         },
         /**
          * Hàm lấy dữ liệu API và gán vào mảng dữ liệu

@@ -205,7 +205,7 @@
 									:class="{ 'dropdown--position': true }"
 									:tabindex="10"
 									:APIurl="APIurl__POSITION"
-
+									:key="1"
 									:dropdownDefaultVal="dropdownDefaultVal__POSITION"
 									:dropdownName="dropdownName__POSITION"
 								/>
@@ -218,7 +218,7 @@
 									:class="{ 'dropdown--department': true }"
 									:tabindex="11"
 									:APIurl="APIurl__DEPARTMENT"
-
+									:key="2"
 									:dropdownDefaultVal="dropdownDefaultVal__DEPARTMENT"
 									:dropdownName="dropdownName__DEPARTMENT"
 								/>	

@@ -2,7 +2,6 @@
   <div id="app"> 
     <TheMain 
       :employees="employees"
-      @employeeRowClick="employeeRowClick($event)"
       />
     <ThePopupInfo
       :popupData="popupData"
@@ -10,15 +9,21 @@
 
       @popupCancelClick="popupCancelClick()"
       />
+    <BaseToastMessage
+
+    />
   </div>
 </template>
 
 <script>
 import TheMain from './components/layout/TheMain.vue'
 import ThePopupInfo from './components/layout/ThePopupInfo.vue'
+import BaseToastMessage from './components/base/BaseToastMessage.vue'
 import axios from 'axios'
+import {EventBus} from './main.js'
 
 export default {
+
   name: 'App',
   data() {
       return {
@@ -43,10 +48,21 @@ export default {
       }).catch(res => {
           console.log(res.data);
       });
+
+      // Lắng nghe sự kiện (EVENTBUS)
+      EventBus.$on('employeeRowClick', (data) => {
+        this.employeeRowClick(data);
+      }); 
+  },
+  destroyed() { 
+      EventBus.$off('employeeRowClick', (data) => {
+        this.employeeRowClick(data);
+      });
   },
   components: {
     TheMain,
-    ThePopupInfo
+    ThePopupInfo,
+    BaseToastMessage
   }
 }
 </script>
