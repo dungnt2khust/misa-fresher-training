@@ -1,5 +1,5 @@
 <template lang="">
-    <label @click="toggleDropdown()" class="dropdown" for="dropdown-input" :class="{'focus-dropdown': dropdownShow}">
+    <label @blur="hideDropdown()" @click="toggleDropdown()" class="dropdown" for="dropdown-input" :class="{'focus-dropdown': dropdownShow}">
         <div class="dropdown-header-wrapper"> 
             <span class="dropdown-value">
                 {{dropdownValue}}
@@ -18,25 +18,50 @@ export default {
     name: 'BaseDropdownFix',
     data() {
         return {
-            currIdx: 0
+            currIdx: 0,
+            dropdownShow: false
         }
     },
     props: {
-        dropdownShow: Boolean,
         dropdownData: Array
     },
     methods: {
+        /**
+         * Bật tắt dropdown khi click vào dropdown
+         * Author: NTDUNG (28/07/2021)
+         */
         toggleDropdown() {
-            this.$emit('toggleDropdown');
+            this.dropdownShow = !this.dropdownShow;
         },
+        /**
+         * Tắt dropdown khi blur dropdown 
+         * Author: NTDUNG (28/07/2021)
+         */
+        hideDropdown() {
+            this.dropdownShow = false;
+        },
+        /**
+         * Khi click vào một option thì đặt lại giá trị hiện tại 
+         * Author: NTDUNG (28/07/2021)
+         */
         activeItem(currIdx) {
             this.currIdx = currIdx;
         }
     },
     computed: {
+        /**
+         * Nếu trạng thái dropdown là true thì hiện lên, còn false thì ẩn đi
+         * Author: NTDUNG (28/07/2021)
+         * @returns {string} trả về thuộc tính của display
+         */
         dropdownState() {
             return this.dropdownShow == true ? 'block' : 'none';
         },
+        /**
+         * Trả về phần tử trong mảng 
+         * Author: NTDUNG (28/07/2021)
+         * @returns {string} trả về chuỗi để đưa lên dropdown
+         */
         dropdownValue() {
             return this.dropdownData[this.currIdx];
         }

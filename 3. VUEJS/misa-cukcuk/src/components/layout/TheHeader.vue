@@ -8,11 +8,9 @@
         <BaseDropdownFix
           :id="'dropdown-restaurant'"
           :class="{'dropdown--restaurant': true}"
-          
-          :dropdownShow="dropdownShow"
+          :tabindex="100"
           :dropdownData="dropdownData"
 
-          @toggleDropdown="toggleDropdown()"
           />           
         <div class="account">
           <div class="account__notify">
@@ -32,7 +30,6 @@ export default {
     name: 'TheHeader',
     data() {
       return {
-        dropdownShow: false,
         dropdownData: [
           'Nhà hàng Biển Đông',
           'Nhà hàng Biển Tây',
@@ -42,9 +39,7 @@ export default {
       }
     },
     methods: {
-      toggleDropdown() {
-        this.dropdownShow = !this.dropdownShow;
-      }
+
     },
     components: {
       BaseDropdownFix

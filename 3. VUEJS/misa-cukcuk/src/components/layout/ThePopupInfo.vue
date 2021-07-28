@@ -203,11 +203,11 @@
 								<BaseDropdown
 									:id="'dropdown-position'"
 									:class="{ 'dropdown--position': true }"
+									:tabindex="10"
 									:APIurl="APIurl__POSITION"
-									:dropdownShow="dropdownShow__POSITION"
+
 									:dropdownDefaultVal="dropdownDefaultVal__POSITION"
 									:dropdownName="dropdownName__POSITION"
-									@toggleDropdown="toggleDropdownPOSITION()"
 								/>
 							</div>
 							<!-- DEPARTMENT -->
@@ -216,11 +216,11 @@
 								<BaseDropdown
 									:id="'dropdown-department'"
 									:class="{ 'dropdown--department': true }"
+									:tabindex="11"
 									:APIurl="APIurl__DEPARTMENT"
-									:dropdownShow="dropdownShow__DEPARTMENT"
+
 									:dropdownDefaultVal="dropdownDefaultVal__DEPARTMENT"
 									:dropdownName="dropdownName__DEPARTMENT"
-									@toggleDropdown="toggleDropdownDEPARTMENT()"
 								/>	
 							</div>
 							<!-- TAX CODE -->
@@ -306,13 +306,11 @@
 			return {
 				// DEPARTMENT
 				APIurl__DEPARTMENT: 'http://cukcuk.manhnv.net/api/Department',
-				dropdownShow__DEPARTMENT: false,
 				dropdownDefaultVal__DEPARTMENT: 'Chọn phòng ban',
 				dropdownName__DEPARTMENT: 'Department',
-				// POSITION
+
 				// POSITION 
 				APIurl__POSITION: 'http://cukcuk.manhnv.net/v1/Positions',
-				dropdownShow__POSITION: false,
 				dropdownDefaultVal__POSITION: 'Chọn vị trí',
 				dropdownName__POSITION: 'Position'
 			};
@@ -321,13 +319,7 @@
 			popupData: Object,
 			popupShow: Boolean,
 		},
-		methods: {
-			toggleDropdownDEPARTMENT() {
-				this.dropdownShow__DEPARTMENT = !this.dropdownShow__DEPARTMENT;
-			},
-			toggleDropdownPOSITION() {
-				this.dropdownShow__POSITION = !this.dropdownShow__POSITION;
-			}
+		methods: {	
 		},
 		computed: {
 			popupState() {
