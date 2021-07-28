@@ -3,18 +3,17 @@
       <div class="header-left">
         <div class="toggle"></div>
         <div class="logo"></div>
-      </div>
-      <div class="header-right">
-        <!-- DROPDOWN RESTAURANT -->
-        <label tabindex="0" id="dropdown-restaurant" class="dropdown dropdown--restaurant" for="dropdown-input">
-          <div class="dropdown-header-wrapper">
-            <span currVal="0" class="dropdown-value dropdown-value--restaurant">
-            </span>
-            <i class="fas fa-chevron-down icon-down"></i>
-          </div>
-          <ul class="dropdown-list dropdown-list--restaurant">
-          </ul>
-        </label>
+      </div> 
+      <div class="header-right"> 
+        <BaseDropdownFix
+          :id="'dropdown-restaurant'"
+          :class="{'dropdown--restaurant': true}"
+          
+          :dropdownShow="dropdownShow"
+          :dropdownData="dropdownData"
+
+          @toggleDropdown="toggleDropdown()"
+          />           
         <div class="account">
           <div class="account__notify">
             <i class="far fa-bell"></i>
@@ -27,8 +26,29 @@
     </div>
 </template>
 <script>
+import BaseDropdownFix from '../base/BaseDropdownFix.vue'
+
 export default {
-    name: 'TheHeader'
+    name: 'TheHeader',
+    data() {
+      return {
+        dropdownShow: false,
+        dropdownData: [
+          'Nhà hàng Biển Đông',
+          'Nhà hàng Biển Tây',
+          'Nhà hàng Biển Nam',
+          'Nhà hàng Biển Bắc'
+        ]
+      }
+    },
+    methods: {
+      toggleDropdown() {
+        this.dropdownShow = !this.dropdownShow;
+      }
+    },
+    components: {
+      BaseDropdownFix
+    }
 }
 </script>
 <style scoped>
