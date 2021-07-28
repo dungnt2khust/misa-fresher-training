@@ -200,46 +200,28 @@
 							<!-- POSITION -->
 							<div class="popup-infor__item">
 								<span class="popup-infor__label"> Vị trí </span>
-								<label
-									id="dropdown-position"
-									tabindex="10"
-									class="dropdown dropdown--position"
-									for="dropdown-input"
-								>
-									<!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
-									<div class="dropdown-header-wrapper">
-										<span
-											id="employee__position"
-											positionid=""
-											class="dropdown-value dropdown-value--position"
-										>
-										</span>
-										<i class="fas fa-chevron-down icon-down"></i>
-									</div>
-									<ul class="dropdown-list dropdown-list--position"></ul>
-								</label>
+								<BaseDropdown
+									:id="'dropdown-position'"
+									:class="{ 'dropdown--position': true }"
+									:APIurl="APIurl__POSITION"
+									:dropdownShow="dropdownShow__POSITION"
+									:dropdownDefaultVal="dropdownDefaultVal__POSITION"
+									:dropdownName="dropdownName__POSITION"
+									@toggleDropdown="toggleDropdownPOSITION()"
+								/>
 							</div>
 							<!-- DEPARTMENT -->
 							<div class="popup-infor__item">
 								<span class="popup-infor__label"> Phòng ban </span>
-								<label
-									id="dropdown-department"
-									tabindex="11"
-									class="dropdown dropdown--department"
-									for="dropdown-input"
-								>
-									<!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
-									<div class="dropdown-header-wrapper">
-										<span
-											id="employee__department"
-											departmentid=""
-											class="dropdown-value dropdown-value--department"
-										>
-										</span>
-										<i class="fas fa-chevron-down icon-down"></i>
-									</div>
-									<ul class="dropdown-list dropdown-list--department"></ul>
-								</label>
+								<BaseDropdown
+									:id="'dropdown-department'"
+									:class="{ 'dropdown--department': true }"
+									:APIurl="APIurl__DEPARTMENT"
+									:dropdownShow="dropdownShow__DEPARTMENT"
+									:dropdownDefaultVal="dropdownDefaultVal__DEPARTMENT"
+									:dropdownName="dropdownName__DEPARTMENT"
+									@toggleDropdown="toggleDropdownDEPARTMENT()"
+								/>	
 							</div>
 							<!-- TAX CODE -->
 							<div class="popup-infor__item">
@@ -317,16 +299,36 @@
 	</div>
 </template>
 <script>
+	import BaseDropdown from '../base/BaseDropdown.vue'
 	export default {
 		name: "ThePopupInfo",
 		data() {
-			return {};
+			return {
+				// DEPARTMENT
+				APIurl__DEPARTMENT: 'http://cukcuk.manhnv.net/api/Department',
+				dropdownShow__DEPARTMENT: false,
+				dropdownDefaultVal__DEPARTMENT: 'Chọn phòng ban',
+				dropdownName__DEPARTMENT: 'Department',
+				// POSITION
+				// POSITION 
+				APIurl__POSITION: 'http://cukcuk.manhnv.net/v1/Positions',
+				dropdownShow__POSITION: false,
+				dropdownDefaultVal__POSITION: 'Chọn vị trí',
+				dropdownName__POSITION: 'Position'
+			};
 		},
 		props: {
 			popupData: Object,
 			popupShow: Boolean,
 		},
-		methods: {},
+		methods: {
+			toggleDropdownDEPARTMENT() {
+				this.dropdownShow__DEPARTMENT = !this.dropdownShow__DEPARTMENT;
+			},
+			toggleDropdownPOSITION() {
+				this.dropdownShow__POSITION = !this.dropdownShow__POSITION;
+			}
+		},
 		computed: {
 			popupState() {
 				return this.popupShow == true ? "block" : "none";
@@ -348,8 +350,11 @@
 				} else {
 					return {};
 				}
-			},
+			}	
 		},
+		components: {
+			BaseDropdown
+		}
 	};
 </script>
 <style lang=""></style>
