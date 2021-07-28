@@ -10,6 +10,7 @@
                 </div>
                 <input tabindex="1" class="table-search__input" placeholder="Tìm theo mã, họ tên hoặc số điện thoại" type="text" />
               </div>
+              <!-- DEPARTMENT -->
               <BaseDropdownFilter
                 :id="'filter-department'"
                 :class="{'table-filter__department': true}"
@@ -21,17 +22,18 @@
 
                 @toggleDropdown="toggleDropdownDEPARTMENT()"
                 /> 
+              <!-- POSITION -->
+              <BaseDropdownFilter
+                :id="'filter-position'"
+                :class="{'table-filter__position': true}"
+                
+                :APIurl="APIurl__POSITION"
+                :dropdownShow="dropdownShow__POSITION"
+                :dropdownDefaultVal="dropdownDefaultVal__POSITION"
+                :dropdownName="dropdownName__POSITION"
 
-              <!-- FILTER POSITION -->
-              <label id="filter-position" tabindex="3" class="dropdown table-filter__position" for="dropdown-input">
-                <div class="dropdown-header-wrapper">
-                  <span currVal="0" class="dropdown-value filter__value--position">
-                  </span>
-                  <i class="fas fa-chevron-down icon-down"></i>
-                </div>
-                <ul class="dropdown-list filter__list--position">
-                </ul>
-              </label>
+                @toggleDropdown="toggleDropdownPOSITION()"
+                />
             </div>
           </div>
           <div class="container__header-right">
@@ -119,10 +121,16 @@ export default {
     name: 'TheContainer',
     data() {
       return {
+        // DEPARTMENT
         APIurl__DEPARTMENT: 'http://cukcuk.manhnv.net/api/Department',
         dropdownShow__DEPARTMENT: false,
         dropdownDefaultVal__DEPARTMENT: 'Tất cả phòng ban',
-        dropdownName__DEPARTMENT: 'Department'
+        dropdownName__DEPARTMENT: 'Department',
+        // POSITION 
+        APIurl__POSITION: 'http://cukcuk.manhnv.net/v1/Positions',
+        dropdownShow__POSITION: false,
+        dropdownDefaultVal__POSITION: 'Tất cả vị trí',
+        dropdownName__POSITION: 'Position',
       }
     },
     props: {
@@ -135,6 +143,9 @@ export default {
       },
       toggleDropdownDEPARTMENT() {
         this.dropdownShow__DEPARTMENT = !this.dropdownShow__DEPARTMENT;
+      },
+      toggleDropdownPOSITION() {
+        this.dropdownShow__POSITION = !this.dropdownShow__POSITION;
       }
     },
     components: {
