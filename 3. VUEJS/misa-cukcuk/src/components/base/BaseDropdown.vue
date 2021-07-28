@@ -73,7 +73,7 @@ export default {
 // USAGE
 /**
     ADD FIELDS TO APPLY CSS AND PROPERTIES OF DROPDOWN
-        <BaseDropdownFilter
+        <BaseDropdown
           :id="'dropdown-restaurant'" 
           :class="{'dropdown--restaurant': true}"
           
