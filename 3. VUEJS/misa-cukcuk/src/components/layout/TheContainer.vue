@@ -14,25 +14,19 @@
               <BaseDropdownFilter
                 :id="'filter-department'"
                 :class="{'table-filter__department': true}"
-                
+                :tabindex="2"
                 :APIurl="APIurl__DEPARTMENT"
-                :dropdownShow="dropdownShow__DEPARTMENT"
                 :dropdownDefaultVal="dropdownDefaultVal__DEPARTMENT"
                 :dropdownName="dropdownName__DEPARTMENT"
-
-                @toggleDropdown="toggleDropdownDEPARTMENT()"
                 /> 
               <!-- POSITION -->
               <BaseDropdownFilter
                 :id="'filter-position'"
                 :class="{'table-filter__position': true}"
-                
+                :tabindex="3"
                 :APIurl="APIurl__POSITION"
-                :dropdownShow="dropdownShow__POSITION"
                 :dropdownDefaultVal="dropdownDefaultVal__POSITION"
                 :dropdownName="dropdownName__POSITION"
-
-                @toggleDropdown="toggleDropdownPOSITION()"
                 />
             </div>
           </div>
@@ -123,12 +117,10 @@ export default {
       return {
         // DEPARTMENT
         APIurl__DEPARTMENT: 'http://cukcuk.manhnv.net/api/Department',
-        dropdownShow__DEPARTMENT: false,
         dropdownDefaultVal__DEPARTMENT: 'Tất cả phòng ban',
         dropdownName__DEPARTMENT: 'Department',
         // POSITION 
         APIurl__POSITION: 'http://cukcuk.manhnv.net/v1/Positions',
-        dropdownShow__POSITION: false,
         dropdownDefaultVal__POSITION: 'Tất cả vị trí',
         dropdownName__POSITION: 'Position',
       }
@@ -140,12 +132,6 @@ export default {
       employeeRowClick(event) {
         var currIndex = event.target.parentElement.getAttribute('index');
         this.$emit('employeeRowClick', currIndex);
-      },
-      toggleDropdownDEPARTMENT() {
-        this.dropdownShow__DEPARTMENT = !this.dropdownShow__DEPARTMENT;
-      },
-      toggleDropdownPOSITION() {
-        this.dropdownShow__POSITION = !this.dropdownShow__POSITION;
       }
     },
     components: {
