@@ -50,26 +50,81 @@
           </div>
         </div> 
         <div class="container__main">
-            <TheTable/>
-            <ThePagination/>
+            <div class="table-wrapper">
+    <table class="table-employee">
+            <thead class="table-employee__head">
+            <tr>
+                <th class="table-employee__header">#</th>
+                <th fieldName="EmployeeCode" class="table-employee__header">Mã nhân viên</th>
+                <th fieldName="FullName" class="table-employee__header">Họ và tên</th>
+                <th fieldName="GenderName" class="table-employee__header">Giới tính</th>
+                <th fieldName="DateOfBirth" class="table-employee__header">Ngày sinh</th>
+                <th fieldName="PhoneNumber" class="table-employee__header">Điện thoại</th>
+                <th fieldName="Email" class="table-employee__header">Email</th>
+                <th fieldName="PositionName" class="table-employee__header">Chức vụ</th>
+                <th fieldName="DepartmentName" class="table-employee__header">Phòng ban</th>
+                <th fieldName="Salary" class="table-employee__header">Mức lương cơ bản</th>
+                <th fieldName="WorkStatus" class="table-employee__header">Tình trạng công việc</th>
+            </tr>
+            </thead>
+            <tbody class="table-employee__body">
+                <tr @click="employeeRowClick($event)" v-for="(employee, index) in employees" :index="index" :key="index" class="table-employee__row">
+                    <td><input type="checkbox" name="" id="" class="table-employee__checkbox"></td>
+                    <td fieldName="EmployeeCode">{{employee.EmployeeCode}}</td>
+                    <td fieldName="FullName">{{employee.FullName}}</td>
+                    <td fieldName="GenderName">{{employee.GenderName}}</td>
+                    <td fieldName="DateOfBirth">{{employee.DateOfBirth}}</td>
+                    <td fieldName="PhoneNumber">{{employee.PhoneNumber}}</td>
+                    <td fieldName="Email">{{employee.Email}}</td>
+                    <td fieldName="PositionName">{{employee.PositionName}}</td>
+                    <td fieldName="DepartmentName">{{employee.DepartmentName}}</td>
+                    <td fieldName="Salary">{{employee.Salary}}</td>
+                    <td fieldName="WorkStatus">{{employee.WorkStatus}}</td>
+                </tr>
+            </tbody>
+        </table>    
+    </div>  
+    <div class="pagination">
+        <p class="pagination__text">Hiển thị 1-10/1000 nhân viên</p>
+        <ul class="pagination__list">
+            <li class="pagination__item">
+                <img class="pagination__item-img" src="../../assets/icon/btn-firstpage.svg" alt="" />
+            </li>
+            <li class="pagination__item">
+                <img class="pagination__item-img" src="../../assets/icon/btn-prev-page.svg" alt="" />
+            </li>
+            <li class="pagination__item active">1</li>
+            <li class="pagination__item">2</li>
+            <li class="pagination__item">3</li>
+            <li class="pagination__item">4</li>
+            <li class="pagination__item">
+                <img class="pagination__item-img" src="../../assets/icon/btn-next-page.svg" alt="" />
+            </li>
+            <li class="pagination__item">
+                <img class="pagination__item-img" src="../../assets/icon/btn-lastpage.svg" alt="" />
+            </li>
+        </ul>
+        <div class="input__number-wrapper">
+            <label for="input__number">Số nhân viên/trang: </label>
+            <input type="number" name="" id="input__number" value="10" class="input__number">
+        </div>
+    </div> 
         </div>
     </div>
 </template>
 <script>
-import TheTable from './TheTable.vue'
-import ThePagination from './ThePagination.vue'
-// import VueAxios from 'vue-axios'
+
 
 export default {
     name: 'TheContainer',
-    data() {
-        return {
-            
-        }
-    }, 
-    components: {
-        TheTable,
-        ThePagination
+    props: {
+      employees: Array
+    },
+    methods: {
+      employeeRowClick(event) {
+        var currIndex = event.target.parentElement.getAttribute('index');
+        this.$emit('employeeRowClick', currIndex);
+      }
     }
 }
 </script>

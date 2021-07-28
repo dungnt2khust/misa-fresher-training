@@ -1,5 +1,5 @@
 .popup-wrapper {
-    display: none;
+    display: flex;
 }
 
 .popup-overlay-info {
@@ -38,7 +38,7 @@
     width: 30px;
     height: 30px;
     margin: 10px;
-    background: url('../../content/icon/x.svg');
+    background: url('../../assets/icon/x.svg');
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
@@ -62,7 +62,7 @@
 .popup-avatar__img {
     width: 150px;
     height: 150px;
-    background-image: url('../../content/img/default-avatar.jpg');
+    background-image: url('../../assets/img/default-avatar.jpg');
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
