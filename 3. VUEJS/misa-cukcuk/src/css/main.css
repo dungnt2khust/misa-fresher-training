@@ -3,6 +3,10 @@
 @import url('base/variable.css');
 @import url("base/customizeScrollbar.css");
 @import url("./common/placeholderItalic.css");
+@import url("./common/header.css");
+@import url("./common/popup.css");
+@import url("./common/menu.css");
+@import url("./common/container.css");
 
 /*
 @import url("./common/dropdown.css");
@@ -10,12 +14,9 @@
 @import url("common/toastMessage.css");
 @import url("common/checkbox.css");
 */
-@import url("./common/header.css");
-@import url("./common/menu.css");
-@import url("./common/container.css");
+
 /*
 @import url("../css/common/popupDialog.css");
-@import url("./common/popup.css");
 @import url("common/common.css"); */ 
 body {
     font-family: MISAGoogleSan;
@@ -41,7 +42,7 @@ body {
 
 
 
-#app {
+#main {
     position: fixed;
     top: 0;
     left: 0;

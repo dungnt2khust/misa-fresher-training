@@ -1,18 +1,17 @@
-<template>
-    <div id="wrapper">
-        <TheMenu/> 
-        <TheContainer 
+<template lang="">
+    <div id="main">
+        <TheHeader/>
+        <TheWrapper 
             :employees="employees"
-
             @employeeRowClick="employeeRowClick($event)"/>
     </div>
 </template>
 <script>
-import TheMenu from './TheMenu.vue';
-import TheContainer from './TheContainer.vue';
+import TheHeader from './TheHeader.vue'
+import TheWrapper from './TheWrapper.vue'
 
 export default {
-    name: 'TheWrapper',
+    name: "TheMain",
     props: {
         employees: Array
     },
@@ -22,11 +21,11 @@ export default {
         }
     },
     components: {
-        TheMenu,
-        TheContainer
+        TheHeader,
+        TheWrapper
     }
 }
 </script>
-<style>
+<style lang="">
     
 </style>
