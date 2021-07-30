@@ -10,7 +10,6 @@
           :class="{'dropdown--restaurant': true}"
           :tabindex="100"
           :dropdownData="dropdownData"
-
           />           
         <div class="account">
           <div class="account__notify">

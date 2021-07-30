@@ -1,5 +1,5 @@
 <template lang="">
-	<div class="popup-wrapper" :style="{ display: popupState }">
+	<div class="popup-wrapper" :style="{ display: popupState ? 'block' : 'none'}">
 		<div class="popup-overlay-info"></div>
 		<div class="popup-form-info">
 			<div class="popup-header">
@@ -7,7 +7,7 @@
 					THÔNG TIN NHÂN VIÊN
 				</span>
 				<div
-					@click="$emit('popupCancelClick')"
+					@click="cancelPopup"
 					class="popup-header__cancel"
 				></div>
 			</div>
@@ -66,10 +66,10 @@
 							<!-- EMPLOYEE CODE -->
 							<div class="popup-infor__item">
 								<span class="popup-infor__label">
-									Mã nhân viên (<span class="text-red">*</span>)</span
+									Mã nhân viên {{	employeeData['EmployeeCode'] }} (<span class="text-red">*</span>)</span
 								>
 								<input
-									:value="bindInfo['EmployeeCode']"
+									v-model="employeeData['EmployeeCode']"
 									required
 									tabindex="1"
 									id="employee__code"
@@ -83,7 +83,7 @@
 									Họ và tên (<span class="text-red">*</span>)</span
 								>
 								<input
-									:value="bindInfo['FullName']"
+									:value="formatEmployeeData['FullName']"
 									required
 									tabindex="2"
 									id="employee__fullname"
@@ -95,7 +95,7 @@
 							<div class="popup-infor__item">
 								<span class="popup-infor__label"> Ngày sinh </span>
 								<input
-									:value="bindInfo['DateOfBirth']"
+									:value="formatEmployeeData['DateOfBirth']"
 									tabindex="3"
 									id="employee__dob"
 									type="date"
@@ -111,7 +111,7 @@
 									class="combobox combobox--gender"
 								>
 									<input
-										:value="bindInfo['GenderName']"
+										:value="formatEmployeeData['GenderName']"
 										tabindex="4"
 										id="employee__gender"
 										type="text"
@@ -133,7 +133,7 @@
 									Số CMTND/ Căn cước (<span class="text-red">*</span>)</span
 								>
 								<input
-									:value="bindInfo['IdentityNumber']"
+									:value="formatEmployeeData['IdentityNumber']"
 									required
 									tabindex="5"
 									id="employee__idnumber"
@@ -145,7 +145,7 @@
 							<div class="popup-infor__item">
 								<span class="popup-infor__label"> Ngày cấp </span>
 								<input
-									:value="bindInfo['IdentityDate']"
+									:value="formatEmployeeData['IdentityDate']"
 									tabindex="6"
 									id="employee__iddate"
 									type="date"
@@ -156,7 +156,7 @@
 							<div class="popup-infor__item noi-cap">
 								<span class="popup-infor__label"> Nơi cấp</span>
 								<input
-									:value="bindInfo['IdentityPlace']"
+									:value="formatEmployeeData['IdentityPlace']"
 									tabindex="7"
 									id="employee__idplace"
 									type="text"
@@ -169,7 +169,7 @@
 									Email (<span class="text-red">*</span>)</span
 								>
 								<input
-									:value="bindInfo['Email']"
+									:value="formatEmployeeData['Email']"
 									required
 									tabindex="8"
 									id="employee__email"
@@ -183,7 +183,7 @@
 									Số điện thoại (<span class="text-red">*</span>)</span
 								>
 								<input
-									:value="bindInfo['PhoneNumber']"
+									:value="formatEmployeeData['PhoneNumber']"
 									required
 									tabindex="9"
 									id="employee__phone"
@@ -205,7 +205,7 @@
 									:class="{ 'dropdown--position': true }"
 									:tabindex="10"
 									:APIurl="APIurl__POSITION"
-
+									:key="1"
 									:dropdownDefaultVal="dropdownDefaultVal__POSITION"
 									:dropdownName="dropdownName__POSITION"
 								/>
@@ -218,7 +218,7 @@
 									:class="{ 'dropdown--department': true }"
 									:tabindex="11"
 									:APIurl="APIurl__DEPARTMENT"
-
+									:key="2"
 									:dropdownDefaultVal="dropdownDefaultVal__DEPARTMENT"
 									:dropdownName="dropdownName__DEPARTMENT"
 								/>	
@@ -227,7 +227,7 @@
 							<div class="popup-infor__item">
 								<span class="popup-infor__label"> Mã số thuế cá nhân </span>
 								<input
-									:value="bindInfo['PersonalTaxCode']"
+									:value="formatEmployeeData['PersonalTaxCode']"
 									tabindex="12"
 									id="employee__taxcode"
 									type="text"
@@ -238,7 +238,7 @@
 							<div class="popup-infor__item" style="position: relative;">
 								<span class="popup-infor__label"> Mức lương cơ bản </span>
 								<input
-									:value="bindInfo['Salary']"
+									:value="formatEmployeeData['Salary']"
 									tabindex="13"
 									id="employee__basesalary"
 									type="text"
@@ -250,7 +250,7 @@
 							<div class="popup-infor__item">
 								<span class="popup-infor__label"> Ngày gia nhập công ty </span>
 								<input
-									:value="bindInfo['JoinDate']"
+									:value="formatEmployeeData['JoinDate']"
 									tabindex="14"
 									id="employee__joiningdate"
 									type="date"
@@ -266,7 +266,6 @@
 									class="dropdown dropdown--workstatus"
 									for="dropdown-input"
 								>
-									<!-- <input type="checkbox" id="dropdown-input" style="display: none;"> -->
 									<div class="dropdown-header-wrapper">
 										<span
 											id="employee__workstatus"
@@ -283,12 +282,12 @@
 				</form>
 			</div>
 			<div class="popup-footer">
-				<button @click="$emit('popupCancelClick')" class="popup-btn-cancel">
+				<button @click="cancelPopup" class="popup-btn-cancel">
 					Huỷ
 				</button>
 				<button class="btn-delete">Xoá</button>
 				<button
-					@click="$emit('popupCancelClick')"
+					@click="cancelPopup"
 					id="popup-btn-save--infor"
 					class="button popup-btn-save"
 				>
@@ -300,6 +299,9 @@
 </template>
 <script>
 	import BaseDropdown from '../base/BaseDropdown.vue'
+	import { EventBus } from '../../main'
+	import axios from 'axios'
+
 	export default {
 		name: "ThePopupInfo",
 		data() {
@@ -312,37 +314,80 @@
 				// POSITION 
 				APIurl__POSITION: 'http://cukcuk.manhnv.net/v1/Positions',
 				dropdownDefaultVal__POSITION: 'Chọn vị trí',
-				dropdownName__POSITION: 'Position'
+				dropdownName__POSITION: 'Position',
+
+				// POPUP STATE
+				popupState: false,
+				employeeId: '',
+				employeeData: {},
+				testData: {
+					name: 'original name'
+				}
 			};
 		},
 		props: {
-			popupData: Object,
-			popupShow: Boolean,
+			popupData: {
+				type: String, 
+				default: ''
+			},
+		},
+		created() {
+			/**
+			 * Lắng nghe sự kiện click vào dòng ở table
+			 * Author: NTDUNG (30/07/2021)
+			 * @param {string} rowId
+			 */
+			EventBus.$on('tableRowOnClick', (rowId) => {
+				this.popupState = true;
+				this.employeeId = rowId;
+				this.getEmployeeData();
+			});
 		},
 		methods: {	
+			/** 
+			 * Lấy dữ liệu một employee từ API
+			 * Author: NTDUNG (30/07/2021)
+			 */
+			getEmployeeData() {
+				axios
+					.get(`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`)
+					.then(res => {
+						this.employeeData = res.data;
+					})
+					.catch(res => {
+						console.log(res)
+					});
+			},
+			/**
+			 * Ẩn popup 
+			 * Author: NTDUNG (30/07/2021)
+			 */
+			cancelPopup() {
+				this.popupState = false;
+			}
 		},
 		computed: {
-			popupState() {
-				return this.popupShow == true ? "block" : "none";
-			},
-			bindInfo() {
-				if (this.popupShow) {
-					var popupDataFormat = this.popupData;
-
-					// FORMAT DATE
-					for (var field in popupDataFormat) {
+			/**
+			 * Format các dữ liệu trước khi binding lên form thông tin
+			 * Author: NTDUNG (30/07/2021)
+			 * @param {object}
+			 */
+			formatEmployeeData() {
+				if (this.popupState) {	
+					var termData = this.employeeData;
+					for (var field in termData) {
 						if (field.includes("Date")) {
-							var value = popupDataFormat[`${field}`];
+							var value = termData[`${field}`];
 							if (value != null || value == "") {
-								popupDataFormat[`${field}`] = value.substring(0, 10);
+								termData[`${field}`] = value.substring(0, 10);
 							}
 						}
 					}
-					return popupDataFormat;
+					return this.employeeData;
 				} else {
 					return {};
-				}
-			}	
+				}	
+			}
 		},
 		components: {
 			BaseDropdown

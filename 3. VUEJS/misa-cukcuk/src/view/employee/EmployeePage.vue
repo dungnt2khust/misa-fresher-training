@@ -8,12 +8,12 @@
 	</div>
 </template>
 <script>
-	import TheControl from '../layout/TheControl.vue'
-	import BaseTable from '../base/BaseTable.vue'
-	import BasePagination from '../base/BasePagination.vue'
+	import TheControl from '../../components/layout/TheControl.vue'
+	import BaseTable from '../../components/base/BaseTable.vue'
+	import BasePagination from '../../components/base/BasePagination.vue'
 
 	export default {
-		name: "TheContainer",	
+		name: "TheContainer",
 		components: {
 			TheControl,
 			BaseTable,

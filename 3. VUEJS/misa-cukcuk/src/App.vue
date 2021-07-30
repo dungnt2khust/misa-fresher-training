@@ -1,52 +1,33 @@
 <template>
   <div id="app"> 
-    <TheMain 
-      :employees="employees"
-      @employeeRowClick="employeeRowClick($event)"
-      />
-    <ThePopupInfo
-      :popupData="popupData"
-      :popupShow="popupShow"
-
-      @popupCancelClick="popupCancelClick()"
-      />
+    <div id="main">
+      <EmployeeHeader/>
+      <div id="wrapper">
+        <EmployeeMenu/>
+        <EmployeePage/>
+      </div>
+    </div>
+    <ThePopupInfo/>
+    <EmployeeToast/>
   </div>
 </template>
 
 <script>
-import TheMain from './components/layout/TheMain.vue'
+import TheHeader from './components/layout/TheHeader.vue'
+import TheMenu from './components/layout/TheMenu.vue'
+import EmployeePage from './view/employee/EmployeePage.vue'
 import ThePopupInfo from './components/layout/ThePopupInfo.vue'
-import axios from 'axios'
+import BaseToastMessage from './components/base/BaseToastMessage.vue'
 
 export default {
+
   name: 'App',
-  data() {
-      return {
-          employees: [],
-          popupShow: false,
-          popupData: {}
-      }
-  },
-  methods: {
-    employeeRowClick(event) {
-      this.popupData = this.employees[event];
-      this.popupShow = true;
-    },
-    popupCancelClick() {
-      this.popupShow = false;
-    }
-  },
-  created() {
-      const vm = this;
-      axios.get('http://cukcuk.manhnv.net/v1/Employees').then(res => {
-          vm.employees = res.data;
-      }).catch(res => {
-          console.log(res.data);
-      });
-  },
   components: {
-    TheMain,
-    ThePopupInfo
+    EmployeeHeader: TheHeader,
+    EmployeeMenu: TheMenu,
+    EmployeePage,
+    ThePopupInfo,
+    EmployeeToast: BaseToastMessage
   }
 }
 </script>
