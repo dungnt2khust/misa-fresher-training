@@ -1,0 +1,113 @@
+/* 2.2. TABLE EMPLOYEE*/
+.table-wrapper {
+    height: calc(100% - 65px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.table-employee {
+    table-layout: fixed;
+    width: 100%;
+    border-spacing: 0;
+    padding: 0 16px;
+}
+    /* 2.1.1. TABLE EMPLOYEE HEAD */
+    .table-employee__head {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: #fff;
+        height: 40px;
+        font-size: 15px;
+        padding: 0 4px;
+        text-align: left;
+    }
+        /* 2.1.1.2. TABLE EMPLOYEE HEADER */
+        th {
+            /* white-space: nowrap; */
+        } 
+        th:nth-child(1) {
+            width: 40px;
+            text-align: center;
+        }
+        tr td:nth-child(1) {
+            text-align: center;
+        }
+        td[fieldName="EmployeeCode"],
+        th[fieldName="EmployeeCode"] {
+            padding-left: 5px;
+            /* width: 100px; */
+        }
+
+        td[fieldName="GenderName"],
+        th[fieldName="GenderName"] {
+            width: 100px;
+        }
+
+        td[fieldName="DateOfBirth"],
+        th[fieldName="DateOfBirth"] {
+            width: 100px;
+        }
+        td[fieldName="PhoneNumber"],
+        th[fieldName="PhoneNumber"] {
+            width: 100px;
+        }
+        td[fieldName="PositionName"],
+        th[fieldName="PositionName"] {
+            width: 100px;
+        }
+        td[fieldName="DepartmentName"],
+        th[fieldName="DepartmentName"] {
+            width: 100px;
+        }
+
+        td[fieldName="WorkStatus"],
+        th[fieldName="WorkStatus"] {
+            text-align: right;
+            padding: 20px;
+        }
+        
+        td[fieldName="Salary"],
+        th[fieldName="Salary"] {
+            text-align: right;
+
+        }
+        td[fieldName="Email"],
+        th[fieldName="Email"] {
+            padding-right: 20px;
+        }
+        td[fieldName="DateOfBirth"],
+        th[fieldName="DateOfBirth"] {
+            text-align: center;
+        }
+
+    /* 2.1.2. TABLE EMPLOYEE BODY */
+    .table-employee__body {
+        cursor: pointer;
+    }
+        /* 2.1.2.1. TABLE EMPLOYEE ROW */
+        .table-employee__row {
+            height: calc((100vh - 272px) / 10);
+            background-color: var(--primary-color);
+        }
+
+        .table-employee__row:hover {
+            background-color: var(--table-row-hover) !important;
+        }
+
+        .table-employee__row td {
+            border-bottom: 1px solid #bbb;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        } 
+            .table-employee__checkbox {
+                height: 20px;
+                width: 20px;
+                background: var(--checkbox-color) !important;
+                cursor: pointer;
+            }
+
+            .table-employee__checkbox:checked {
+                background-color: var(--checkbox-color);
+            }
