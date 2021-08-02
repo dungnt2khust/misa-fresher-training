@@ -36,7 +36,7 @@
 			</thead>
 			<tbody class="table-employee__body">
 				<tr
-					@click="tableRowOnClick($event)"
+					@dblclick="tableRowOnDbClick($event)"
 					v-for="(row, index) in tableData"
 					:employeeId="row.EmployeeId"
 					:key="index"
@@ -78,25 +78,40 @@
 				tableData: [],
 			};
 		},
-        created() {
-            axios
-                .get('http://cukcuk.manhnv.net/v1/Employees')
-                .then(res => {
-                    this.tableData = res.data;
-                })
-                .catch(res => {
-                    console.log(res)
-                });
+		created(){
+			// Lắng nghe sự kiện load lại dữ liệu
+			EventBus.$on('reloadTableData', () => {
+				this.getTableData();
+			});	
+		},
+        mounted() {
+			// Gọi đến hàm lấy dữ liệu từ API
+			this.getTableData();	
         },
 		methods: { 	 
+			/**
+			 * Lấy dữ liệu vào gán vào mảng lưu trữ
+			 * Author: NTDUNG (31/07/2021)
+			 */
+			getTableData() {
+				axios
+					.get('http://cukcuk.manhnv.net/v1/Employees')
+					.then(res => {
+						this.tableData = res.data;
+					})
+					.catch(res => {
+						console.log(res)
+					});
+			},
             /** 
              * Bắt sự kiện double click vào từng dòng trên table
              * Author: NTDUNG (30/07/2021)
              * @param {event} event
              */
-            tableRowOnClick(event) {
+            tableRowOnDbClick(event) {
                 var tableRowId = event.target.parentElement.getAttribute('employeeId');
-				EventBus.$emit("tableRowOnClick", tableRowId);
+				// Phát gọi đến sự kiện click vào từng dòng trên bảng
+				EventBus.$emit("tableRowOnDbClick", tableRowId);
             },
             /**
              * Format lại dữ liệu ngày tháng cho dữ liệu trong bảng

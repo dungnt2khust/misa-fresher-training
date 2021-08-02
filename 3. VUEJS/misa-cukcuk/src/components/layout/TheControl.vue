@@ -35,7 +35,7 @@
 			</div>
 		</div>
 		<div class="container__header-right">
-			<button class="button button-addemployee">
+			<button @click="addEmployee" class="button button-addemployee">
 				<div class="button__img">
 					<img src="../../assets/icon/add.png" alt="" />
 				</div>
@@ -45,7 +45,7 @@
 				<button id="button-delete" class="button">
 					<i class="fas fa-minus-square"></i> Xoá nhân viên
 				</button>
-				<div class="refresh">
+				<div @click="reloadTableData" class="refresh">
 					<img src="../../assets/icon/refresh.png" alt="" />
 				</div>
 			</div>
@@ -53,7 +53,8 @@
 	</div>
 </template>
 <script>
-	import BaseDropdownFilter from "../base/BaseDropdownFilter.vue";
+	import BaseDropdownFilter from "../base/BaseDropdown/BaseDropdownFilter.vue";
+	import { EventBus } from "../../main"
 
 	export default {
 		name: "TheControl",
@@ -68,6 +69,22 @@
 				dropdownDefaultVal__POSITION: "Tất cả vị trí",
 				dropdownName__POSITION: "Position",
 			};
+		},
+		methods: {
+			/**
+			 * Gọi sự kiện reload dữ liệu trong bảng
+			 * Author: NTDUNG (31/07/2021)
+			 */
+			reloadTableData() {
+				EventBus.$emit('reloadTableData');
+			},
+			/**
+			 * Mở form thông tin chi tiết để nhập dữ liệu tạo mới
+			 * Author: NTDUNG (31/07/2021)
+			 */
+			addEmployee() {
+				EventBus.$emit('addEmployee');
+			}
 		},
 		components: {
 			BaseDropdownFilter,

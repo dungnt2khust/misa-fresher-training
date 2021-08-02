@@ -9,6 +9,7 @@
 @import url("./common/container.css");
 @import url("./common/pagination.css");
 @import url("./common/table.css");
+@import url("common/common.css"); 
 /*
 @import url("./common/dropdown.css");
 @import url("./common/combobox.css");
@@ -17,8 +18,7 @@
 */
 
 /*
-@import url("../css/common/popupDialog.css");
-@import url("common/common.css"); */ 
+@import url("../css/common/popupDialog.css");*/ 
 body {
     font-family: MISAGoogleSan;
     font-size: 13px;

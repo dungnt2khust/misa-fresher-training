@@ -23,7 +23,7 @@
     </div>
 </template>
 <script>
-import BaseDropdownFix from '../base/BaseDropdownFix.vue'
+import BaseDropdownFix from '../base/BaseDropdown/BaseDropdownFix.vue'
 
 export default {
     name: 'TheHeader',

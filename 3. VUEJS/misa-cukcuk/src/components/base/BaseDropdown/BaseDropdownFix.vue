@@ -69,7 +69,7 @@ export default {
 }
 </script>
 <style>
-    @import url('../../css/common/dropdown.css'); 
+    @import url('../../../css/common/dropdown.css'); 
 </style>
 
 // USAGE
