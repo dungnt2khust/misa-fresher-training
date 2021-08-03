@@ -69,6 +69,7 @@
 									inputName="Mã nhân viên"
 									:required="true"
 									:inputValue="employeeData['EmployeeCode']"
+									inputField="EmployeeCode"
 									@changeInputValue="changeInputValue($event, 'EmployeeCode')"
 								/>
 							</div>
@@ -78,6 +79,7 @@
 									inputName="Họ và tên"
 									:required="true"
 									:inputValue="employeeData['FullName']"
+									inputField="FullName"
 									@changeInputValue="changeInputValue($event, 'FullName')"
 								/>
 							</div>
@@ -104,6 +106,7 @@
 									inputName=" Số CMTND/ Căn cước"
 									:required="true"
 									:inputValue="employeeData['IdentityNumber']"
+									inputField="IdentityNumber"
 									@changeInputValue="changeInputValue($event, 'IdentityNumber')"
 								/>
 							</div>
@@ -131,7 +134,7 @@
 									inputName="Email"
 									:required="true"
 									:inputValue="employeeData['Email']"
-									validateField="email"
+									inputField="Email"
 									@changeInputValue="changeInputValue($event, 'Email')"
 								/>
 							</div>
@@ -141,7 +144,7 @@
 									inputName="Số điện thoại"
 									:required="true"
 									:inputValue="employeeData['PhoneNumber']"
-									validateField="phone"
+									inputField="PhoneNumber"
 									@changeInputValue="changeInputValue($event, 'PhoneNumber')"
 								/>
 							</div>
@@ -194,7 +197,7 @@
 									inputType="text"
 									:inputValue="employeeData['Salary']"
 									:haveUnit="true"
-									formatField="Salary"
+									inputField="Salary"
 									@changeInputValue="changeInputValue($event, 'Salary')"
 								/>	
 							</div>
@@ -333,6 +336,11 @@
 					})
 					.catch((res) => {
 						console.log(res);
+						EventBus.$emit('ToastMessage', {
+							type: 'error',
+							content: 'Không lấy được mã nhân viên mới. Vui lòng liên hệ MISA',
+							duration: 5000
+						});
 					});
 			},
 			/**

@@ -51,18 +51,14 @@ export default {
 			type: String,
 			default: "",
 		},
-		validateField: {
+		inputField: {
 			type: String,
 			default: "",
 		},
 		haveUnit: {
 			type: Boolean,
 			default: false,
-		},
-		formatField: {
-			type: String,
-			default: "",
-		},
+		}
 	},
 	created() {
 		EventBus.$on("validateEmployeeInput", () => {
@@ -91,27 +87,43 @@ export default {
 				// Validate các trường bắt buộc, email, số điện thoại
 				let inputValue = input.value;
 				if (this.required && inputValue == "") {
-					console.log("you must fill this field");
+					// Border đỏ cho input không hợp lệ
 					input.classList.add("invalid-input");
+					// Toast message
+					switch(this.inputField) {
+						case 'EmployeeCode':
+							this.toastMessage('error', 'Bạn phải nhập Mã nhân viên', 5000);
+							break;
+						case 'FullName':
+							this.toastMessage('error', 'Bạn phải nhập Họ tên', 5000);
+							break;
+						case 'IdentityNumber':
+							this.toastMessage('error', 'Bạn phải nhập Số CMTND/ Căn cước', 5000);
+							break;
+						case 'Email':
+							this.toastMessage('error', 'Bạn phải nhập Email', 5000);
+							break;
+						case 'PhoneNumber':
+							this.toastMessage('error', 'Bạn phải nhập Số điện thoại', 5000);
+							break;	
+					}
 					return;
 				}
-				switch (this.validateField) {
-					case "email":
+				switch (this.inputField) {
+					case "Email":
 						if (this.regEmail.test(input.value)) {
-							console.log("valid email");
 							this.$emit("changeInputValue", inputValue);
 						} else {
 							input.classList.add("invalid-input");
-							console.log("invalid email");
+							this.toastMessage('error', 'Email không hợp lệ', 5000);
 						}
 						break;
-					case "phone":
+					case "PhoneNumber":
 						if (this.regPhone.test(input.value)) {
-							console.log("valid phone");
 							this.$emit("changeInputValue", inputValue);
 						} else {
+							this.toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
 							input.classList.add("invalid-input");
-							console.log("invalid phone");
 						}
 						break;
 					default:
@@ -136,7 +148,7 @@ export default {
 		 * @param {event} event
 		 */
 		inputOnKeyup(event) {
-			if (this.formatField == "Salary") {
+			if (this.inputField == "Salary") {
 				let key = event.key.charCodeAt();
 				if (
 					!(
@@ -148,13 +160,29 @@ export default {
 				) {
 					event.preventDefault();
 				} else {
-                    if (event.target.value) {
-                        let inputValue = event.target.value.replaceAll('.', '');
-                        event.target.value = parseInt(inputValue).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-                    } 
-                } 
+					if (event.target.value) {
+						let inputValue = event.target.value.replaceAll(".", "");
+						event.target.value = parseInt(inputValue)
+							.toFixed(0)
+							.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+					}
+				}
 			}
 		},
+		/**
+		 * Hàm toast message
+		 * Author: NTDUNG (03/08/2021)
+		 * @param {string} type
+		 * @param {string} content
+		 * @param {number} duration
+		 */
+		toastMessage(type, content, duration) {
+			EventBus.$emit("ToastMessage", {
+				type: type,
+				content: content,
+				duration: duration,
+			});
+		}
 	},
 	computed: {
 		/**
