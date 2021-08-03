@@ -2,7 +2,7 @@
     <label @blur="hideDropdown()" @click="toggleDropdown()" class="dropdown" for="dropdown-input" :class="{'focus-dropdown': dropdownShow}">
         <div class="dropdown-header-wrapper"> 
             <span class="dropdown-value">
-                {{dropdownValue}}
+                {{dropdownValue()}}
             </span>
             <i class="fas fa-chevron-down icon-down"></i>
         </div>
@@ -18,12 +18,20 @@ export default {
     name: 'BaseDropdownFix',
     data() {
         return {
-            currIdx: 0,
+            currIdx: -1,
             dropdownShow: false
         }
     },
     props: {
-        dropdownData: Array
+        dropdownData: Array,
+        dropdownVal: {
+            type: [String, Number],
+            default: '' 
+        },
+        currDefault: {
+            type: Number,
+            default: -1
+        }
     },
     methods: {
         /**
@@ -44,8 +52,30 @@ export default {
          * Khi click vào một option thì đặt lại giá trị hiện tại 
          * Author: NTDUNG (28/07/2021)
          */
-        activeItem(currIdx) {
-            this.currIdx = currIdx;
+        activeItem(index) {
+            this.currIdx = index;
+            this.$emit('changeInputValue', this.dropdownData[index]);
+        },
+        /**
+         * Trả về phần tử trong mảng 
+         * Author: NTDUNG (28/07/2021)
+         * @returns {string} trả về chuỗi để đưa lên dropdown
+         */
+        dropdownValue() {
+            // Nếu có giá trị truyền vào dropdown và giá trị hiện tại chưa có
+            if (this.dropdownVal != '' && this.currIdx == -1) {
+                var foundValue = this.dropdownData.indexOf(this.dropdownVal);
+                this.currIdx = foundValue;
+                return this.dropdownVal;
+            // Nếu có giá trị index mặc định mà giá trị hiện tại chưa có
+            } else if (this.currDefault != -1 && this.currIdx == -1) {
+                this.currIdx = this.currDefault;
+            // Đã có giá trị hiện tại
+            } else if (this.currIdx != -1){
+                return this.dropdownData[this.currIdx];
+            } else {
+                return '';
+            }
         }
     },
     computed: {
@@ -56,15 +86,7 @@ export default {
          */
         dropdownState() {
             return this.dropdownShow == true ? 'block' : 'none';
-        },
-        /**
-         * Trả về phần tử trong mảng 
-         * Author: NTDUNG (28/07/2021)
-         * @returns {string} trả về chuỗi để đưa lên dropdown
-         */
-        dropdownValue() {
-            return this.dropdownData[this.currIdx];
-        }
+        } 
     }
 }
 </script>

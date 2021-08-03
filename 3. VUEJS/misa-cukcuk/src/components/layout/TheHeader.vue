@@ -8,8 +8,8 @@
         <BaseDropdownFix
           :id="'dropdown-restaurant'"
           :class="{'dropdown--restaurant': true}"
-          :tabindex="100"
           :dropdownData="dropdownData"
+          :currDefault="0"
           />           
         <div class="account">
           <div class="account__notify">

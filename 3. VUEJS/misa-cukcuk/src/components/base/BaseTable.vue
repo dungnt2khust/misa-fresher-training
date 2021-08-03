@@ -3,6 +3,9 @@
 		<table class="table-employee">
 			<thead class="table-employee__head">
 				<tr>
+					<th class="table-employee__header">
+						<input type="checkbox" class="table-employee__checkbox">
+					</th>
 					<th class="table-employee__header">#</th>
 					<th fieldName="EmployeeCode" class="table-employee__header">
 						Mã nhân viên
@@ -50,6 +53,7 @@
 							class="table-employee__checkbox"
 						/>
 					</td>
+					<td>{{ index + 1 }}</td>
 					<td fieldName="EmployeeCode">{{ row.EmployeeCode }}</td>
 					<td fieldName="FullName">{{ row.FullName }}</td>
 					<td fieldName="GenderName">{{ row.GenderName }}</td>

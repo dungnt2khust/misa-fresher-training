@@ -120,8 +120,19 @@
                 if (this.comboboxState) {
                     let input = event.target.parentElement.parentElement.querySelector('input');
                     input.focus();
+                } else {
+                    // if (!this.checkValueInput()) {
+                    //     console.log(event.target);
+                    // }
                 }
-            }
+            },
+            /**
+             * Kiểm tra giá trị hợp lệ khi nhập xong combobox bằng input
+             * Author: NTDUNG (02/08/2021)
+             */
+            // checkValueInput() {
+            //     return this.comboboxData.includes(this.inputValue);
+            // }
 		},
 	};
 </script>

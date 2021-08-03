@@ -18,6 +18,7 @@ import TheMenu from './components/layout/TheMenu.vue'
 import EmployeePage from './view/employee/EmployeePage.vue'
 import ThePopupInfo from './components/layout/ThePopupInfo.vue'
 import BaseToastMessage from './components/base/BaseToastMessage.vue'
+import { EventBus } from './main'
 
 export default {
 
@@ -28,6 +29,16 @@ export default {
     EmployeePage,
     ThePopupInfo,
     EmployeeToast: BaseToastMessage
+  },
+  created() {
+    setTimeout(() => {
+      var data = {
+        type: 'info',
+        content: ' Đã có bản cập nhật mới. Hãy cập nhật để trải niệm.',
+        duration: 5000
+      };
+      EventBus.$emit('ToastMessage', data);
+    }, 5000);
   }
 }
 </script>
