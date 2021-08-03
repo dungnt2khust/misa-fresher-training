@@ -13,7 +13,7 @@
             :value="formatInputValue"
             @blur="validateInput($event, 'event')"
             @focus="inputOnFocus($event)"
-            @keydown="inputOnKeydown($event)"
+            @keyup="inputOnKeyup($event)"
         />
         <span class="input-unit" v-if="haveUnit">(VNĐ)</span>
     </div>
@@ -135,7 +135,7 @@ export default {
 		 * Author: NTDUNG (03/08/2021)
 		 * @param {event} event
 		 */
-		inputOnKeydown(event) {
+		inputOnKeyup(event) {
 			if (this.formatField == "Salary") {
 				let key = event.key.charCodeAt();
 				if (
@@ -148,14 +148,10 @@ export default {
 				) {
 					event.preventDefault();
 				} else {
-                    let inputValue = event.target.value.replaceAll('.', '');
-                    if (inputValue != '')  {
+                    if (event.target.value) {
+                        let inputValue = event.target.value.replaceAll('.', '');
                         event.target.value = parseInt(inputValue).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-                    } else {
-                        if (event.key != 'Backspace' || event.key != 'ArrowLeft' || event.key != 'ArrowRight') {
-                            event.target.value += event.key;
-                        }
-                    }
+                    } 
                 } 
 			}
 		},
