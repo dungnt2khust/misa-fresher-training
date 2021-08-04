@@ -266,7 +266,6 @@
 				employeeId: "",
 				employeeData: {},
 				method: "",
-				newEmployeeId: "",
 				accountName: 'NTDUNG'
 			};
 		},
@@ -288,10 +287,10 @@
 			 */
 			EventBus.$on("addEmployee", () => {
 				this.popupState = true;
-				this.employeeData = {};
+				var emptyObject = {};
+				this.employeeData = emptyObject;
 				this.method = "POST";
 				this.getNewEmployeeId();
-				this.$set(this.employeeData, "EmployeeCode", this.newEmployeeId);
 			});
 			/**
 			 * Lắng nghe sự kiện thay đổi input
@@ -306,8 +305,8 @@
 			 * Lấy dữ liệu một employee từ API
 			 * Author: NTDUNG (30/07/2021)
 			 */
-			async getEmployeeData() {
-				await axios
+			getEmployeeData() {
+				axios
 					.get(`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`)
 					.then((res) => {
 						this.employeeData = res.data;
@@ -324,7 +323,8 @@
 				axios
 					.get("http://cukcuk.manhnv.net/v1/Employees/NewEmployeeCode")
 					.then((res) => {
-						this.newEmployeeId = res.data;
+						this.$set(this.employeeData, "EmployeeCode", res.data);
+						this.$el.querySelector('input[type="text"]').focus();
 					})
 					.catch((res) => {
 						console.log(res);
@@ -341,21 +341,40 @@
 			 */
 			cancelPopup() {
 				this.popupState = false;
+				EventBus.$emit('showPopupDialog', {
+					type: 'warn', 
+					title: 'Huỷ nhập dữ liệu',
+					content: ' Bạn có muốn huỷ nhập form thông tin đang chỉnh sửa',
+					continueBtn: 'Tiếp tục nhập',
+					mode: 'CANCELFORM'
+				});
+				EventBus.$on('continueBtnOnClick', data => {
+					if (data == 'CANCELFORM') {
+						this.popupState = true;
+					}
+				});
+				EventBus.$on('cancelBtnOnClick', data => {
+					if (data == 'CANCELFORM') {
+						var emptyObject = {};
+						this.employeeData = emptyObject;
+					}
+				});
 			},
 			/**
 			 * Xử lý sự kiện nhấn nút Lưu (Chỉnh sửa hoặc tạo mới)
 			 * Author: NTDUNG (31/07/2021)
 			 */
 			savePopup() {
+				// Gọi đến sự kiện validate input để validate từng trường input
 				EventBus.$emit('validateEmployeeInput');
 				var checkForm = true;
 				var inputs = this.$el.querySelectorAll('input[type="text"]');
 				inputs.forEach((input) => {
+					// Kiểm tra nếu có trường input nào không hợp lệ thì false
 					if (input.classList.contains('invalid-input')) {
 						checkForm = false;
 					}
 				});
-				console.log(checkForm);
 				
 				if (checkForm) {
 					// Ẩn popup đi
@@ -370,8 +389,8 @@
 						axios
 							.post(`http://cukcuk.manhnv.net/v1/Employees`, this.employeeData)
 							.then(() => {
-								this.reloadTableData();
 								EventBus.$emit('ToastMessage', {type: 'success', content: 'Tạo mới thành công', duration: 5000});
+								this.reloadTableData();
 							})	
 							.catch((res) => {
 								console.log(res);
@@ -381,7 +400,6 @@
 						// Thêm ngày chỉnh sửa, người chỉnh sửa 
 						this.$set(this.employeeData, 'ModifiedDate', this.getNewDateJSON);
 						this.$set(this.employeeData, 'ModifiedBy', this.accountName);
-
 						EventBus.$emit('ToastMessage', {type: 'warn', content: 'Đang chỉnh sửa. Vui lòng chờ', duration: 5000});
 						// Chỉnh sửa thông tin
 						axios
@@ -390,8 +408,8 @@
 								this.employeeData
 							)
 							.then(() => {
-								this.reloadTableData();
 								EventBus.$emit('ToastMessage', {type: 'success', content: 'Chỉnh sửa thành công', duration: 5000});
+								this.reloadTableData();
 							})	
 							.catch((res) => {
 								console.log(res);
@@ -405,17 +423,34 @@
 			 * Author: NTDUNG (02/08/2021)
 			 */
 			deleteEmployee() {
-				axios
-					.delete(
-						`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`,
-						this.employeeData
-					)
-					.then(() => {
-						this.reloadTableData();	
-					})
-					.catch((res) => {
-						console.log(res);
-					});
+				this.popupState = false;
+				// Show popup cảnh báo xác nhận xoá
+				EventBus.$emit('showPopupDialog', {
+					type: 'error',
+					title: 'Xác nhận xoá thông tin',
+					content: `Bạn có muốn xoá <b>${this.employeeData['FullName']} - ${this.employeeData['EmployeeCode']}</b>`,
+					continueBtn: 'Xoá nhân viên',
+					mode: 'DELETE'
+				});
+				// Lắng nghe lựa chọn của popup dialog	
+				EventBus.$on('continueBtnOnClick', data => {
+					if (data == 'DELETE') {
+						EventBus.$emit('ToastMessage', {type: 'warn', content: 'Đang xoá. Vui lòng chờ', duration: 5000});
+						axios
+							.delete(
+								`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`,
+								this.employeeData
+							)
+							.then(() => {
+								EventBus.$emit('ToastMessage', {type: 'success', content: 'Xoá thành công', duration: 5000});
+								this.reloadTableData();	
+							})
+							.catch((res) => {
+								console.log(res);
+								EventBus.$emit('ToastMessage', {type: 'error', content:  'Xoá thất bại. Vui lòng liên hệ MISA', duration: 5000});
+							});
+					}
+				});		
 			},
 			/**
 			 * Phát sự kiện load lại dữ liệu bảng table

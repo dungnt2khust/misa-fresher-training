@@ -72,15 +72,15 @@ export default {
 		/**
 		 * Lấy dữ liệu vào gán vào mảng lưu trữ
 		 * Author: NTDUNG (31/07/2021)
-		 * @param {boolean} toast nếu true thì toast, false thì không 
+		//  * @param {boolean} toast nếu true thì toast, false thì không 
 		 */
-		getTableData(toast) {
+		getTableData() {
 			EventBus.$emit('ToastMessage', {type: 'warn', content: 'Đang tải dữ liệu. Vui lòng chờ', duration: 5000});
 			axios
 				.get(this.urlAPI)
 				.then((res) => {
 					this.tableData = res.data;
-					if (toast) 
+					// if (toast) 
 						EventBus.$emit('ToastMessage', {type: 'success', content: 'Tải dữ liệu thành công', duration: 5000});
 				})
 				.catch((res) => {
