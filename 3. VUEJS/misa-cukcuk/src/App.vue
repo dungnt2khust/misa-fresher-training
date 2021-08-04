@@ -32,12 +32,11 @@ export default {
   },
   created() {
     setTimeout(() => {
-      var data = {
+      EventBus.$emit('ToastMessage', {
         type: 'info',
         content: ' Đã có bản cập nhật mới. Hãy cập nhật để trải niệm.',
         duration: 5000
-      };
-      EventBus.$emit('ToastMessage', data);
+      });
     }, 5000);
   }
 }

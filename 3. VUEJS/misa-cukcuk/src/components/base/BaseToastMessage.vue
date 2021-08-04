@@ -1,6 +1,5 @@
 <template lang="">
-	<div class="toast-message-list">	
-		<transition-group name="toast">
+	<div is="transition-group" name="toast" class="toast-message-list">	
 		<div v-for="(item, index) in toastMessageList" :class="bindClass(item)" :key="index"  class="toast-message">
 			<div class="toast-message__body">
 				<div class="toast-message__icon">
@@ -12,7 +11,6 @@
 				<i class="fas fa-times"></i>
 			</div>
 		</div>
-		</transition-group>
 	</div>
 </template>
 <script>
