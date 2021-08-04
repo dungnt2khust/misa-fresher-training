@@ -48,7 +48,7 @@ export default {
 			default: "text",
 		},
 		inputValue: {
-			type: String,
+			type: [String, Number],
 			default: "",
 		},
 		inputField: {
@@ -83,9 +83,9 @@ export default {
 				input = event;
 			}
 
+			let inputValue = input.value;
 			if (this.inputType == "text") {
 				// Validate các trường bắt buộc, email, số điện thoại
-				let inputValue = input.value;
 				if (this.required && inputValue == "") {
 					// Border đỏ cho input không hợp lệ
 					input.classList.add("invalid-input");
@@ -112,7 +112,7 @@ export default {
 				switch (this.inputField) {
 					case "Email":
 						if (this.regEmail.test(input.value)) {
-							this.$emit("changeInputValue", inputValue);
+							this.changeInputValue(inputValue, this.inputField);
 						} else {
 							input.classList.add("invalid-input");
 							this.toastMessage('error', 'Email không hợp lệ', 5000);
@@ -120,17 +120,24 @@ export default {
 						break;
 					case "PhoneNumber":
 						if (this.regPhone.test(input.value)) {
-							this.$emit("changeInputValue", inputValue);
+							this.changeInputValue(inputValue, this.inputField);
 						} else {
 							this.toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
 							input.classList.add("invalid-input");
 						}
 						break;
+					// Những trường hợp trả về số
+					case "Salary":
+					case "PersonalTaxCode":
+						inputValue = parseInt(inputValue);
+						this.changeInputValue(inputValue, this.inputField);
+						break;
 					default:
+						this.changeInputValue(inputValue, this.inputField);
 				}
 			} else if (this.inputType == "date") {
-				if (input.value != "") {
-					this.$emit("changeInputValue", input.value + "T00:00:00");
+				if (inputValue != "") {
+					this.changeInputValue(inputValue + "T00:00:00", this.inputField);
 				}
 			}
 		},
@@ -181,6 +188,18 @@ export default {
 				type: type,
 				content: content,
 				duration: duration,
+			});
+		},
+		/**
+		 * Gọi sự kiện thay đổi input phía popup
+		 * Author: NTDUNG (03/08/2021)
+		 * @param {string, number}  newValue
+		 * @param {string} inputField
+		 */
+		changeInputValue(newValue, inputField) {
+			EventBus.$emit('changeInputValue', {
+				NewValue: newValue, 
+				InputField: inputField
 			});
 		}
 	},

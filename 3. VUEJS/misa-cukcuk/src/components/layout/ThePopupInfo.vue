@@ -70,7 +70,6 @@
 									:required="true"
 									:inputValue="employeeData['EmployeeCode']"
 									inputField="EmployeeCode"
-									@changeInputValue="changeInputValue($event, 'EmployeeCode')"
 								/>
 							</div>
 							<!-- FULL NAME -->
@@ -80,7 +79,6 @@
 									:required="true"
 									:inputValue="employeeData['FullName']"
 									inputField="FullName"
-									@changeInputValue="changeInputValue($event, 'FullName')"
 								/>
 							</div>
 							<!-- DOB -->
@@ -89,7 +87,7 @@
 									inputName="Ngày sinh"
 									inputType="date"
 									:inputValue="employeeData['DateOfBirth']"
-									@changeInputValue="changeInputValue($event, 'DateOfBirth')"
+									inputField="DateOfBirth"
 								/>
 							</div>
 							<!-- GENDER -->
@@ -107,7 +105,6 @@
 									:required="true"
 									:inputValue="employeeData['IdentityNumber']"
 									inputField="IdentityNumber"
-									@changeInputValue="changeInputValue($event, 'IdentityNumber')"
 								/>
 							</div>
 							<!-- RELEASE DATE -->
@@ -115,8 +112,8 @@
 								<BaseInput
 									inputName="Ngày cấp"
 									inputType="date"
+									inputField="IdentityDate"
 									:inputValue="employeeData['IdentityDate']"
-									@changeInputValue="changeInputValue($event, 'IdentityDate')"
 								/>
 							</div>
 							<!-- RELEASE PLACE -->
@@ -124,8 +121,8 @@
 								<BaseInput
 									inputName="Nơi cấp"
 									:alone="true"
+									inputField="IdentityPlace"
 									:inputValue="employeeData['IdentityPlace']"
-									@changeInputValue="changeInputValue($event, 'IdentityPlace')"
 								/>
 							</div>
 							<!-- EMAIL -->
@@ -135,7 +132,6 @@
 									:required="true"
 									:inputValue="employeeData['Email']"
 									inputField="Email"
-									@changeInputValue="changeInputValue($event, 'Email')"
 								/>
 							</div>
 							<!-- PHONE -->
@@ -145,7 +141,6 @@
 									:required="true"
 									:inputValue="employeeData['PhoneNumber']"
 									inputField="PhoneNumber"
-									@changeInputValue="changeInputValue($event, 'PhoneNumber')"
 								/>
 							</div>
 						</div>
@@ -165,7 +160,6 @@
 									:key="1"
 									:dropdownDefaultVal="dropdownDefaultVal__POSITION"
 									:dropdownName="dropdownName__POSITION"
-									@changeInputValue="changeInputValue($event, 'Position')"
 								/>
 							</div>
 							<!-- DEPARTMENT -->
@@ -179,15 +173,14 @@
 									:key="2"
 									:dropdownDefaultVal="dropdownDefaultVal__DEPARTMENT"
 									:dropdownName="dropdownName__DEPARTMENT"
-									@changeInputValue="changeInputValue($event, 'Department')"
 								/>
 							</div>
 							<!-- TAX CODE -->
 							<div class="popup-infor__item">
 								<BaseInput
 									inputName="Mã số thuế cá nhân"
+									inputField="PersonalTaxCode"
 									:inputValue="employeeData['PersonalTaxCode']"
-									@changeInputValue="changeInputValue($event, 'PersonalTaxCode')"
 								/>
 							</div>
 							<!-- BASE SALARY -->
@@ -198,7 +191,6 @@
 									:inputValue="employeeData['Salary']"
 									:haveUnit="true"
 									inputField="Salary"
-									@changeInputValue="changeInputValue($event, 'Salary')"
 								/>	
 							</div>
 							<!-- JOINING DATE -->
@@ -206,8 +198,8 @@
 								<BaseInput
 									inputName="Ngày gia nhập công ty"
 									inputType="date"
+									inputField="JoinDate"
 									:inputValue="employeeData['JoinDate']"
-									@changeInputValue="changeInputValue($event, 'JoinDate')"
 								/>
 							</div>
 							<!-- WORKING STATUS -->
@@ -216,7 +208,6 @@
 								<BaseDropdownFix 
 									:dropdownData="workStatus" 
 									:dropdownVal="employeeData['WorkStatus']"
-									@changeInputValue="changeInputValue($event, 'WorkStatus')"
 									/>	
 							</div>
 						</div>
@@ -279,12 +270,6 @@
 				accountName: 'NTDUNG'
 			};
 		},
-		props: {
-			popupData: {
-				type: String,
-				default: "",
-			},
-		},
 		created() {
 			/**
 			 * Lắng nghe sự kiện click vào dòng ở table
@@ -308,14 +293,21 @@
 				this.getNewEmployeeId();
 				this.$set(this.employeeData, "EmployeeCode", this.newEmployeeId);
 			});
+			/**
+			 * Lắng nghe sự kiện thay đổi input
+			 * Author: NTDUNG (04/08/2021)
+			 */
+			EventBus.$on("changeInputValue", (data) => {
+				this.changeInputValue(data['NewValue'], data['InputField']);
+			});
 		},
 		methods: {
 			/**
 			 * Lấy dữ liệu một employee từ API
 			 * Author: NTDUNG (30/07/2021)
 			 */
-			getEmployeeData() {
-				axios
+			async getEmployeeData() {
+				await axios
 					.get(`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`)
 					.then((res) => {
 						this.employeeData = res.data;
@@ -363,6 +355,7 @@
 						checkForm = false;
 					}
 				});
+				console.log(checkForm);
 				
 				if (checkForm) {
 					// Ẩn popup đi
@@ -372,30 +365,38 @@
 						// Thêm ngày tạo mới, người tạo mới
 						this.$set(this.employeeData, 'CreatedDate', this.getNewDateJSON);
 						this.$set(this.employeeData, 'CreatedBy', this.accountName);
+						EventBus.$emit('ToastMessage', {type: 'warn', content: 'Đang tạo mới. Vui lòng chờ', duration: 5000});
 						// Tạo mới thông tin
 						axios
 							.post(`http://cukcuk.manhnv.net/v1/Employees`, this.employeeData)
-							.then(() => {})
+							.then(() => {
+								this.reloadTableData();
+								EventBus.$emit('ToastMessage', {type: 'success', content: 'Tạo mới thành công', duration: 5000});
+							})	
 							.catch((res) => {
 								console.log(res);
+								EventBus.$emit('ToastMessage', {type: 'error', content: 'Tạo mới thất bại. Vui lòng liên hệ MISA', duration: 5000});
 							});
-
-						this.reloadTableData();
 					} else if (this.method == "PUT") {
 						// Thêm ngày chỉnh sửa, người chỉnh sửa 
 						this.$set(this.employeeData, 'ModifiedDate', this.getNewDateJSON);
 						this.$set(this.employeeData, 'ModifiedBy', this.accountName);
+
+						EventBus.$emit('ToastMessage', {type: 'warn', content: 'Đang chỉnh sửa. Vui lòng chờ', duration: 5000});
 						// Chỉnh sửa thông tin
 						axios
 							.put(
 								`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`,
 								this.employeeData
 							)
-							.then(() => {})
+							.then(() => {
+								this.reloadTableData();
+								EventBus.$emit('ToastMessage', {type: 'success', content: 'Chỉnh sửa thành công', duration: 5000});
+							})	
 							.catch((res) => {
 								console.log(res);
+								EventBus.$emit('ToastMessage', {type: 'error', content: 'Chỉnh sửa thất bại. Vui lòng liên hệ MISA', duration: 5000});
 							});
-						this.reloadTableData();
 					}
 				}	
 			},
@@ -409,11 +410,12 @@
 						`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`,
 						this.employeeData
 					)
-					.then(() => {})
+					.then(() => {
+						this.reloadTableData();	
+					})
 					.catch((res) => {
 						console.log(res);
 					});
-				this.reloadTableData();	
 			},
 			/**
 			 * Phát sự kiện load lại dữ liệu bảng table
@@ -426,11 +428,10 @@
 			 * Bắt sự kiện thay đổi input để gán lại vào employeeData
 			 * Author: NTDUNG (02/08/2021)
 			 * @param {string} newValue
-			 * @param {string} key
+			 * @param {string} inputField
 			 */
-			changeInputValue(newValue, key) {
-				console.log(key, newValue);
-				this.$set(this.employeeData, key, newValue);
+			changeInputValue(newValue, inputField) {
+				this.$set(this.employeeData, inputField, newValue);
 			}
 		},
 		computed: {

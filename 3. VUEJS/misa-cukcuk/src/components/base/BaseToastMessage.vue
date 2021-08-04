@@ -1,6 +1,5 @@
 <template lang="">
 	<div class="toast-message-list">	
-		<!-- <button @click="addToastMessage('success', 'Congratulations', 5000)" class="button">add toast message</button> -->
 		<transition-group name="toast">
 		<div v-for="(item, index) in toastMessageList" :class="bindClass(item)" :key="index"  class="toast-message">
 			<div class="toast-message__body">
@@ -9,7 +8,7 @@
 				</div>
 				<span class="toast-message__title"> {{item.content}}</span>
 			</div>
-			<div @click="removeToastMessage(index)" class="toast-message__cancel">
+			<div @click="removeToastMessage(item.id, 0)" class="toast-message__cancel">
 				<i class="fas fa-times"></i>
 			</div>
 		</div>
@@ -30,9 +29,15 @@ export default {
 				"fa-info-circle",
 			],
 			toastMessageList: [],
+			toastMessageId: 0
 		};
 	},
 	created() {
+		/**
+		 * Bật lắng nghe sự kiện Toast Message từ các component khác
+		 * Author: NTDUNG (03/08/2021)
+		 * @param {object} data - Chứa thông tin chi tiết của một Toast Message (type, content, duration)
+		 */
 		EventBus.$on('ToastMessage', (data) => {
 			this.addToastMessage(data);
 		});
@@ -47,13 +52,9 @@ export default {
 			this.toastMessageList.push({
 				type: data['type'],
 				content: data['content'],
+				id: ++this.toastMessageId
 			});
-			setTimeout(() => {
-				var toastList = this.$el.querySelectorAll(".toast-message");
-				setTimeout(() => {
-					toastList[toastList.length - 1].remove();
-				}, data['duration']);
-			}, 10);
+			this.removeToastMessage(this.toastMessageId, data['duration']);	
 		},
 		/**
 		 * Với từng thông báo khác nhau thì các icon sẽ khác nhau
@@ -111,15 +112,20 @@ export default {
 			return returnClass;
 		},
 		/**
-		 * Xoá toast message đi
+		 * Xoá toast message
 		 * Author: NTDUNG (03/08/2021)
-		 * @param {number} index
+		 * @param {number} id - id của toast message
+		 * @param {number} duration - khoảng thời gian chờ cho đến lúc xoá
 		 */
-		removeToastMessage(index) {
-			this.toastMessageList.splice(index, 1);
+		removeToastMessage(id, duration) {
+			setTimeout(() => {
+				var foundMatchId = this.toastMessageList.findIndex((item) => {
+					return item.id == id;
+				});
+				this.toastMessageList.splice(foundMatchId, 1);
+			}, duration);
 		},
-	},
-	computed: {},
+	}
 };
 </script>
 <style scoped>
