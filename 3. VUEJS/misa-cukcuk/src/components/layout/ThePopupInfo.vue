@@ -122,7 +122,7 @@
 							<div class="popup-infor__item noi-cap">
 								<BaseInput
 									inputLabel="Nơi cấp"
-									:alone="true"
+									:inputAlone="true"
 									inputField="IdentityPlace"
 									:valueTranfer="employeeData['IdentityPlace']"
 								/>
@@ -196,6 +196,7 @@
 							<!-- JOINING DATE -->
 							<div class="popup-infor__item">
 								<BaseInput
+									:required="true"
 									inputLabel="Ngày gia nhập công ty"
 									inputType="date"
 									inputField="JoinDate"
@@ -372,7 +373,7 @@
 				// Gọi đến sự kiện validate input để validate từng trường input
 				EventBus.$emit('validateEmployeeInput');
 				var checkForm = true;
-				var inputs = this.$el.querySelectorAll('input[type="text"]');
+				var inputs = this.$el.querySelectorAll('input');
 				inputs.forEach((input) => {
 					// Kiểm tra nếu có trường input nào không hợp lệ thì false
 					if (input.classList.contains('invalid-input')) {
