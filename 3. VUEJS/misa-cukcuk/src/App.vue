@@ -9,6 +9,7 @@
     </div>
     <ThePopupInfo/>
     <EmployeeToast/>
+    <EmployeePopupDialog/>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import TheMenu from './components/layout/TheMenu.vue'
 import EmployeePage from './view/employee/EmployeePage.vue'
 import ThePopupInfo from './components/layout/ThePopupInfo.vue'
 import BaseToastMessage from './components/base/BaseToastMessage.vue'
+import BasePopupDialog from './components/base/BasePopupDialog.vue'
 import { EventBus } from './main'
 
 export default {
@@ -28,16 +30,16 @@ export default {
     EmployeeMenu: TheMenu,
     EmployeePage,
     ThePopupInfo,
-    EmployeeToast: BaseToastMessage
+    EmployeeToast: BaseToastMessage,
+    EmployeePopupDialog: BasePopupDialog
   },
-  created() {
+  mounted() {
     setTimeout(() => {
-      var data = {
+      EventBus.$emit('ToastMessage', {
         type: 'info',
         content: ' Đã có bản cập nhật mới. Hãy cập nhật để trải niệm.',
         duration: 5000
-      };
-      EventBus.$emit('ToastMessage', data);
+      });
     }, 5000);
   }
 }

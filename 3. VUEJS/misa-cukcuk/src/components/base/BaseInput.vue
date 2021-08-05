@@ -31,7 +31,7 @@ export default {
 		};
 	},
 	props: {
-		inputName: {
+		inputLabel: {
 			type: String,
 			default: "",
 		},
@@ -47,8 +47,8 @@ export default {
 			type: String,
 			default: "text",
 		},
-		inputValue: {
-			type: String,
+		valueTranfer: {
+			type: [String, Number],
 			default: "",
 		},
 		inputField: {
@@ -69,7 +69,7 @@ export default {
 	methods: {
 		/**
 		 * Validate các dữ liệu đã nhập ở phía input
-		 * Author: NTDUNG (02/08/2021)
+		 * CreatedBy: NTDUNG (02/08/2021)
 		 * @param {event, element} event
 		 * @param {string} type
 		 */
@@ -83,10 +83,10 @@ export default {
 				input = event;
 			}
 
+			let valueTranfer = input.value;
 			if (this.inputType == "text") {
 				// Validate các trường bắt buộc, email, số điện thoại
-				let inputValue = input.value;
-				if (this.required && inputValue == "") {
+				if (this.required && valueTranfer == "") {
 					// Border đỏ cho input không hợp lệ
 					input.classList.add("invalid-input");
 					// Toast message
@@ -112,7 +112,7 @@ export default {
 				switch (this.inputField) {
 					case "Email":
 						if (this.regEmail.test(input.value)) {
-							this.$emit("changeInputValue", inputValue);
+							this.changeInputValue(valueTranfer, this.inputField);
 						} else {
 							input.classList.add("invalid-input");
 							this.toastMessage('error', 'Email không hợp lệ', 5000);
@@ -120,23 +120,30 @@ export default {
 						break;
 					case "PhoneNumber":
 						if (this.regPhone.test(input.value)) {
-							this.$emit("changeInputValue", inputValue);
+							this.changeInputValue(valueTranfer, this.inputField);
 						} else {
 							this.toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
 							input.classList.add("invalid-input");
 						}
 						break;
+					// Những trường hợp trả về số
+					case "Salary":
+					case "PersonalTaxCode":
+						valueTranfer = parseInt(valueTranfer);
+						this.changeInputValue(valueTranfer, this.inputField);
+						break;
 					default:
+						this.changeInputValue(valueTranfer, this.inputField);
 				}
 			} else if (this.inputType == "date") {
-				if (input.value != "") {
-					this.$emit("changeInputValue", input.value + "T00:00:00");
+				if (valueTranfer != "") {
+					this.changeInputValue(valueTranfer + "T00:00:00", this.inputField);
 				}
 			}
 		},
 		/**
 		 * Khi focus vào ô input thì bỏ lớp cảnh báo đi
-		 * Author: NTDUNG (03/08/2021)
+		 * CreatedBy: NTDUNG (03/08/2021)
 		 * @param {event} event
 		 */
 		inputOnFocus(event) {
@@ -144,7 +151,7 @@ export default {
 		},
 		/**
 		 * Sự kiện nhập vào (ấn bàn phím) của input
-		 * Author: NTDUNG (03/08/2021)
+		 * CreatedBy: NTDUNG (03/08/2021)
 		 * @param {event} event
 		 */
 		inputOnKeyup(event) {
@@ -161,8 +168,8 @@ export default {
 					event.preventDefault();
 				} else {
 					if (event.target.value) {
-						let inputValue = event.target.value.replaceAll(".", "");
-						event.target.value = parseInt(inputValue)
+						let valueTranfer = event.target.value.replaceAll(".", "");
+						event.target.value = parseInt(valueTranfer)
 							.toFixed(0)
 							.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 					}
@@ -171,7 +178,7 @@ export default {
 		},
 		/**
 		 * Hàm toast message
-		 * Author: NTDUNG (03/08/2021)
+		 * CreatedBy: NTDUNG (03/08/2021)
 		 * @param {string} type
 		 * @param {string} content
 		 * @param {number} duration
@@ -182,12 +189,24 @@ export default {
 				content: content,
 				duration: duration,
 			});
+		},
+		/**
+		 * Gọi sự kiện thay đổi input phía popup
+		 * CreatedBy: NTDUNG (03/08/2021)
+		 * @param {string, number}  newValue
+		 * @param {string} inputField
+		 */
+		changeInputValue(newValue, inputField) {
+			EventBus.$emit('changeInputValue', {
+				NewValue: newValue, 
+				InputField: inputField
+			});
 		}
 	},
 	computed: {
 		/**
 		 * Tính toán width với 2 trường hợp trong form
-		 * Author: NTDUNG (02/08/2021)
+		 * CreatedBy: NTDUNG (02/08/2021)
 		 * @returns {string}
 		 */
 		widthCalc() {
@@ -199,26 +218,27 @@ export default {
 		},
 		/**
 		 * Khi required thì thêm cặp ngoặc và dấu sao đỏ vào label
-		 * Author: NTDUNG (02/08/2021)
+		 * CreatedBy: NTDUNG (02/08/2021)
+		 * ModifiedBy: NTDUNG (05/08/2021)
 		 * @returns {string}
 		 */
 		requiredAssign() {
 			if (this.required) {
-				return `${this.inputName} (<span class="text-red">*</span>)`;
+				return `${this.inputLabel} (<span class="text-red">*</span>)`;
 			} else {
-				return `${this.inputName}`;
+				return `${this.inputLabel}`;
 			}
 		},
 		/**
 		 * Format giá trị input khi là text hoặc date
-		 * Author: NTDUNG (02/08/2021)
+		 * CreatedBy: NTDUNG (02/08/2021)
 		 * @returns {string}
 		 */
 		formatInputValue() {
 			if (this.inputType == "text") {
-				return this.inputValue;
+				return this.valueTranfer;
 			} else if (this.inputType == "date") {
-				let date = new Date(this.inputValue);
+				let date = new Date(this.valueTranfer);
 				let day = date.getDate();
 				day = day < 10 ? "0" + day : day;
 				let month = date.getMonth() + 1;

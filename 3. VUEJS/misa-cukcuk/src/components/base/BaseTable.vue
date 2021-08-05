@@ -3,38 +3,13 @@
 		<table class="table-employee">
 			<thead class="table-employee__head">
 				<tr>
-					<th class="table-employee__header">
+					<th class="table-employee__header" style="width: 40px">
 						<input type="checkbox" class="table-employee__checkbox">
 					</th>
-					<th class="table-employee__header">#</th>
-					<th fieldName="EmployeeCode" class="table-employee__header">
-						Mã nhân viên
-					</th>
-					<th fieldName="FullName" class="table-employee__header">
-						Họ và tên
-					</th>
-					<th fieldName="GenderName" class="table-employee__header">
-						Giới tính
-					</th>
-					<th fieldName="DateOfBirth" class="table-employee__header">
-						Ngày sinh
-					</th>
-					<th fieldName="PhoneNumber" class="table-employee__header">
-						Điện thoại
-					</th>
-					<th fieldName="Email" class="table-employee__header">Email</th>
-					<th fieldName="PositionName" class="table-employee__header">
-						Chức vụ
-					</th>
-					<th fieldName="DepartmentName" class="table-employee__header">
-						Phòng ban
-					</th>
-					<th fieldName="Salary" class="table-employee__header">
-						Mức lương cơ bản
-					</th>
-					<th fieldName="WorkStatus" class="table-employee__header">
-						Tình trạng công việc
-					</th>
+					<th class="table-employee__header" style="width: 60px">#</th>
+					<th v-for="(item, index) in tableStyle" :key="index" class="table-employee__header" :class="classAlignTable(item.Style)">
+						{{ item.HeaderName }}
+					</th>	
 				</tr>
 			</thead>
 			<tbody class="table-employee__body">
@@ -48,95 +23,131 @@
 					<td>
 						<input
 							type="checkbox"
-							name=""
-							id=""
 							class="table-employee__checkbox"
 						/>
 					</td>
-					<td>{{ index + 1 }}</td>
-					<td fieldName="EmployeeCode">{{ row.EmployeeCode }}</td>
-					<td fieldName="FullName">{{ row.FullName }}</td>
-					<td fieldName="GenderName">{{ row.GenderName }}</td>
-					<td fieldName="DateOfBirth">
-						{{ formatDateTable(row.DateOfBirth) }}
+					<td>{{ index + 1 }}</td>	
+					<td v-for="(item, index) in tableStyle" :key="index" :class="classAlignTable(item.Style)">
+						{{ formatDataTable(row, item.FieldName) }}
 					</td>
-					<td fieldName="PhoneNumber">{{ row.PhoneNumber }}</td>
-					<td fieldName="Email">{{ row.Email }}</td>
-					<td fieldName="PositionName">{{ row.PositionName }}</td>
-					<td fieldName="DepartmentName">{{ row.DepartmentName }}</td>
-					<td fieldName="Salary">{{row.salary }}</td>
-					<td fieldName="WorkStatus">{{ row.WorkStatus }}</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 </template>
 <script>
-	import { EventBus } from '../../main';
-    import axios from 'axios';
+import { EventBus } from "../../main";
+import axios from "axios";
 
-	export default {
-		name: "BaseTable",
-		data() {
-			return {
-				tableData: [],
-			};
+export default {
+	name: "BaseTable",
+	props: {
+		urlAPI: {
+			type: String,
+			default: "",
 		},
-		created(){
-			// Lắng nghe sự kiện load lại dữ liệu
-			EventBus.$on('reloadTableData', () => {
-				this.getTableData();
-			});	
-		},
-        mounted() {
-			// Gọi đến hàm lấy dữ liệu từ API
-			this.getTableData();	
-        },
-		methods: { 	 
-			/**
-			 * Lấy dữ liệu vào gán vào mảng lưu trữ
-			 * Author: NTDUNG (31/07/2021)
-			 */
-			getTableData() {
-				axios
-					.get('http://cukcuk.manhnv.net/v1/Employees')
-					.then(res => {
-						this.tableData = res.data;
-					})
-					.catch(res => {
-						console.log(res)
-					});
+		tableStyle: {
+			type: Array,
+			default: function () {
+				return [];
 			},
-            /** 
-             * Bắt sự kiện double click vào từng dòng trên table
-             * Author: NTDUNG (30/07/2021)
-             * @param {event} event
-             */
-            tableRowOnDbClick(event) {
-                var tableRowId = event.target.parentElement.getAttribute('employeeId');
-				// Phát gọi đến sự kiện click vào từng dòng trên bảng
-				EventBus.$emit("tableRowOnDbClick", tableRowId);
-            },
-            /**
-             * Format lại dữ liệu ngày tháng cho dữ liệu trong bảng
-             * Author: NTDUNG (28/07/2021)
-             * @param {dateJSON} value
-             * @returns {string} 
-             */
-			formatDateTable(value) {
-				if (value != "" && value != null) {
-					var date = new Date(value);
+		},
+	},
+	data() {
+		return {
+			tableData: [],
+		};
+	},
+	created() {
+		// Lắng nghe sự kiện load lại dữ liệu
+		EventBus.$on("reloadTableData", () => {
+			this.getTableData(false);
+		});
+	},
+	mounted() {
+		// Gọi đến hàm lấy dữ liệu từ API
+		this.getTableData(true);
+	},
+	methods: {
+		/**
+		 * Lấy dữ liệu vào gán vào mảng lưu trữ
+		 * CreatedBy: NTDUNG (31/07/2021)
+		 * @param {boolean} toast nếu true thì toast, false thì không 
+		 */
+		getTableData() {
+			EventBus.$emit('ToastMessage', {type: 'warn', content: 'Đang tải dữ liệu. Vui lòng chờ', duration: 5000});
+			axios
+				.get(this.urlAPI)
+				.then((res) => {
+					this.tableData = res.data;
+					// if (toast) 
+						EventBus.$emit('ToastMessage', {type: 'success', content: 'Tải dữ liệu thành công', duration: 5000});
+				})
+				.catch((res) => {
+					console.log(res);
+					EventBus.$emit('ToastMessage', {type: 'error', content: 'Tải dữ liệu thất bại. Vui lòng liên hệ MISA.', duration: 5000});
+				});
+		},
+		/**
+		 * Bắt sự kiện double click vào từng dòng trên table
+		 * CreatedBy: NTDUNG (30/07/2021)
+		 * @param {event} event
+		 */
+		tableRowOnDbClick(event) {
+			var tableRowId = event.target.parentElement.getAttribute("employeeId");
+			// Phát gọi đến sự kiện click vào từng dòng trên bảng
+			EventBus.$emit("tableRowOnDbClick", tableRowId);
+		},
+		/**
+		 * Format lại dữ liệu trong bảng
+		 * CreatedBy: NTDUNG (28/07/2021)
+		 * @param {object} dataRow
+		 * @param {string} fieldName
+		 * @returns {string}
+		 */
+		formatDataTable(dataRow, fieldName) {	
+			// Nếu là ngày tháng thì format lại
+			if (fieldName.includes('Date')) {
+				if (dataRow[fieldName] != '' && dataRow[fieldName] != null) {
+					var date = new Date(dataRow[fieldName]);
 					var day = date.getDate();
-					day = day < 10 ? "0" + day : day;
+					day = day < 10 ? '0' + day : day;
 					var month = date.getMonth() + 1;
-					month = month < 10 ? "0" + month : month;
+					month = month < 10 ? '0' + month : month;
 					var year = date.getFullYear();
 					return `${day}/${month}/${year}`;
 				} else {
-					return "";
+					return '';
 				}
-			},
+			} else if (fieldName == 'Salary') {
+				if (dataRow['Salary'] !== null) {
+					return dataRow['Salary'].toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+				} else {
+					return '';
+				}
+			} else {
+				// Các trường hợp còn lại trả về giá trị của các trường khác
+				return dataRow[fieldName];
+			}
 		},
-	};
+		/**
+		 * Gán các class căn chỉnh chữ cho bảng
+		 * CreatedBy: NTDUNG (04/08/2021)
+		 * @param {number} classIdx
+		 */
+		classAlignTable(classIdx) {
+			switch (classIdx) {
+				case 0:
+					return "text-align-left";
+				case 1:
+					return "text-align-center";
+				case 2:
+					return "text-align-right";
+				default:
+					return "";
+			}
+		},
+	},
+};
 </script>
 <style lang=""></style>

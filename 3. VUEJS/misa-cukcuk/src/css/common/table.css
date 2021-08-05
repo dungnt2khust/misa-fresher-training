@@ -23,62 +23,8 @@
         text-align: left;
     }
         /* 2.1.1.2. TABLE EMPLOYEE HEADER */
-        th {
-            /* white-space: nowrap; */
-        } 
-        th:nth-child(1) {
-            width: 40px;
-            text-align: center;
-        }
-        tr td:nth-child(1) {
-            text-align: center;
-        }
-        td[fieldName="EmployeeCode"],
-        th[fieldName="EmployeeCode"] {
-            padding-left: 5px;
-            /* width: 100px; */
-        }
-
-        td[fieldName="GenderName"],
-        th[fieldName="GenderName"] {
-            width: 100px;
-        }
-
-        td[fieldName="DateOfBirth"],
-        th[fieldName="DateOfBirth"] {
-            width: 100px;
-        }
-        td[fieldName="PhoneNumber"],
-        th[fieldName="PhoneNumber"] {
-            width: 100px;
-        }
-        td[fieldName="PositionName"],
-        th[fieldName="PositionName"] {
-            width: 100px;
-        }
-        td[fieldName="DepartmentName"],
-        th[fieldName="DepartmentName"] {
-            width: 100px;
-        }
-
-        td[fieldName="WorkStatus"],
-        th[fieldName="WorkStatus"] {
-            text-align: right;
-            padding: 20px;
-        }
-        
-        td[fieldName="Salary"],
-        th[fieldName="Salary"] {
-            text-align: right;
-
-        }
-        td[fieldName="Email"],
-        th[fieldName="Email"] {
-            padding-right: 20px;
-        }
-        td[fieldName="DateOfBirth"],
-        th[fieldName="DateOfBirth"] {
-            text-align: center;
+        th, td {
+            padding: 0 10px;
         }
 
     /* 2.1.2. TABLE EMPLOYEE BODY */
