@@ -15,6 +15,7 @@
 			<tbody class="table-employee__body">
 				<tr
 					@dblclick="tableRowOnDbClick($event)"
+					@click="tableRowOnClick($event)"
 					v-for="(row, index) in tableData"
 					:employeeId="row.EmployeeId"
 					:key="index"
@@ -56,6 +57,7 @@ export default {
 	data() {
 		return {
 			tableData: [],
+			employeeDeleteData: new Set()
 		};
 	},
 	created() {
@@ -89,14 +91,26 @@ export default {
 				});
 		},
 		/**
-		 * Bắt sự kiện double click vào từng dòng trên table
+		 * Bắt sự kiện click vào từng dòng trên table
 		 * CreatedBy: NTDUNG (30/07/2021)
 		 * @param {event} event
 		 */
 		tableRowOnDbClick(event) {
-			var tableRowId = event.target.parentElement.getAttribute("employeeId");
-			// Phát gọi đến sự kiện click vào từng dòng trên bảng
-			EventBus.$emit("tableRowOnDbClick", tableRowId);
+			// Bỏ qua trường hợp click vào checkbox
+			if (event.target.tagName != 'INPUT') {
+				var tableRowId = event.target.parentElement.getAttribute("employeeId");
+				// Phát gọi đến sự kiện click vào từng dòng trên bảng
+				EventBus.$emit("tableRowOnDbClick", tableRowId);
+			}
+		},
+		/**
+		 * Bắt sự kiện double click vào từng dòng trên table
+		 * CreatedBy: NTDUNG (05/08/2021)
+		 * @param {event} event
+		 */
+		tableRowOnClick(event) {
+			console.log('table row on click');
+			console.log(event);
 		},
 		/**
 		 * Format lại dữ liệu trong bảng

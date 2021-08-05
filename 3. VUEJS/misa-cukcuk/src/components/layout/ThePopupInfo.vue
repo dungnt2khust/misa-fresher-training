@@ -183,8 +183,8 @@
 									:valueTranfer="employeeData['PersonalTaxCode']"
 								/>
 							</div>
-							<!-- BASE SALARY -->
-							<div class="popup-infor__item" style="position: relative;">	
+							<!-- SALARY -->
+							<div class="popup-infor__item" style="position: relative">	
 								<BaseInput
 									inputLabel="Mức lương cơ bản"
 									inputType="text"
@@ -193,7 +193,7 @@
 									inputField="Salary"
 								/>	
 							</div>
-							<!-- JOINING DATE -->
+							<!-- JOIN DATE -->
 							<div class="popup-infor__item">
 								<BaseInput
 									:required="true"
@@ -203,7 +203,7 @@
 									:valueTranfer="employeeData['JoinDate']"
 								/>
 							</div>
-							<!-- WORKING STATUS -->
+							<!-- WORK STATUS -->
 							<div class="popup-infor__item">
 								<span class="popup-infor__label"> Tình trạng công việc </span>
 								<BaseDropdownFix 
@@ -360,8 +360,10 @@
 				});
 				EventBus.$on('cancelBtnOnClick', data => {
 					if (data == 'CANCELFORM') {
-						var emptyObject = {};
-						this.employeeData = emptyObject;
+						this.employeeData = {};
+						this.$el.querySelectorAll('input').forEach((input) => {
+							input.classList.remove('invalid-input');
+						});
 					}
 				});
 			},
@@ -470,7 +472,6 @@
 			 * @param {string} inputField
 			 */
 			changeInputValue(newValue, inputField) {
-				console.log(inputField, newValue);
 				this.$set(this.employeeData, inputField, newValue);
 			}
 		},

@@ -80,9 +80,10 @@ export default {
 				inputElement = inputParam.target;
 				if (
 					inputParam.relatedTarget &&
-					inputParam.relatedTarget.tagName == "BUTTON"
+					inputParam.relatedTarget.tagName == "BUTTON" || 
+					inputParam.relatedTarget.classList.contains('popup-header__cancel')
 				)
-					return;
+					return true;
 			} else if (type == "input") {
 				inputElement = inputParam;
 			}
@@ -233,9 +234,9 @@ export default {
 		 * @param {number, string} value
 		 */
 		formatSalary(value) {
-			return parseInt(value)
+			return value ? parseInt(value)
 				.toFixed(0)
-				.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+				.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") : '';
 		},
 	},
 	computed: {
