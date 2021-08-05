@@ -13,7 +13,7 @@
             :value="formatInputValue"
             @blur="validateInput($event, 'event')"
             @focus="inputOnFocus($event)"
-            @keydown="inputOnKeydown($event)"
+            @keyup="inputOnkeyup($event)"
         />
         <span class="input-unit" v-if="haveUnit">(VNĐ)</span>
     </div>
@@ -70,17 +70,20 @@ export default {
 		/**
 		 * Validate các dữ liệu đã nhập ở phía input
 		 * CreatedBy: NTDUNG (02/08/2021)
-		 * @param {event, element} inputParam bắt trong 2 trường hợp input on blur 
+		 * @param {event, element} inputParam bắt trong 2 trường hợp input on blur
 		 * và bấm nút ở form nên tham số truyền vào có 2 kiểu
 		 * @param {string} type
 		 */
 		validateInput(inputParam, type) {
 			var inputElement;
-			if (type == 'event') {
+			if (type == "event") {
 				inputElement = inputParam.target;
-				if (inputParam.relatedTarget && inputParam.relatedTarget.tagName == 'BUTTON')
+				if (
+					inputParam.relatedTarget &&
+					inputParam.relatedTarget.tagName == "BUTTON"
+				)
 					return;
-			} else if (type == 'input') {
+			} else if (type == "input") {
 				inputElement = inputParam;
 			}
 
@@ -90,11 +93,14 @@ export default {
 				this.validateSpecialField(this.inputField, inputElement)
 			) {
 				// Khi đã validate đủ thì cho phép thay đổi giá trị input (thay đổi thông tin phía form)
-				if (this.inputType == 'text') 
+				if (this.inputType == "text")
 					this.changeInputValue(inputElement.value, this.inputField);
-				else if (this.inputType == 'date')
-					this.changeInputValue(inputElement.value + 'T00:00:00', this.inputField);
-			}	
+				else if (this.inputType == "date")
+					this.changeInputValue(
+						inputElement.value + "T00:00:00",
+						this.inputField
+					);
+			}
 		},
 		/**
 		 * Validate các trường input bắt buộc
@@ -129,7 +135,7 @@ export default {
 					case "PhoneNumber":
 						this.toastMessage("error", "Bạn phải nhập Số điện thoại", 5000);
 						break;
-					default: 
+					default:
 						this.toastMessage("error", `Bạn phải nhập ${inputField}`, 5000);
 				}
 			}
@@ -145,28 +151,25 @@ export default {
 			var valid = true;
 			switch (inputField) {
 				case "Email":
-					if (this.regEmail.test(inputElement.value)) {
-						this.changeInputValue(inputElement.value, inputField);
-					} else {
+					if (!this.regEmail.test(inputElement.value)) {
 						inputElement.classList.add("invalid-input");
 						this.toastMessage("error", "Email không hợp lệ", 5000);
 						valid = false;
 					}
 					break;
 				case "PhoneNumber":
-					if (this.regPhoneNumber.test(inputElement.value)) {
-						this.changeInputValue(inputElement.value, inputField);
-					} else {
+					if (!this.regPhoneNumber.test(inputElement.value)) {
 						this.toastMessage("error", "Số điện thoại không hợp lệ", 5000);
-						inputElement.classList.add("invalid-input");	
+						inputElement.classList.add("invalid-input");
 						valid = false;
 					}
 					break;
 				// Những trường hợp trả về số
 				case "Salary":
+					inputElement.value = parseInt(inputElement.value.replaceAll('.', ''));
+					break;
 				case "PersonalTaxCode":
 					inputElement.value = parseInt(inputElement.value);
-					this.changeInputValue(inputElement.value, inputField);
 					break;
 			}
 			return valid;
@@ -184,24 +187,16 @@ export default {
 		 * CreatedBy: NTDUNG (03/08/2021)
 		 * @param {event} event
 		 */
-		inputOnKeydown(event) {
+		inputOnkeyup(event) {
 			if (this.inputField == "Salary") {
 				let key = event.key.charCodeAt();
-				if (
-					!(
-						(key >= 48 && key <= 57) ||
-						event.key == "Backspace" ||
-						event.key == "ArrowRight" ||
-						event.key == "ArrowLeft"
-					)
-				) {
+				// Khi nút nhập vào là số (0-9), phím backspace và 2 phím mũi tên trái phải
+				if (!((key >= 48 && key <= 57) || key == 66 || key == 65)) {
 					event.preventDefault();
 				} else {
-					if (event.target.value) {
-						let valueTranfer = event.target.value.replaceAll(".", "");
-						event.target.value = parseInt(valueTranfer)
-							.toFixed(0)
-							.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+					if (event.target.value != '') {	
+						let inputValue = event.target.value.replaceAll('.', '');
+						event.target.value = this.formatSalary(inputValue);
 					}
 				}
 			}
@@ -231,6 +226,16 @@ export default {
 				NewValue: newValue,
 				InputField: inputField,
 			});
+		},
+		/**
+		 * Format salary
+		 * CreatedBy: NTDUNG (05/08/2021)
+		 * @param {number, string} value
+		 */
+		formatSalary(value) {
+			return parseInt(value)
+				.toFixed(0)
+				.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 		},
 	},
 	computed: {
@@ -266,6 +271,9 @@ export default {
 		 */
 		formatInputValue() {
 			if (this.inputType == "text") {
+				if (this.inputField == "Salary") {
+					return this.formatSalary(this.valueTranfer);
+				}
 				return this.valueTranfer;
 			} else if (this.inputType == "date") {
 				let date = new Date(this.valueTranfer);
