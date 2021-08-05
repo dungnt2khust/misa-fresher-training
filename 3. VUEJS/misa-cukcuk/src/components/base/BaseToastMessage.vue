@@ -33,7 +33,7 @@ export default {
 	created() {
 		/**
 		 * Bật lắng nghe sự kiện Toast Message từ các component khác
-		 * Author: NTDUNG (03/08/2021)
+		 * CreatedBy: NTDUNG (03/08/2021)
 		 * @param {object} data - Chứa thông tin chi tiết của một Toast Message (type, content, duration)
 		 */
 		EventBus.$on('ToastMessage', (data) => {
@@ -43,7 +43,7 @@ export default {
 	methods: {
 		/**
 		 * Thêm một toast message mới
-		 * Author: NTDUNG (03/08/2021)
+		 * CreatedBy: NTDUNG (03/08/2021)
 		 * @param {object} data
 		 */
 		addToastMessage(data) {
@@ -56,7 +56,7 @@ export default {
 		},
 		/**
 		 * Với từng thông báo khác nhau thì các icon sẽ khác nhau
-		 * Author: NTDUNG (03/08/2021)
+		 * CreatedBy: NTDUNG (03/08/2021)
 		 * @param {string} item
 		 */
 		bindIcon(item) {
@@ -84,7 +84,7 @@ export default {
 		},
 		/**
 		 * Với những thông báo khác nhau thì màu hiển thị cũng khác nhau (css qua class)
-		 * Author: NTDUNG (03/08/2021)
+		 * CreatedBy: NTDUNG (03/08/2021)
 		 * @param {string} item
 		 */
 		bindClass(item) {
@@ -111,7 +111,7 @@ export default {
 		},
 		/**
 		 * Xoá toast message
-		 * Author: NTDUNG (03/08/2021)
+		 * CreatedBy: NTDUNG (03/08/2021)
 		 * @param {number} id - id của toast message
 		 * @param {number} duration - khoảng thời gian chờ cho đến lúc xoá
 		 */

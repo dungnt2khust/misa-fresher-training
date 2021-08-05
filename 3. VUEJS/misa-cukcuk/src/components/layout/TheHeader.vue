@@ -8,8 +8,8 @@
         <BaseDropdownFix
           :id="'dropdown-restaurant'"
           :class="{'dropdown--restaurant': true}"
-          :dropdownData="dropdownData"
-          :currDefault="0"
+          :dropdownData="dropdownDataRestaurant"
+          :indexTranfer="0"
           />           
         <div class="account">
           <div class="account__notify">
@@ -29,7 +29,7 @@ export default {
     name: 'TheHeader',
     data() {
       return {
-        dropdownData: [
+        dropdownDataRestaurant: [
           'Nhà hàng Biển Đông',
           'Nhà hàng Biển Tây',
           'Nhà hàng Biển Nam',

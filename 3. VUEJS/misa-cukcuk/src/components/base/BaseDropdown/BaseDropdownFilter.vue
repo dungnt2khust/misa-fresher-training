@@ -34,21 +34,21 @@ export default {
     methods: {
         /**
          * Bật tắt dropdown khi click vào dropdown
-         * Author: NTDUNG (28/07/2021)
+         * CreatedBy: NTDUNG (28/07/2021)
          */
         toggleDropdown() {
             this.dropdownShow = !this.dropdownShow;
         },
         /**
          * Tắt dropdown khi blur dropdown 
-         * Author: NTDUNG (28/07/2021)
+         * CreatedBy: NTDUNG (28/07/2021)
          */
         hideDropdown() {
             this.dropdownShow = false;
         },
         /**
          * Hàm lấy dữ liệu API và gán vào mảng dữ liệu
-         * Author: NTDUNG (28/07/2021)
+         * CreatedBy: NTDUNG (28/07/2021)
          */
         getData() {
             axios.get(this.APIurl)
@@ -61,7 +61,7 @@ export default {
         },
         /**
          * Khi click vào một option thì đặt lại giá trị hiện tại 
-         * Author: NTDUNG (28/07/2021)
+         * CreatedBy: NTDUNG (28/07/2021)
          */
         activeItem(currIdx) {
             this.currIdx = currIdx;
@@ -70,7 +70,7 @@ export default {
     computed: {
         /**
          * Nếu trạng thái dropdown là true thì lấy dữ liệu và đổ vào rồi hiện lên, còn false thì ẩn đi
-         * Author: NTDUNG (28/07/2021)
+         * CreatedBy: NTDUNG (28/07/2021)
          * @returns {string} trả về thuộc tính của display
          */
         dropdownState() {
@@ -83,7 +83,7 @@ export default {
         },
         /**
          * Nếu chỉ số hiện tại bằng -1 thì trả về giá trị mặc định, lớn hơn thì trả về phần tử trong mảng 
-         * Author: NTDUNG (28/07/2021)
+         * CreatedBy: NTDUNG (28/07/2021)
          * @returns {string} trả về chuỗi để đưa lên dropdown
          */
         dropdownValue() {

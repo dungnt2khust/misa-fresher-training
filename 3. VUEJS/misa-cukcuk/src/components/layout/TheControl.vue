@@ -73,14 +73,14 @@
 		methods: {
 			/**
 			 * Gọi sự kiện reload dữ liệu trong bảng
-			 * Author: NTDUNG (31/07/2021)
+			 * CreatedBy: NTDUNG (31/07/2021)
 			 */
 			reloadTableData() {
 				EventBus.$emit('reloadTableData');
 			},
 			/**
 			 * Mở form thông tin chi tiết để nhập dữ liệu tạo mới
-			 * Author: NTDUNG (31/07/2021)
+			 * CreatedBy: NTDUNG (31/07/2021)
 			 */
 			addEmployee() {
 				EventBus.$emit('addEmployee');

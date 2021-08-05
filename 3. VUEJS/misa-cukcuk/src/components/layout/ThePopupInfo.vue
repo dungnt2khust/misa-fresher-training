@@ -66,80 +66,82 @@
 							<!-- EMPLOYEE CODE -->
 							<div class="popup-infor__item">
 								<BaseInput
-									inputName="Mã nhân viên"
+									inputLabel="Mã nhân viên"
 									:required="true"
-									:inputValue="employeeData['EmployeeCode']"
+									:valueTranfer="employeeData['EmployeeCode']"
 									inputField="EmployeeCode"
 								/>
 							</div>
 							<!-- FULL NAME -->
 							<div class="popup-infor__item">
 								<BaseInput
-									inputName="Họ và tên"
+									inputLabel="Họ và tên"
 									:required="true"
-									:inputValue="employeeData['FullName']"
+									:valueTranfer="employeeData['FullName']"
 									inputField="FullName"
 								/>
 							</div>
 							<!-- DOB -->
 							<div class="popup-infor__item">
 								<BaseInput
-									inputName="Ngày sinh"
+									inputLabel="Ngày sinh"
 									inputType="date"
-									:inputValue="employeeData['DateOfBirth']"
+									:valueTranfer="employeeData['DateOfBirth']"
 									inputField="DateOfBirth"
 								/>
 							</div>
 							<!-- GENDER -->
-							<div class="popup-infor__item">
-								<BaseCombobox
-									:comboboxData="comboboxDataGender"
-									:comboboxName="comboboxNameGender"
-									:placeHolder="comboboxPlaceHolderGender"
+							<div class="popup-infor__item">	
+								<span class="popup-infor__label"> Giới tính </span>
+								<BaseDropdownFix
+									:dropdownData="genderData"
+									dropdownField="Gender"
+									defaultValue="Chọn giới tính"
+									:valueTranfer="employeeData['Gender']"
 								/>
 							</div>
 							<!-- ID CARD NUMBER -->
 							<div class="popup-infor__item">
 								<BaseInput
-									inputName=" Số CMTND/ Căn cước"
+									inputLabel=" Số CMTND/ Căn cước"
 									:required="true"
-									:inputValue="employeeData['IdentityNumber']"
+									:valueTranfer="employeeData['IdentityNumber']"
 									inputField="IdentityNumber"
 								/>
 							</div>
 							<!-- RELEASE DATE -->
 							<div class="popup-infor__item">
 								<BaseInput
-									inputName="Ngày cấp"
+									inputLabel="Ngày cấp"
 									inputType="date"
 									inputField="IdentityDate"
-									:inputValue="employeeData['IdentityDate']"
+									:valueTranfer="employeeData['IdentityDate']"
 								/>
 							</div>
 							<!-- RELEASE PLACE -->
 							<div class="popup-infor__item noi-cap">
 								<BaseInput
-									inputName="Nơi cấp"
+									inputLabel="Nơi cấp"
 									:alone="true"
 									inputField="IdentityPlace"
-									:inputValue="employeeData['IdentityPlace']"
+									:valueTranfer="employeeData['IdentityPlace']"
 								/>
 							</div>
 							<!-- EMAIL -->
 							<div class="popup-infor__item email">
 								<BaseInput
-									inputName="Email"
+									inputLabel="Email"
 									:required="true"
-									:inputValue="employeeData['Email']"
+									:valueTranfer="employeeData['Email']"
 									inputField="Email"
 								/>
 							</div>
 							<!-- PHONE -->
 							<div class="popup-infor__item">
 								<BaseInput
-									inputName="Số điện thoại"
+									inputLabel="Số điện thoại"
 									:required="true"
-									:inputValue="employeeData['PhoneNumber']"
+									:valueTranfer="employeeData['PhoneNumber']"
 									inputField="PhoneNumber"
 								/>
 							</div>
@@ -155,11 +157,10 @@
 								<BaseDropdown
 									:id="'dropdown-position'"
 									:class="{ 'dropdown--position': true }"
-									:tabindex="10"
 									:APIurl="APIurl__POSITION"
-									:key="1"
-									:dropdownDefaultVal="dropdownDefaultVal__POSITION"
-									:dropdownName="dropdownName__POSITION"
+									:valueTranfer="employeeData['PositionId']"
+									defaultValue="Chọn vị trí"
+									dropdownField="Position"
 								/>
 							</div>
 							<!-- DEPARTMENT -->
@@ -168,27 +169,26 @@
 								<BaseDropdown
 									:id="'dropdown-department'"
 									:class="{ 'dropdown--department': true }"
-									:tabindex="11"
 									:APIurl="APIurl__DEPARTMENT"
-									:key="2"
-									:dropdownDefaultVal="dropdownDefaultVal__DEPARTMENT"
-									:dropdownName="dropdownName__DEPARTMENT"
+									:valueTranfer="employeeData['DepartmentId']"
+									defaultValue="Chọn phòng ban"
+									dropdownField="Department"
 								/>
 							</div>
 							<!-- TAX CODE -->
 							<div class="popup-infor__item">
 								<BaseInput
-									inputName="Mã số thuế cá nhân"
+									inputLabel="Mã số thuế cá nhân"
 									inputField="PersonalTaxCode"
-									:inputValue="employeeData['PersonalTaxCode']"
+									:valueTranfer="employeeData['PersonalTaxCode']"
 								/>
 							</div>
 							<!-- BASE SALARY -->
 							<div class="popup-infor__item" style="position: relative;">	
 								<BaseInput
-									inputName="Mức lương cơ bản"
+									inputLabel="Mức lương cơ bản"
 									inputType="text"
-									:inputValue="employeeData['Salary']"
+									:valueTranfer="employeeData['Salary']"
 									:haveUnit="true"
 									inputField="Salary"
 								/>	
@@ -196,18 +196,20 @@
 							<!-- JOINING DATE -->
 							<div class="popup-infor__item">
 								<BaseInput
-									inputName="Ngày gia nhập công ty"
+									inputLabel="Ngày gia nhập công ty"
 									inputType="date"
 									inputField="JoinDate"
-									:inputValue="employeeData['JoinDate']"
+									:valueTranfer="employeeData['JoinDate']"
 								/>
 							</div>
 							<!-- WORKING STATUS -->
 							<div class="popup-infor__item">
 								<span class="popup-infor__label"> Tình trạng công việc </span>
 								<BaseDropdownFix 
-									:dropdownData="workStatus" 
-									:dropdownVal="employeeData['WorkStatus']"
+									:dropdownData="workStatusData" 
+									:valueTranfer="employeeData['WorkStatus']"
+									defaultValue="Chọn trạng thái"
+									dropdownField="WorkStatus"
 									/>	
 							</div>
 						</div>
@@ -233,7 +235,6 @@
 <script>
 	import BaseDropdown from "../base/BaseDropdown/BaseDropdown.vue";
 	import BaseDropdownFix from "../base/BaseDropdown/BaseDropdownFix.vue";
-	import BaseCombobox from "../base/BaseCombobox.vue";
 	import BaseInput from "../base/BaseInput.vue";
 
 	import { EventBus } from "../../main";
@@ -243,23 +244,25 @@
 		name: "ThePopupInfo",
 		data() {
 			return {
-				// DEPARTMENT
+				// API url
 				APIurl__DEPARTMENT: "http://cukcuk.manhnv.net/api/Department",
-				dropdownDefaultVal__DEPARTMENT: "Chọn phòng ban",
-				dropdownName__DEPARTMENT: "Department",
-
-				// POSITION
 				APIurl__POSITION: "http://cukcuk.manhnv.net/v1/Positions",
-				dropdownDefaultVal__POSITION: "Chọn vị trí",
-				dropdownName__POSITION: "Position",
 
 				//WORKSTATUS
-				workStatus: [0, 1, 2, 3, 4],
+				workStatusData: [
+					{WorkStatusId: 0, WorkStatusName: 0},
+					{WorkStatusId: 1, WorkStatusName: 1},
+					{WorkStatusId: 2, WorkStatusName: 2},
+					{WorkStatusId: 3, WorkStatusName: 3},
+					{WorkStatusId: 4, WorkStatusName: 4},
+				],
 
 				// GENDER
-				comboboxDataGender: ["Nam", "Nữ", "Không xác định"],
-				comboboxNameGender: "Giới tính",
-				comboboxPlaceHolderGender: "Chọn giới tính",
+				genderData: [
+					{GenderId: 0, GenderName: 'Nữ'},
+					{GenderId: 1, GenderName: 'Nam'},		
+					{GenderId: 2, GenderName: 'Không xác định'},
+				],
 
 				// COMMON VARIABLES
 				popupState: false,
@@ -272,10 +275,11 @@
 		created() {
 			/**
 			 * Lắng nghe sự kiện click vào dòng ở table
-			 * Author: NTDUNG (30/07/2021)
+			 * CreatedBy: NTDUNG (30/07/2021)
 			 * @param {string} rowId
 			 */
 			EventBus.$on("tableRowOnDbClick", (rowId) => {
+				EventBus.$emit('getDropdownData');
 				this.popupState = true;
 				this.employeeId = rowId;
 				this.getEmployeeData();
@@ -283,18 +287,18 @@
 			});
 			/**
 			 * Lắng nghe sự kiện click vào nút tạo mới
-			 * Author: NTDUNG (31/07/2021)
+			 * CreatedBy: NTDUNG (31/07/2021)
 			 */
 			EventBus.$on("addEmployee", () => {
+				EventBus.$emit('getDropdownData');
 				this.popupState = true;
-				var emptyObject = {};
-				this.employeeData = emptyObject;
+				this.employeeData = {};
 				this.method = "POST";
 				this.getNewEmployeeId();
 			});
 			/**
 			 * Lắng nghe sự kiện thay đổi input
-			 * Author: NTDUNG (04/08/2021)
+			 * CreatedBy: NTDUNG (04/08/2021)
 			 */
 			EventBus.$on("changeInputValue", (data) => {
 				this.changeInputValue(data['NewValue'], data['InputField']);
@@ -303,7 +307,7 @@
 		methods: {
 			/**
 			 * Lấy dữ liệu một employee từ API
-			 * Author: NTDUNG (30/07/2021)
+			 * CreatedBy: NTDUNG (30/07/2021)
 			 */
 			getEmployeeData() {
 				axios
@@ -317,7 +321,7 @@
 			},
 			/**
 			 * Lấy mã nhân viên mới
-			 * Author: NTDUNG (31/07/2021)
+			 * CreatedBy: NTDUNG (31/07/2021)
 			 */
 			getNewEmployeeId() {
 				axios
@@ -337,7 +341,7 @@
 			},
 			/**
 			 * Ẩn popup
-			 * Author: NTDUNG (30/07/2021)
+			 * CreatedBy: NTDUNG (30/07/2021)
 			 */
 			cancelPopup() {
 				this.popupState = false;
@@ -362,7 +366,7 @@
 			},
 			/**
 			 * Xử lý sự kiện nhấn nút Lưu (Chỉnh sửa hoặc tạo mới)
-			 * Author: NTDUNG (31/07/2021)
+			 * CreatedBy: NTDUNG (31/07/2021)
 			 */
 			savePopup() {
 				// Gọi đến sự kiện validate input để validate từng trường input
@@ -379,7 +383,6 @@
 				if (checkForm) {
 					// Ẩn popup đi
 					this.popupState = false;
-					console.log(this.getNewDateJSON);
 					if (this.method == "POST") {
 						// Thêm ngày tạo mới, người tạo mới
 						this.$set(this.employeeData, 'CreatedDate', this.getNewDateJSON);
@@ -420,7 +423,7 @@
 			},
 			/**
 			 * Xoá thông tin nhân viên
-			 * Author: NTDUNG (02/08/2021)
+			 * CreatedBy: NTDUNG (02/08/2021)
 			 */
 			deleteEmployee() {
 				this.popupState = false;
@@ -454,25 +457,26 @@
 			},
 			/**
 			 * Phát sự kiện load lại dữ liệu bảng table
-			 * Author: NTDUNG (31/07/2021)
+			 * CreatedBy: NTDUNG (31/07/2021)
 			 */
 			reloadTableData() {
 				EventBus.$emit("reloadTableData");
 			},
 			/**
 			 * Bắt sự kiện thay đổi input để gán lại vào employeeData
-			 * Author: NTDUNG (02/08/2021)
+			 * CreatedBy: NTDUNG (02/08/2021)
 			 * @param {string} newValue
 			 * @param {string} inputField
 			 */
 			changeInputValue(newValue, inputField) {
+				console.log(inputField, newValue);
 				this.$set(this.employeeData, inputField, newValue);
 			}
 		},
 		computed: {
 			/**
 			 * Format các dữ liệu trước khi binding lên form thông tin
-			 * Author: NTDUNG (30/07/2021)
+			 * CreatedBy: NTDUNG (30/07/2021)
 			 * @param {object}
 			 */
 			formatEmployeeData() {
@@ -493,7 +497,7 @@
 			},
 			/**
 			 * Tạo một thông tin date mới theo kiểu JSON
-			 * Author: NTDUNG (03/08/2021)
+			 * CreatedBy: NTDUNG (03/08/2021)
 			 */
 			getNewDateJSON() {
 				var date = new Date();
@@ -521,7 +525,6 @@
 			BaseDropdown,
 			BaseDropdownFix,
 			BaseInput,
-			BaseCombobox,
 		},
 	};
 </script>

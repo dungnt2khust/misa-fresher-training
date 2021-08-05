@@ -1,94 +1,124 @@
 <template lang="">
-    <label @blur="hideDropdown()" @click="toggleDropdown()" class="dropdown" for="dropdown-input" :class="{'focus-dropdown': dropdownShow}">
+    <label @blur="hideDropdown()" @click="toggleDropdown()" class="dropdown" for="dropdown-input" :class="{'focus-dropdown': dropdownState}">
         <div class="dropdown-header-wrapper"> 
             <span class="dropdown-value">
-                {{dropdownValue()}}
+                {{ dropdownValue }}
             </span>
             <i class="fas fa-chevron-down icon-down"></i>
         </div>
-        <ul class="dropdown-list" :style="{display: dropdownState}">
+        <ul class="dropdown-list" :style="{display: dropdownState ? 'block' : 'none'}">
             <li @click="activeItem(index)" v-for="(item, index) in dropdownData" :class="{'active': (currIdx == index)}" :key="index" class="dropdown-item" >
-                {{item}}
+                {{ typeof item == 'object' ? item[dropdownField + 'Name'] : item }}
             </li>
         </ul>
     </label> 
 </template>
 <script>
+import { EventBus } from "../../../main";
 export default {
-    name: 'BaseDropdownFix',
-    data() {
-        return {
-            currIdx: -1,
-            dropdownShow: false
-        }
-    },
-    props: {
-        dropdownData: Array,
-        dropdownVal: {
-            type: [String, Number],
-            default: '' 
-        },
-        currDefault: {
-            type: Number,
-            default: -1
-        }
-    },
-    methods: {
-        /**
-         * Bật tắt dropdown khi click vào dropdown
-         * Author: NTDUNG (28/07/2021)
-         */
-        toggleDropdown() {
-            this.dropdownShow = !this.dropdownShow;
-        },
-        /**
-         * Tắt dropdown khi blur dropdown 
-         * Author: NTDUNG (28/07/2021)
-         */
-        hideDropdown() {
-            this.dropdownShow = false;
-        },
-        /**
-         * Khi click vào một option thì đặt lại giá trị hiện tại 
-         * Author: NTDUNG (28/07/2021)
-         */
-        activeItem(index) {
-            this.currIdx = index;
-            this.$emit('changeInputValue', this.dropdownData[index]);
-        },
-        /**
-         * Trả về phần tử trong mảng 
-         * Author: NTDUNG (28/07/2021)
-         * @returns {string} trả về chuỗi để đưa lên dropdown
-         */
-        dropdownValue() {
-            // Nếu có giá trị truyền vào dropdown và giá trị hiện tại chưa có
-            if (this.dropdownVal != '' && this.currIdx == -1) {
-                var foundValue = this.dropdownData.indexOf(this.dropdownVal);
-                this.currIdx = foundValue;
-                return this.dropdownVal;
-            // Nếu có giá trị index mặc định mà giá trị hiện tại chưa có
-            } else if (this.currDefault != -1 && this.currIdx == -1) {
-                this.currIdx = this.currDefault;
-            // Đã có giá trị hiện tại
-            } else if (this.currIdx != -1){
-                return this.dropdownData[this.currIdx];
-            } else {
-                return '';
-            }
-        }
-    },
-    computed: {
-        /**
-         * Nếu trạng thái dropdown là true thì hiện lên, còn false thì ẩn đi
-         * Author: NTDUNG (28/07/2021)
-         * @returns {string} trả về thuộc tính của display
-         */
-        dropdownState() {
-            return this.dropdownShow == true ? 'block' : 'none';
-        } 
-    }
-}
+	name: "BaseDropdownFix",
+	data() {
+		return {
+			currIdx: -1,
+			dropdownState: false,
+		};
+	},
+	props: {
+		dropdownData: Array,
+		valueTranfer: {
+			type: [String, Number],
+			default: "",
+		},
+		dropdownField: {
+			type: String,
+			default: "",
+		},
+		indexTranfer: {
+			type: Number,
+			default: -1
+		},
+		defaultValue: {
+			type: String,
+			default: "",
+		}
+	},
+	methods: {
+		/**
+		 * Bật tắt dropdown khi click vào dropdown
+		 * CreatedBy: NTDUNG (28/07/2021)
+		 */
+		toggleDropdown() {
+			this.dropdownState = !this.dropdownState;
+		},
+		/**
+		 * Tắt dropdown khi blur dropdown
+		 * CreatedBy: NTDUNG (28/07/2021)
+		 */
+		hideDropdown() {
+			this.dropdownState = false;
+		},
+		/**
+		 * Khi click vào một option thì đặt lại giá trị hiện tại
+		 * CreatedBy: NTDUNG (28/07/2021)
+		 */
+		activeItem(index) {
+			this.currIdx = index;
+			if (index != -1 && typeof this.dropdownData[0] == 'object') {
+				// Nếu là gender thì sẽ truyền cả GenderId
+				EventBus.$emit("changeInputValue", {
+					NewValue: this.dropdownData[index][this.dropdownField + 'Id'],
+					InputField: this.dropdownField,
+				});
+				if (this.dropdownField == 'Gender')
+					// Tất cả các trường hợp đều truyền Name
+					EventBus.$emit("changeInputValue", {
+						NewValue: this.dropdownData[index][this.dropdownField + "Name"],
+						InputField: this.dropdownField + "Name",
+					});
+			}	
+		}	
+	},
+	watch: {
+		/**
+		 * Theo dõi biến valueTranfer khi thay đổi thì reset index
+		 * CreatedBy: NTDUNG (05/08/2021)
+		 */
+		valueTranfer: function() {
+			this.currIdx = -1;
+		}
+	},
+	computed: {
+		/**
+		 * Tính giá trị hiện tại của Dropdown
+		 * CreatedBy: NTDUNG (28/07/2021)
+		 * @returns {string} trả về chuỗi để đưa lên dropdown
+		 */
+		dropdownValue() {
+			if (typeof this.dropdownData[0] == 'object') {
+				if (this.currIdx == -1) {
+					if (this.valueTranfer !== '' && this.valueTranfer !== null) {
+						var index = this.dropdownData.findIndex((item) => {
+							return item[this.dropdownField + 'Id'] == this.valueTranfer;
+						});
+						this.activeItem(index);
+						return index == -1 ? this.defaultValue : this.dropdownData[index][this.dropdownField + 'Name'];
+					} else {
+						return this.defaultValue;
+					}
+				} else {
+					return this.dropdownData[this.currIdx][this.dropdownField + "Name"];
+				}
+			} else {
+				if (this.indexTranfer != -1 && this.currIdx == -1) {
+					this.activeItem(this.indexTranfer);
+					return this.dropdownData[this.indexTranfer];
+				} else {
+					return this.dropdownData[this.currIdx];
+				}
+			}
+		},
+	},
+};
 </script>
 <style>
     @import url('../../../css/common/dropdown.css'); 

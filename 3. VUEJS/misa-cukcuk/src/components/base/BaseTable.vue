@@ -71,8 +71,8 @@ export default {
 	methods: {
 		/**
 		 * Lấy dữ liệu vào gán vào mảng lưu trữ
-		 * Author: NTDUNG (31/07/2021)
-		//  * @param {boolean} toast nếu true thì toast, false thì không 
+		 * CreatedBy: NTDUNG (31/07/2021)
+		 * @param {boolean} toast nếu true thì toast, false thì không 
 		 */
 		getTableData() {
 			EventBus.$emit('ToastMessage', {type: 'warn', content: 'Đang tải dữ liệu. Vui lòng chờ', duration: 5000});
@@ -90,7 +90,7 @@ export default {
 		},
 		/**
 		 * Bắt sự kiện double click vào từng dòng trên table
-		 * Author: NTDUNG (30/07/2021)
+		 * CreatedBy: NTDUNG (30/07/2021)
 		 * @param {event} event
 		 */
 		tableRowOnDbClick(event) {
@@ -100,32 +100,39 @@ export default {
 		},
 		/**
 		 * Format lại dữ liệu trong bảng
-		 * Author: NTDUNG (28/07/2021)
+		 * CreatedBy: NTDUNG (28/07/2021)
 		 * @param {object} dataRow
 		 * @param {string} fieldName
 		 * @returns {string}
 		 */
-		formatDataTable(dataRow, fieldName) {
+		formatDataTable(dataRow, fieldName) {	
 			// Nếu là ngày tháng thì format lại
-			if (fieldName.includes("Date")) {
-				if (dataRow[fieldName] != "" && dataRow[fieldName] != null) {
+			if (fieldName.includes('Date')) {
+				if (dataRow[fieldName] != '' && dataRow[fieldName] != null) {
 					var date = new Date(dataRow[fieldName]);
 					var day = date.getDate();
-					day = day < 10 ? "0" + day : day;
+					day = day < 10 ? '0' + day : day;
 					var month = date.getMonth() + 1;
-					month = month < 10 ? "0" + month : month;
+					month = month < 10 ? '0' + month : month;
 					var year = date.getFullYear();
 					return `${day}/${month}/${year}`;
 				} else {
-					return "";
+					return '';
 				}
+			} else if (fieldName == 'Salary') {
+				if (dataRow['Salary'] !== null) {
+					return dataRow['Salary'].toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+				} else {
+					return '';
+				}
+			} else {
+				// Các trường hợp còn lại trả về giá trị của các trường khác
+				return dataRow[fieldName];
 			}
-			// Các trường hợp còn lại trả về giá trị của các trường khác
-			return dataRow[fieldName];
 		},
 		/**
 		 * Gán các class căn chỉnh chữ cho bảng
-		 * Author: NTDUNG (04/08/2021)
+		 * CreatedBy: NTDUNG (04/08/2021)
 		 * @param {number} classIdx
 		 */
 		classAlignTable(classIdx) {

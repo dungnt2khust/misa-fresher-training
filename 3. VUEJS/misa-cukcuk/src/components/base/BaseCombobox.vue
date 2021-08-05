@@ -71,7 +71,7 @@
 		methods: {
             /**
              * Bắt sự kiện click vào từng option của combobox
-             * Author: NTDUNG (02/08/2021)
+             * CreatedBy: NTDUNG (02/08/2021)
              * @param {number} index
              */
 			itemOnClick(index) {
@@ -81,7 +81,7 @@
 			},
             /**
              * Bắt sự kiện click vào nút cancel trong ô input
-             * Author: NTDUNG (02/08/2021)
+             * CreatedBy: NTDUNG (02/08/2021)
              * @param {event} event
              */
             cancelInputOnClick(event) {
@@ -95,7 +95,7 @@
             },
             /**
              * Sự kiện nhập vào ô tìm kiếm ở combobox 
-             * Author: NTDUNG (02/08/2021)
+             * CreatedBy: NTDUNG (02/08/2021)
              * @param {event} event
              */
             inputSeachOnInput(event) {
@@ -112,7 +112,7 @@
             },
             /**
              * Bắt sự kiện click vào nút dropdown ở combobox 
-             * Author: NTDUNG (02/08/2021)
+             * CreatedBy: NTDUNG (02/08/2021)
              * @param {event} event
              */  
             comboboxDropdownOnClick(event) {
@@ -128,7 +128,7 @@
             },
             /**
              * Kiểm tra giá trị hợp lệ khi nhập xong combobox bằng input
-             * Author: NTDUNG (02/08/2021)
+             * CreatedBy: NTDUNG (02/08/2021)
              */
             // checkValueInput() {
             //     return this.comboboxData.includes(this.inputValue);

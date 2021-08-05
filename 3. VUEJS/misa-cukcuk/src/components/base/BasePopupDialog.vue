@@ -38,6 +38,11 @@ export default {
 		};
 	},
     mounted() {
+        /**
+         * Lắng nghe sự kiện hiển thị popup dialog
+         * CreatedBy: NTDUNG (05/08/2021)
+         * @param {object} data chứa các thông tin hiển thị của popup dialog
+         */
         EventBus.$on('showPopupDialog', data => {
             this.popupDialogState = true;
             this.type = data['type'];
@@ -48,16 +53,29 @@ export default {
         });
     },
     methods: {
+        /**
+         * Bắt sự kiện click vào nút continue
+         * CreatedBy: NTDUNG (05/08/2021)
+         */
         continueBtnOnClick() {
             this.popupDialogState = false;
             EventBus.$emit('continueBtnOnClick', this.mode);
         },
+
+        /**
+         * Bắt sự kiện click vào nút continue
+         * CreatedBy: NTDUNG (05/08/2021)
+         */
         cancelBtnOnClick() {
             this.popupDialogState = false;
             EventBus.$emit('cancelBtnOnClick', this.mode);
         }
     },
     computed: {
+        /**
+         * Theo mỗi type khác nhau thì nút cancel được style theo các class khác nhau
+         * CreatedBy: NTDUNG (05/08/2021)
+         */
         cancelBtnState() {
             switch(this.type) {
                 case 'error':

@@ -4,7 +4,7 @@
 		@click="toggleDropdown()"
 		class="dropdown"
 		for="dropdown-input"
-		:class="{ 'focus-dropdown': dropdownShow }"
+		:class="{ 'focus-dropdown': dropdownState }"
 	>
 		<div class="dropdown-header-wrapper">
 			<span class="dropdown-value">
@@ -12,7 +12,7 @@
 			</span>
 			<i class="fas fa-chevron-down icon-down"></i>
 		</div>
-		<ul class="dropdown-list" :style="{ display: dropdownState }">
+		<ul class="dropdown-list" :style="{ display: dropdownState ? 'block' : 'none' }">
 			<li
 				@click="activeItem(index)"
 				v-for="(item, index) in dropdownData"
@@ -20,93 +20,138 @@
 				:key="index"
 				class="dropdown-item"
 			>
-				{{ item[dropdownName + "Name"] }}
+				{{ item[dropdownField + "Name"] }}
 			</li>
 		</ul>
 	</label>
 </template>
 <script>
-	import axios from "axios";
+import {EventBus} from '../../../main'
+import axios from "axios";
 
-	export default {
-		name: "BaseDropdown",
-		data() {
-			return {
-				dropdownData: [],
-				currIdx: -1,
-				dropdownShow: false,
-			};
+export default {
+	name: "BaseDropdown",
+	data() {
+		return {
+			dropdownData: [],
+			currIdx: -1,
+			dropdownState: false,
+		};
+	},
+	props: {
+		APIurl: {
+			type: String,
+			default: "",
 		},
-		props: {
-			APIurl: String,
-			dropdownDefaultVal: String,
-			dropdownName: String,
+		defaultValue: {
+			type: String,
+			default: "",
 		},
-		methods: {
-			/**
-			 * Bật tắt dropdown khi click vào dropdown
-			 * Author: NTDUNG (28/07/2021)
-			 */
-			toggleDropdown() {
-				this.dropdownShow = !this.dropdownShow;
-			},
-			/**
-			 * Tắt dropdown khi blur dropdown
-			 * Author: NTDUNG (28/07/2021)
-			 */
-			hideDropdown() {
-				this.dropdownShow = false;
-			},
-			/**
-			 * Hàm lấy dữ liệu API và gán vào mảng dữ liệu
-			 * Author: NTDUNG (28/07/2021)
-			 */
-			getData() {
-				axios
-					.get(this.APIurl)
-					.then((res) => {
-						this.dropdownData = res.data;
-					})
-					.catch((res) => {
-						console.log(res);
+		valueTranfer: {
+			type: String,
+			default: "",
+		},
+		dropdownField: {
+			type: String,
+			default: "",
+		},
+	},
+	mounted() {
+		// Lắng nghe sự kiện lấy dữ liệu dropdown
+		EventBus.$on("getDropdownData", () => {
+			this.getDropdownData();
+		});
+	},
+	methods: {
+		/**
+		 * Bật tắt dropdown khi click vào dropdown
+		 * CreatedBy: NTDUNG (28/07/2021)
+		 */
+		toggleDropdown() {
+			this.dropdownState = !this.dropdownState;
+		},
+		/**
+		 * Tắt dropdown khi blur dropdown
+		 * CreatedBy: NTDUNG (28/07/2021)
+		 */
+		hideDropdown() {
+			this.dropdownState = false;
+		},
+		/**
+		 * Hàm lấy dữ liệu API và gán vào mảng dữ liệu
+		 * CreatedBy: NTDUNG (28/07/2021)
+		 */
+		getDropdownData() {
+			axios
+				.get(this.APIurl)
+				.then((res) => {
+					this.dropdownData = res.data;
+					console.log(this.dropdownData);
+				})
+				.catch((res) => {
+					console.log(res);
+				});
+		},
+		/**
+		 * Khi click vào một phần option thì đặt lại giá trị hiện tại
+		 * CreatedBy: NTDUNG (28/07/2021)
+		 * ModifiedBy: NTDUNG (05/08/2021)
+		 * @param {number} index chỉ số của option trong mảng
+		 */
+		activeItem(index) {
+			this.currIdx = index;
+			if (index != -1) {
+				// Truyền Id mới
+				EventBus.$emit("changeInputValue", {
+					NewValue: this.dropdownData[index][this.dropdownField + 'Id'],
+					InputField: this.dropdownField + 'Id',
+				});
+				// Truyền Name mới
+				EventBus.$emit("changeInputValue", {
+					NewValue: this.dropdownData[index][this.dropdownField + "Name"],
+					InputField: this.dropdownField + "Name",
+				});
+				// Truyền Code mới
+				EventBus.$emit("changeInputValue", {
+					NewValue: this.dropdownData[index][this.dropdownField + "Code"],
+					InputField: this.dropdownField + "Code",
+				});
+			}
+		},
+	},
+	watch: {
+		/**
+		 * Theo dõi biến valueTranfer khi thay đổi thì reset index
+		 * CreatedBy: NTDUNG (05/08/2021)
+		 */
+		valueTranfer: function() {
+			this.currIdx = -1;
+		}
+	},
+	computed: {
+		/**
+		 * Nếu chỉ số hiện tại bằng -1 thì trả về giá trị mặc định, lớn hơn thì trả về phần tử trong mảng
+		 * CreatedBy: NTDUNG (28/07/2021)
+		 * ModifiedBy: NTDUNG (05/08/2021)
+		 * @returns {string} trả về chuỗi để đưa lên dropdown
+		 */
+		dropdownValue() {
+			if (this.currIdx == -1) {
+				if (this.valueTranfer !== '' && this.valueTranfer !== null) {
+					var index = this.dropdownData.findIndex((item) => {
+						return item[this.dropdownField + 'Id'] == this.valueTranfer;
 					});
-			},
-			/**
-			 * Khi click vào một option thì đặt lại giá trị hiện tại
-			 * Author: NTDUNG (28/07/2021)
-			 */
-			activeItem(currIdx) {
-				this.currIdx = currIdx;
-			},
-		},
-		computed: {
-			/**
-			 * Nếu trạng thái dropdown là true thì lấy dữ liệu và đổ vào rồi hiện lên, còn false thì ẩn đi
-			 * Author: NTDUNG (28/07/2021)
-			 * @returns {string} trả về thuộc tính của display
-			 */
-			dropdownState() {
-				if (this.dropdownShow) {
-					this.getData();
-					return "block";
+					this.activeItem(index);
+					return index == -1 ? this.defaultValue : this.dropdownData[index][this.dropdownField + 'Name'];
 				} else {
-					return "none";
+					return this.defaultValue;
 				}
-			},
-			/**
-			 * Nếu chỉ số hiện tại bằng -1 thì trả về giá trị mặc định, lớn hơn thì trả về phần tử trong mảng
-			 * Author: NTDUNG (28/07/2021)
-			 * @returns {string} trả về chuỗi để đưa lên dropdown
-			 */
-			dropdownValue() {
-				if (this.currIdx == -1) {
-					return this.dropdownDefaultVal;
-				} else {
-					return this.dropdownData[this.currIdx][this.dropdownName + "Name"];
-				}
-			},
+			} else {
+				return this.dropdownData[this.currIdx][this.dropdownField + "Name"];
+			}
 		},
-	};
+	},
+};
 </script>
 <style>
 	@import url("../../../css/common/dropdown.css");
@@ -118,8 +163,8 @@
 	:class="{ 'dropdown--restaurant': true }"
 	:APIurl="APIurl"
 	:dropdownShow="dropdownShow"
-	:dropdownDefaultVal="dropdownDefaultVal"
-	:dropdownName="dropdownName"
+	:valueTranfer="valueTranfer"
+	:dropdownField="dropdownField"
 	@toggleDropdown="toggleDropdown()"
 />
 */
