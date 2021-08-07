@@ -22,7 +22,16 @@
 
 #button-delete {
     margin-right: 10px;
+    background-color: #EA2B2B;
 } 
+
+#button-delete:hover {
+    background-color: #ea2b2b9c;
+}
+
+#button-delete:active {
+    background-color: #ea2b2bde;
+}
 
 #button-delete i{
     margin-right: 10px;

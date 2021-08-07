@@ -86,7 +86,6 @@ export default {
 				.get(this.APIurl)
 				.then((res) => {
 					this.dropdownData = res.data;
-					console.log(this.dropdownData);
 				})
 				.catch((res) => {
 					console.log(res);

@@ -13,7 +13,7 @@
             :value="formatInputValue"
             @blur="validateInput($event, 'event')"
             @focus="inputOnFocus($event)"
-            @keyup="inputOnKeyup($event)"
+            @keyup="inputOnkeyup($event)"
         />
         <span class="input-unit" v-if="haveUnit">(VNĐ)</span>
     </div>
@@ -27,7 +27,7 @@ export default {
 		return {
 			regEmail:
 				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-			regPhone: /^\D*(\d\D*){9,14}$/,
+			regPhoneNumber: /^\D*(\d\D*){9,14}$/,
 		};
 	},
 	props: {
@@ -35,7 +35,7 @@ export default {
 			type: String,
 			default: "",
 		},
-		alone: {
+		inputAlone: {
 			type: Boolean,
 			default: false,
 		},
@@ -58,88 +58,122 @@ export default {
 		haveUnit: {
 			type: Boolean,
 			default: false,
-		}
+		},
 	},
 	created() {
 		EventBus.$on("validateEmployeeInput", () => {
-			let input = this.$el.querySelector("input");
-			this.validateInput(input, "input");
+			let inputElement = this.$el.querySelector("input");
+			this.validateInput(inputElement, "input");
 		});
 	},
 	methods: {
 		/**
 		 * Validate các dữ liệu đã nhập ở phía input
 		 * CreatedBy: NTDUNG (02/08/2021)
-		 * @param {event, element} event
+		 * @param {event, element} inputParam bắt trong 2 trường hợp input on blur
+		 * và bấm nút ở form nên tham số truyền vào có 2 kiểu
 		 * @param {string} type
 		 */
-		validateInput(event, type) {
-			var input;
+		validateInput(inputParam, type) {
+			var inputElement;
 			if (type == "event") {
-				input = event.target;
-				if (event.relatedTarget && event.relatedTarget.tagName == "BUTTON")
-					return;
+				inputElement = inputParam.target;
+				if (
+					inputParam.relatedTarget &&
+					inputParam.relatedTarget.tagName == "BUTTON" || 
+					inputParam.relatedTarget.classList.contains('popup-header__cancel')
+				)
+					return true;
 			} else if (type == "input") {
-				input = event;
+				inputElement = inputParam;
 			}
 
-			let valueTranfer = input.value;
-			if (this.inputType == "text") {
-				// Validate các trường bắt buộc, email, số điện thoại
-				if (this.required && valueTranfer == "") {
-					// Border đỏ cho input không hợp lệ
-					input.classList.add("invalid-input");
-					// Toast message
-					switch(this.inputField) {
-						case 'EmployeeCode':
-							this.toastMessage('error', 'Bạn phải nhập Mã nhân viên', 5000);
-							break;
-						case 'FullName':
-							this.toastMessage('error', 'Bạn phải nhập Họ tên', 5000);
-							break;
-						case 'IdentityNumber':
-							this.toastMessage('error', 'Bạn phải nhập Số CMTND/ Căn cước', 5000);
-							break;
-						case 'Email':
-							this.toastMessage('error', 'Bạn phải nhập Email', 5000);
-							break;
-						case 'PhoneNumber':
-							this.toastMessage('error', 'Bạn phải nhập Số điện thoại', 5000);
-							break;	
-					}
-					return;
-				}
-				switch (this.inputField) {
+			// Validate các trường bắt buộc và validate các trường đặc biệt như email, số điện thoại
+			if (
+				this.validateRequired(this.inputField, inputElement) &&
+				this.validateSpecialField(this.inputField, inputElement)
+			) {
+				// Khi đã validate đủ thì cho phép thay đổi giá trị input (thay đổi thông tin phía form)
+				if (this.inputType == "text")
+					this.changeInputValue(inputElement.value, this.inputField);
+				else if (this.inputType == "date")
+					this.changeInputValue(
+						inputElement.value + "T00:00:00",
+						this.inputField
+					);
+			}
+		},
+		/**
+		 * Validate các trường input bắt buộc
+		 * CreatedBy: NTDUNG (05/08/2021)
+		 * @param {string} inputField tên trường input hiện tại
+		 * @param {element} inputElement input hiện tại
+		 */
+		validateRequired(inputField, inputElement) {
+			var valid = true;
+			if (this.required && inputElement.value == "") {
+				valid = false;
+				// Border đỏ cho input không hợp lệ
+				inputElement.classList.add("invalid-input");
+				// Toast message báo lối
+				switch (inputField) {
+					case "EmployeeCode":
+						this.toastMessage("error", "Bạn phải nhập Mã nhân viên", 5000);
+						break;
+					case "FullName":
+						this.toastMessage("error", "Bạn phải nhập Họ tên", 5000);
+						break;
+					case "IdentityNumber":
+						this.toastMessage(
+							"error",
+							"Bạn phải nhập Số CMTND/ Căn cước",
+							5000
+						);
+						break;
 					case "Email":
-						if (this.regEmail.test(input.value)) {
-							this.changeInputValue(valueTranfer, this.inputField);
-						} else {
-							input.classList.add("invalid-input");
-							this.toastMessage('error', 'Email không hợp lệ', 5000);
-						}
+						this.toastMessage("error", "Bạn phải nhập Email", 5000);
 						break;
 					case "PhoneNumber":
-						if (this.regPhone.test(input.value)) {
-							this.changeInputValue(valueTranfer, this.inputField);
-						} else {
-							this.toastMessage('error', 'Số điện thoại không hợp lệ', 5000);
-							input.classList.add("invalid-input");
-						}
-						break;
-					// Những trường hợp trả về số
-					case "Salary":
-					case "PersonalTaxCode":
-						valueTranfer = parseInt(valueTranfer);
-						this.changeInputValue(valueTranfer, this.inputField);
+						this.toastMessage("error", "Bạn phải nhập Số điện thoại", 5000);
 						break;
 					default:
-						this.changeInputValue(valueTranfer, this.inputField);
-				}
-			} else if (this.inputType == "date") {
-				if (valueTranfer != "") {
-					this.changeInputValue(valueTranfer + "T00:00:00", this.inputField);
+						this.toastMessage("error", `Bạn phải nhập ${inputField}`, 5000);
 				}
 			}
+			return valid;
+		},
+		/**
+		 * Validate các trường input đặc biệt (email, phonenumber, ...)
+		 * CreatedBy: NTDUNG (05/08/2021)
+		 * @param {string} inputField tên trường input hiện tại
+		 * @param {element} inputElement input hiện tại
+		 */
+		validateSpecialField(inputField, inputElement) {
+			var valid = true;
+			switch (inputField) {
+				case "Email":
+					if (!this.regEmail.test(inputElement.value)) {
+						inputElement.classList.add("invalid-input");
+						this.toastMessage("error", "Email không hợp lệ", 5000);
+						valid = false;
+					}
+					break;
+				case "PhoneNumber":
+					if (!this.regPhoneNumber.test(inputElement.value)) {
+						this.toastMessage("error", "Số điện thoại không hợp lệ", 5000);
+						inputElement.classList.add("invalid-input");
+						valid = false;
+					}
+					break;
+				// Những trường hợp trả về số
+				case "Salary":
+					inputElement.value = parseInt(inputElement.value.replaceAll('.', ''));
+					break;
+				case "PersonalTaxCode":
+					inputElement.value = parseInt(inputElement.value);
+					break;
+			}
+			return valid;
 		},
 		/**
 		 * Khi focus vào ô input thì bỏ lớp cảnh báo đi
@@ -154,24 +188,16 @@ export default {
 		 * CreatedBy: NTDUNG (03/08/2021)
 		 * @param {event} event
 		 */
-		inputOnKeyup(event) {
+		inputOnkeyup(event) {
 			if (this.inputField == "Salary") {
 				let key = event.key.charCodeAt();
-				if (
-					!(
-						(key >= 48 && key <= 57) ||
-						event.key == "Backspace" ||
-						event.key == "ArrowRight" ||
-						event.key == "ArrowLeft"
-					)
-				) {
+				// Khi nút nhập vào là số (0-9), phím backspace và 2 phím mũi tên trái phải
+				if (!((key >= 48 && key <= 57) || key == 66 || key == 65)) {
 					event.preventDefault();
 				} else {
-					if (event.target.value) {
-						let valueTranfer = event.target.value.replaceAll(".", "");
-						event.target.value = parseInt(valueTranfer)
-							.toFixed(0)
-							.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+					if (event.target.value != '') {	
+						let inputValue = event.target.value.replaceAll('.', '');
+						event.target.value = this.formatSalary(inputValue);
 					}
 				}
 			}
@@ -197,11 +223,21 @@ export default {
 		 * @param {string} inputField
 		 */
 		changeInputValue(newValue, inputField) {
-			EventBus.$emit('changeInputValue', {
-				NewValue: newValue, 
-				InputField: inputField
+			EventBus.$emit("changeInputValue", {
+				NewValue: newValue,
+				InputField: inputField,
 			});
-		}
+		},
+		/**
+		 * Format salary
+		 * CreatedBy: NTDUNG (05/08/2021)
+		 * @param {number, string} value
+		 */
+		formatSalary(value) {
+			return value ? parseInt(value)
+				.toFixed(0)
+				.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.") : '';
+		},
 	},
 	computed: {
 		/**
@@ -210,7 +246,7 @@ export default {
 		 * @returns {string}
 		 */
 		widthCalc() {
-			if (this.alone) {
+			if (this.inputAlone) {
 				return "calc(50% - 5px)";
 			} else {
 				return "100%";
@@ -236,6 +272,9 @@ export default {
 		 */
 		formatInputValue() {
 			if (this.inputType == "text") {
+				if (this.inputField == "Salary") {
+					return this.formatSalary(this.valueTranfer);
+				}
 				return this.valueTranfer;
 			} else if (this.inputType == "date") {
 				let date = new Date(this.valueTranfer);
