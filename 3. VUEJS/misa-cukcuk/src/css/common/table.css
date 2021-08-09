@@ -22,6 +22,9 @@
         padding: 0 4px;
         text-align: left;
     }
+        .table-employee__head th {
+            border-bottom: 1px solid #bbb;
+        }
         /* 2.1.1.2. TABLE EMPLOYEE HEADER */
         th, td {
             padding: 0 10px;

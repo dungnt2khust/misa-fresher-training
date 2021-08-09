@@ -1,6 +1,8 @@
 <template lang="">
 	<div class="pagination">
-		<p class="pagination__text">Hiển thị 1-10/1000 nhân viên</p>
+		<p class="pagination__text">
+            {{ paginationDesc }}
+        </p>
 		<ul class="pagination__list">
 			<li @click="firstPageOnClick()" class="pagination__item">
 				<img
@@ -19,7 +21,7 @@
 			<li
 				@click="pageItemOnClick(index)"
 				v-for="index in pageNum"
-				:class="{ active: currIdx == index }"
+				:class="{'pagination__item--active': currIdx == index }"
 				:key="index"
 				class="pagination__item"
                 v-show="displayItemOnClick(index)"
@@ -104,6 +106,11 @@
             displayItemOnClick(index) {
                 var idxDisplay = Math.ceil(this.currIdx / this.pageNumDisplay);
                 return index <= idxDisplay * this.pageNumDisplay && index >= (idxDisplay - 1) * this.pageNumDisplay + 1;
+            }
+        },
+        computed: {
+            paginationDesc() {
+                return 'Hiển thị 1-10/1000 nhân viên';
             }
         },
         components: {

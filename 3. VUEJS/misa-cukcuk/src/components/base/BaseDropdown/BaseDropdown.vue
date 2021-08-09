@@ -1,10 +1,11 @@
 <template lang="">
-	<label
+	<div
 		@blur="hideDropdown()"
 		@click="toggleDropdown()"
 		class="dropdown"
 		for="dropdown-input"
 		:class="{ 'dropdown--show': dropdownState }"
+		:tabindex="tabIndex"
 	>
 		<div class="dropdown-header-wrapper">
 			<span class="dropdown-value">
@@ -23,7 +24,7 @@
 				{{ item[dropdownField + "Name"] }}
 			</li>
 		</ul>
-	</label>
+	</div>
 </template>
 <script>
 import {EventBus} from '../../../main'
@@ -55,6 +56,10 @@ export default {
 			type: String,
 			default: "",
 		},
+		tabIndex: {
+			type: Number,
+			default: -1
+		}
 	},
 	mounted() {
 		// Lắng nghe sự kiện lấy dữ liệu dropdown

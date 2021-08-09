@@ -40,7 +40,7 @@
             align-items: center;
             user-select: none;
         }
-        .pagination__item.active {
+        .pagination__item.pagination__item--active {
             background-color: var(--pagination-active-color);
             color: var(--text-color);
         }
