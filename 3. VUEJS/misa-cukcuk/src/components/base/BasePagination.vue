@@ -41,19 +41,13 @@
 				/>
 			</li>
 		</ul>
-		<div class="input__number-wrapper">
-			<label for="input__number">Số nhân viên/trang: </label>
-			<input
-				type="number"
-				name=""
-				id="input__number"
-				value="10"
-				class="input__number"
-			/>
+		<div class="pagination__number-employee">
+			<DropUpEmployeeNum/>
 		</div>
 	</div>
 </template>
 <script>
+    import BaseDropUp from './BaseDropUp.vue'
 	export default {
 		name: "BasePagination",
 		data() {
@@ -111,6 +105,9 @@
                 var idxDisplay = Math.ceil(this.currIdx / this.pageNumDisplay);
                 return index <= idxDisplay * this.pageNumDisplay && index >= (idxDisplay - 1) * this.pageNumDisplay + 1;
             }
+        },
+        components: {
+            DropUpEmployeeNum: BaseDropUp
         }
 	};
 </script>

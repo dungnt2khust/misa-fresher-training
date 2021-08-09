@@ -4,7 +4,7 @@
 		@click="toggleDropdown()"
 		class="dropdown"
 		for="dropdown-input"
-		:class="{ 'focus-dropdown': dropdownState }"
+		:class="{ 'dropdown--show': dropdownState }"
 	>
 		<div class="dropdown-header-wrapper">
 			<span class="dropdown-value">
@@ -12,11 +12,11 @@
 			</span>
 			<i class="fas fa-chevron-down icon-down"></i>
 		</div>
-		<ul class="dropdown-list" :style="{ display: dropdownState ? 'block' : 'none' }">
+		<ul class="dropdown-list">
 			<li
 				@click="activeItem(index)"
 				v-for="(item, index) in dropdownData"
-				:class="{ active: currIdx == index }"
+				:class="{ 'dropdown-item--active': currIdx == index }"
 				:key="index"
 				class="dropdown-item"
 			>

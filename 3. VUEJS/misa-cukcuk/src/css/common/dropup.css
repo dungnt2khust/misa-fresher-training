@@ -1,9 +1,10 @@
-.dropdown {
+
+.dropup {
     background-color: #fff;
     border-radius: 4px;
     border: 1px solid #bbb;
     position: relative;
-    margin: auto;
+    margin: 0;
     width: 100%;
     height: 40px;
     margin-top: 4px;
@@ -11,12 +12,12 @@
     cursor: pointer;
 }
 /* FOCUS DROPDOWN */
-.dropdown.dropdown--show {
+.dropup.dropup--show {
     border: 1px solid #019160 !important;
 }
 
      /* 1. DROPDOWN VALUE  */
-    .dropdown-value {
+    .dropup-value {
         padding: 10px 8px;
         display: block;
         cursor: pointer;
@@ -24,71 +25,70 @@
         justify-content: space-between;
     }
         /* 1.1 DROPDOWN VALUE i  */
-        .dropdown-value i {
+        .dropup-value i {
             position: relative;
             top: 2px;
         }
 
     /* 2. DROPDOWN LIST */
-    .dropdown-list {
+    .dropup-list {
         margin: 0;
         padding-left: 0;
         list-style: none;
         background-color: #fff;
         position: absolute;
-        top: calc(100% + 2px);
         left: 0;
         right: 0;
+        bottom: calc(100% + 2px);
         display: none;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
+        border-radius: 4px;
         overflow: hidden;
         z-index: 10000;
     }
 
-    .dropdown.dropdown--show .dropdown-list {
+    .dropup.dropup--show .dropup-list {
         display: block;
     }
         /* 2.2. DROPDOWN ITEM */
-        .dropdown-item {
+        .dropup-item {
             padding: 10px 8px;
             cursor: pointer;
         } 
 
-        .dropdown-item.dropdown-item--active {
+        .dropup-item.dropup-item--active {
             background-color: #019160;
             color: #fff;
         }
 
-        .dropdown-item:hover {
+        .dropup-item:hover {
             background-color: #e1e1e1;
             color: #000;
         }
             /* 2.2.1.DROPDOWN ICON DOWN */
-            .icon-down {
+            .icon-up {
                 transform: rotate(0);
                 transition: all 0.3s ease;
                 line-height: 40px !important;
             }
 
-            .dropdown.dropdown--show .icon-down {
+            .dropup.dropup--show .icon-up {
                 transform: rotate(180deg);
                 transition: all 0.3s ease;
             }
 
             /* 2.2.2. DROPDOWN ICON CHECK */
-            .dropdown-icon {
+            .dropup-icon {
                 visibility: hidden;
                 margin-right: 5px;
             }
 
-            .dropdown-item.dropdown-item--active .dropdown-icon {
+            .dropup-item.dropup-item--active .dropup-icon {
                 visibility: visible;
             }
     
     /* WRAPPER */
-    .dropdown-header-wrapper {
+    .dropup-header-wrapper {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -100,15 +100,15 @@
 
 
 /* DROPDOWN HANDLE BY INPUT CHECKBOX */
-/* #dropdown-input:checked~.dropdown-list {
+/* #dropup-input:checked~.dropup-list {
     display: block;
 }
 
-#dropdown-input:checked~.dropdown-value .icon-down {
+#dropup-input:checked~.dropup-value .icon-up {
     display: none;
 }
 
-#dropdown-input:checked~.dropdown-value .icon-up {
+#dropup-input:checked~.dropup-value .icon-up {
     display: block;
 } */
 

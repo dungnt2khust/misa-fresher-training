@@ -14,24 +14,11 @@
 						type="text"
 					/>
 				</div>
-				<!-- DEPARTMENT -->
-				<BaseDropdownFilter
-					:id="'filter-department'"
-					:class="{ 'table-filter__department': true }"
-					:tabindex="2"
-					:APIurl="APIurl__DEPARTMENT"
-					:dropdownDefaultVal="dropdownDefaultVal__DEPARTMENT"
-					:dropdownName="dropdownName__DEPARTMENT"
-				/>
-				<!-- POSITION -->
-				<BaseDropdownFilter
-					:id="'filter-position'"
-					:class="{ 'table-filter__position': true }"
-					:tabindex="3"
-					:APIurl="APIurl__POSITION"
-					:dropdownDefaultVal="dropdownDefaultVal__POSITION"
-					:dropdownName="dropdownName__POSITION"
-				/>
+				<BaseCombobox
+					style="margin-right: 7px;"
+					placeHolder="Tất cả phòng ban"/>
+				<BaseCombobox
+					placeHolder="Tất cả vị trí"/>	
 			</div>
 		</div>
 		<div class="container__header-right">
@@ -53,7 +40,7 @@
 	</div>
 </template>
 <script>
-	import BaseDropdownFilter from "../base/BaseDropdown/BaseDropdownFilter.vue";
+	import BaseCombobox from '../base/BaseCombobox.vue'
 	import { EventBus } from "../../main"
 
 	export default {
@@ -94,7 +81,7 @@
 			}
 		},
 		components: {
-			BaseDropdownFilter,
+			BaseCombobox
 		},
 	};
 </script>

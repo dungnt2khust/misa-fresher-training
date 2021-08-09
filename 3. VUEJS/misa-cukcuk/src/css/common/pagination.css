@@ -67,15 +67,8 @@
 
 
     /* 2.2.3. NUMBER EMPLOYEE */
-    .input__number-wrapper {
+    .pagination__number-employee {
         flex-basis: 30%;
         display: flex;
         justify-content: flex-end;
     }
-        /* 2.2.3.1. NUMBER EMPLOYEE INPUT */
-        .input__number {
-            outline: none;
-            width: 40px;
-            margin-left: 10px;
-            border: 0;
-        }
