@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MySqlConnector;
 using Dapper;
 using System.Data;
+using Microsoft.AspNetCore.Cors;
 
 namespace MISA.CukCukApi.Controllers
 {
@@ -20,6 +21,7 @@ namespace MISA.CukCukApi.Controllers
         /// </summary>
         /// CreatedBy: NTDUNG (07/08/2021)
         /// <returns>Trả về mã code và json chứa thông tin tất cả khách hàng</returns> 
+        [EnableCors("Policy")]
         [HttpGet]
         public IActionResult GetCustomers()
         {

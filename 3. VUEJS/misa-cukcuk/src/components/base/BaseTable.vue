@@ -4,7 +4,7 @@
 			<thead class="table-employee__head">
 				<tr>
 					<th class="table-employee__header" style="width: 40px">
-						<input type="checkbox" class="table-employee__checkbox">
+						<input v-model="checkAll" type="checkbox" class="table-employee__checkbox">
 					</th>
 					<th class="table-employee__header" style="width: 60px">#</th>
 					<th v-for="(item, index) in tableStyle" :key="index" class="table-employee__header" :class="classAlignTable(item.Style)">
@@ -57,7 +57,8 @@ export default {
 	data() {
 		return {
 			tableData: [],
-			employeeDeleteData: new Set()
+			employeeDeleteData: new Set(),
+			checkAll: false
 		};
 	},
 	created() {
@@ -69,6 +70,34 @@ export default {
 	mounted() {
 		// Gọi đến hàm lấy dữ liệu từ API
 		this.getTableData(true);
+		// Bắt sự kiện nút xoá nhiều nhân viên
+		EventBus.$on('deleteEmployees', () => {
+			if (this.employeeDeleteData.size) {
+				var confirmResult = confirm('Do you want delete these ' + this.employeeDeleteData.size);
+				if (confirmResult) {
+					EventBus.$emit('ToastMessage', {type: 'warn', content: 'Đang xoá. Vui lòng chờ', duration: 5000});
+					this.employeeDeleteData.forEach(employeeId => {	
+						this.deleteEmployee(employeeId);
+					});
+					this.employeeDeleteData.clear();
+				} 
+			} else {
+				EventBus.$emit('showPopupDialog', {
+					type: 'info',
+					title: 'Bạn chưa chọn dòng nào',
+					content: `Hãy chọn những dòng mà bạn muốn xoá`,
+				});
+			}
+		});
+	},
+	watch: {
+		checkAll: function(newValue) {
+			if (newValue) {
+				console.log(this.tableData);
+			} else {
+				console.log('uncheck all');
+			}
+		}
 	},
 	methods: {
 		/**
@@ -104,13 +133,26 @@ export default {
 			}
 		},
 		/**
-		 * Bắt sự kiện double click vào từng dòng trên table
+		 * Bắt sự kiện click vào từng dòng trên table (Lưu employeeid ở từng dòng vào set)
 		 * CreatedBy: NTDUNG (05/08/2021)
+		 * ModifiedBy: NTDUNG (07/08/2021)
 		 * @param {event} event
 		 */
 		tableRowOnClick(event) {
-			console.log('table row on click');
-			console.log(event);
+			var tableRow;
+			if (event.target.tagName == 'INPUT') {
+				tableRow = event.target.parentElement.parentElement;
+			} else {
+				tableRow = event.target.parentElement;
+				tableRow.querySelector('input').checked = !tableRow.querySelector('input').checked;
+			}
+			tableRow.classList.toggle('table-employee__row--selected');
+			var employeeId = tableRow.getAttribute('EmployeeId');
+			if (this.employeeDeleteData.has(employeeId)) {
+				this.employeeDeleteData.delete(employeeId);
+			} else {
+				this.employeeDeleteData.add(employeeId);
+			}
 		},
 		/**
 		 * Format lại dữ liệu trong bảng
@@ -160,6 +202,25 @@ export default {
 				default:
 					return "";
 			}
+		},	
+		/**
+		 * Xoá thông tin nhân viên
+		 * CreatedBy: NTDUNG (07/08/2021)
+		 * @param {string} employeeId
+		 */
+		deleteEmployee(employeeId) {	
+			// Lắng nghe lựa chọn của popup dialog	
+			axios
+				.delete(
+					`http://cukcuk.manhnv.net/v1/Employees/${employeeId}`
+				)
+				.then(() => {
+					this.getTableData();	
+				})
+				.catch((res) => {
+					console.log(res);
+					EventBus.$emit('ToastMessage', {type: 'error', content:  'Xoá thất bại. Vui lòng liên hệ MISA', duration: 5000});
+				});
 		},
 	},
 };

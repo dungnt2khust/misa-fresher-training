@@ -353,18 +353,14 @@
 					continueBtn: 'Tiếp tục nhập',
 					mode: 'CANCELFORM'
 				});
-				EventBus.$on('continueBtnOnClick', data => {
-					if (data == 'CANCELFORM') {
-						this.popupState = true;
-					}
+				EventBus.$on('continueBtnOnClickCANCELFORM', () => {
+					this.popupState = true;
 				});
-				EventBus.$on('cancelBtnOnClick', data => {
-					if (data == 'CANCELFORM') {
-						this.employeeData = {};
-						this.$el.querySelectorAll('input').forEach((input) => {
-							input.classList.remove('invalid-input');
-						});
-					}
+				EventBus.$on('cancelBtnOnClickCANCELFORM', () => {
+					this.employeeData = {};
+					this.$el.querySelectorAll('input').forEach((input) => {
+						input.classList.remove('invalid-input');
+					});
 				});
 			},
 			/**
@@ -439,23 +435,20 @@
 					mode: 'DELETE'
 				});
 				// Lắng nghe lựa chọn của popup dialog	
-				EventBus.$on('continueBtnOnClick', data => {
-					if (data == 'DELETE') {
-						EventBus.$emit('ToastMessage', {type: 'warn', content: 'Đang xoá. Vui lòng chờ', duration: 5000});
-						axios
-							.delete(
-								`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`,
-								this.employeeData
-							)
-							.then(() => {
-								EventBus.$emit('ToastMessage', {type: 'success', content: 'Xoá thành công', duration: 5000});
-								this.reloadTableData();	
-							})
-							.catch((res) => {
-								console.log(res);
-								EventBus.$emit('ToastMessage', {type: 'error', content:  'Xoá thất bại. Vui lòng liên hệ MISA', duration: 5000});
-							});
-					}
+				EventBus.$on('continueBtnOnClickDELETE', () => {
+					EventBus.$emit('ToastMessage', {type: 'warn', content: 'Đang xoá. Vui lòng chờ', duration: 5000});
+					axios
+						.delete(
+							`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`
+						)
+						.then(() => {
+							EventBus.$emit('ToastMessage', {type: 'success', content: 'Xoá thành công', duration: 5000});
+							this.reloadTableData();	
+						})
+						.catch((res) => {
+							console.log(res);
+							EventBus.$emit('ToastMessage', {type: 'error', content:  'Xoá thất bại. Vui lòng liên hệ MISA', duration: 5000});
+						});
 				});		
 			},
 			/**

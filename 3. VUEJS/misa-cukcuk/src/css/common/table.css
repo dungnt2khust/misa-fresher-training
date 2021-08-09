@@ -47,6 +47,10 @@
             overflow: hidden;
             text-overflow: ellipsis;
         } 
+
+        .table-employee__row.table-employee__row--selected {
+            background-color: #efefef;
+        }
             .table-employee__checkbox {
                 height: 20px;
                 width: 20px;
@@ -57,3 +61,4 @@
             .table-employee__checkbox:checked {
                 background-color: var(--checkbox-color);
             }
+        

@@ -42,7 +42,7 @@
 				<span class="button__name"> Thêm nhân viên </span>
 			</button>
 			<div class="button-f5-delete">
-				<button id="button-delete" class="button">
+				<button @click="deleteEmployees()" id="button-delete" class="button">
 					<i class="fas fa-minus-square"></i> Xoá nhân viên
 				</button>
 				<div @click="reloadTableData" class="refresh">
@@ -84,6 +84,13 @@
 			 */
 			addEmployee() {
 				EventBus.$emit('addEmployee');
+			},
+			/**
+			 * Sự kiện nhấn vào nút xoá nhiều nhân viên
+			 * CreatedBy: NTDUNG (07/08/2021)
+			 */
+			deleteEmployees() {
+				EventBus.$emit('deleteEmployees');
 			}
 		},
 		components: {
