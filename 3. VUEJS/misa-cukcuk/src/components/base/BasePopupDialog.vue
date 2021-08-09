@@ -59,7 +59,7 @@ export default {
          */
         continueBtnOnClick() {
             this.popupDialogState = false;
-            EventBus.$emit('continueBtnOnClick', this.mode);
+            EventBus.$emit('continueBtnOnClick' + this.mode);
         },
 
         /**
@@ -68,7 +68,7 @@ export default {
          */
         cancelBtnOnClick() {
             this.popupDialogState = false;
-            EventBus.$emit('cancelBtnOnClick', this.mode);
+            EventBus.$emit('cancelBtnOnClick' + this.mode);
         }
     },
     computed: {

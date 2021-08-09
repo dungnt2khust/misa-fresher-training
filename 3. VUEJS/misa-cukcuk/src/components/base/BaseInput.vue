@@ -6,6 +6,7 @@
             v-html="requiredAssign"
             ></span>
         <input
+			:tabindex="tabIndex"
             :type="inputType"
             class="popup-infor__input"
             :class="{'text-align-right': haveUnit}"
@@ -59,6 +60,10 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		tabIndex: {
+			type: Number,
+			default: -1
+		}
 	},
 	created() {
 		EventBus.$on("validateEmployeeInput", () => {
@@ -76,14 +81,13 @@ export default {
 		 */
 		validateInput(inputParam, type) {
 			var inputElement;
-			if (type == "event") {
+			if (type == "event") {	
 				inputElement = inputParam.target;
-				if (
-					inputParam.relatedTarget &&
-					inputParam.relatedTarget.tagName == "BUTTON" || 
-					inputParam.relatedTarget.classList.contains('popup-header__cancel')
-				)
-					return true;
+				if (inputParam.relatedTarget != null) {
+					if (inputParam.relatedTarget.tagName == "BUTTON") {
+						return true;
+					}
+				}	
 			} else if (type == "input") {
 				inputElement = inputParam;
 			}

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,17 @@ namespace MISA.CukCukApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Policy",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:44304/")
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod()
+                                            .AllowAnyOrigin();
+                    });
+            });
 
             services.AddControllers().AddJsonOptions(jsonOptions =>
             {
@@ -62,6 +74,8 @@ namespace MISA.CukCukApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

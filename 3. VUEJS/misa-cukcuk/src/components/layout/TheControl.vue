@@ -14,24 +14,11 @@
 						type="text"
 					/>
 				</div>
-				<!-- DEPARTMENT -->
-				<BaseDropdownFilter
-					:id="'filter-department'"
-					:class="{ 'table-filter__department': true }"
-					:tabindex="2"
-					:APIurl="APIurl__DEPARTMENT"
-					:dropdownDefaultVal="dropdownDefaultVal__DEPARTMENT"
-					:dropdownName="dropdownName__DEPARTMENT"
-				/>
-				<!-- POSITION -->
-				<BaseDropdownFilter
-					:id="'filter-position'"
-					:class="{ 'table-filter__position': true }"
-					:tabindex="3"
-					:APIurl="APIurl__POSITION"
-					:dropdownDefaultVal="dropdownDefaultVal__POSITION"
-					:dropdownName="dropdownName__POSITION"
-				/>
+				<BaseCombobox
+					style="margin-right: 7px;"
+					placeHolder="Tất cả phòng ban"/>
+				<BaseCombobox
+					placeHolder="Tất cả vị trí"/>	
 			</div>
 		</div>
 		<div class="container__header-right">
@@ -42,7 +29,7 @@
 				<span class="button__name"> Thêm nhân viên </span>
 			</button>
 			<div class="button-f5-delete">
-				<button id="button-delete" class="button">
+				<button @click="deleteEmployees()" id="button-delete" class="button">
 					<i class="fas fa-minus-square"></i> Xoá nhân viên
 				</button>
 				<div @click="reloadTableData" class="refresh">
@@ -53,7 +40,7 @@
 	</div>
 </template>
 <script>
-	import BaseDropdownFilter from "../base/BaseDropdown/BaseDropdownFilter.vue";
+	import BaseCombobox from '../base/BaseCombobox.vue'
 	import { EventBus } from "../../main"
 
 	export default {
@@ -84,10 +71,17 @@
 			 */
 			addEmployee() {
 				EventBus.$emit('addEmployee');
+			},
+			/**
+			 * Sự kiện nhấn vào nút xoá nhiều nhân viên
+			 * CreatedBy: NTDUNG (07/08/2021)
+			 */
+			deleteEmployees() {
+				EventBus.$emit('deleteEmployees');
 			}
 		},
 		components: {
-			BaseDropdownFilter,
+			BaseCombobox
 		},
 	};
 </script>

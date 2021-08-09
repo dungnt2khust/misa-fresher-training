@@ -1,10 +1,11 @@
 <template lang="">
-	<label
+	<div
 		@blur="hideDropdown()"
 		@click="toggleDropdown()"
 		class="dropdown"
 		for="dropdown-input"
-		:class="{ 'focus-dropdown': dropdownState }"
+		:class="{ 'dropdown--show': dropdownState }"
+		:tabindex="tabIndex"
 	>
 		<div class="dropdown-header-wrapper">
 			<span class="dropdown-value">
@@ -12,18 +13,18 @@
 			</span>
 			<i class="fas fa-chevron-down icon-down"></i>
 		</div>
-		<ul class="dropdown-list" :style="{ display: dropdownState ? 'block' : 'none' }">
+		<ul class="dropdown-list">
 			<li
 				@click="activeItem(index)"
 				v-for="(item, index) in dropdownData"
-				:class="{ active: currIdx == index }"
+				:class="{ 'dropdown-item--active': currIdx == index }"
 				:key="index"
 				class="dropdown-item"
 			>
 				{{ item[dropdownField + "Name"] }}
 			</li>
 		</ul>
-	</label>
+	</div>
 </template>
 <script>
 import {EventBus} from '../../../main'
@@ -55,6 +56,10 @@ export default {
 			type: String,
 			default: "",
 		},
+		tabIndex: {
+			type: Number,
+			default: -1
+		}
 	},
 	mounted() {
 		// Lắng nghe sự kiện lấy dữ liệu dropdown

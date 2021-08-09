@@ -22,6 +22,9 @@
         padding: 0 4px;
         text-align: left;
     }
+        .table-employee__head th {
+            border-bottom: 1px solid #bbb;
+        }
         /* 2.1.1.2. TABLE EMPLOYEE HEADER */
         th, td {
             padding: 0 10px;
@@ -47,6 +50,10 @@
             overflow: hidden;
             text-overflow: ellipsis;
         } 
+
+        .table-employee__row.table-employee__row--selected {
+            background-color: #efefef;
+        }
             .table-employee__checkbox {
                 height: 20px;
                 width: 20px;
@@ -57,3 +64,4 @@
             .table-employee__checkbox:checked {
                 background-color: var(--checkbox-color);
             }
+        
