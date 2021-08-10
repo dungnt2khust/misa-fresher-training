@@ -11,7 +11,7 @@ using System.Data;
 using Microsoft.AspNetCore.Cors;
 
 namespace MISA.CukCukApi.Controllers
-{
+{ 
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
@@ -20,15 +20,14 @@ namespace MISA.CukCukApi.Controllers
         /// Lấy toàn bộ dữ liệu khách hàng
         /// </summary>
         /// CreatedBy: NTDUNG (07/08/2021)
-        /// <returns>Trả về mã code và json chứa thông tin tất cả khách hàng</returns> 
-        [EnableCors("Policy")]
+        /// <returns>Trả về mã code và json chứa thông tin tất cả khách hàng</returns>  
         [HttpGet]
         public IActionResult GetCustomers()
         {
             // 1. Khai báo thông tin kết nối DATABASE:
             var connectionString =
                 "Host = 47.241.69.179;" +
-                "Database = MISA.CukCuk_Demo_NVMANH;" +
+                "Database = WEB07.MF936.NTDUNG.CukCuk;" +
                 "User Id = dev;" +
                 "Password = 12345678";
 
@@ -55,7 +54,7 @@ namespace MISA.CukCukApi.Controllers
             // 1. Khai báo thông tin kết nối DATABASE:
             var connectionString =
                 "Host = 47.241.69.179;" +
-                "Database = MISA.CukCuk_Demo_NVMANH;" +
+                "Database = WEB07.MF936.NTDUNG.CukCuk;" +
                 "User Id = dev;" +
                 "Password = 12345678";
 

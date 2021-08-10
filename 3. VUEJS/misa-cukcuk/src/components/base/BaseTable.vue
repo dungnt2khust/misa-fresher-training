@@ -33,7 +33,7 @@
 					<td>
 						<input type="checkbox" class="table-employee__checkbox" />
 					</td>
-					<td>{{ index + 1 }}</td>
+					<td>{{ indexBegin + index }}</td>
 					<td
 						v-for="(item, index) in tableStyle"
 						:title="formatDataTable(row, item.FieldName)"
@@ -64,6 +64,10 @@
 					return [];
 				},
 			},
+			indexBegin: {
+				type: Number,
+				default: -1	
+			}
 		},
 		data() {
 			return {
@@ -80,7 +84,7 @@
 		},
 		mounted() {
 			// Gọi đến hàm lấy dữ liệu từ API
-			this.getTableData(true);
+			this.getTableData(this.urlAPI);
 			// Bắt sự kiện nút xoá nhiều nhân viên
 			EventBus.$on("deleteEmployees", () => {
 				if (this.employeeDeleteData.size) {
@@ -108,6 +112,11 @@
 			});
 		},
 		watch: {
+			/**
+			 * Kiểm tra khi check box chọn tất cả có thay đổi không
+			 * CreatedBy: NTDUNG (10/08/2021)
+			 * @param {boolean} newValue
+			 */
 			checkAll: function(newValue) {
 				if (newValue) {
 					console.log(this.tableData);
@@ -115,28 +124,40 @@
 					console.log("uncheck all");
 				}
 			},
+			/**
+			 * Kiểm tra nếu urlAPI thay đổi thì load lại dữ liệu
+			 * CreatedBy: NTDUNG (10/08/2021)
+			 * @param {string} newValue
+			 */
+			urlAPI: function(newValue) {
+				this.getTableData(newValue);
+			}
 		},
 		methods: {
 			/**
 			 * Lấy dữ liệu vào gán vào mảng lưu trữ
 			 * CreatedBy: NTDUNG (31/07/2021)
-			 * @param {boolean} toast nếu true thì toast, false thì không
+			 * @param {string} urlAPI
 			 */
-			getTableData() {
+			getTableData(urlAPI) {
 				EventBus.$emit("ToastMessage", {
 					type: "warn",
 					content: "Đang tải dữ liệu. Vui lòng chờ",
 					duration: 5000,
 				});
 				axios
-					.get(this.urlAPI)
+					.get(urlAPI)
 					.then((res) => {
-						this.tableData = res.data;
-						// if (toast)
+						this.tableData = res.data.Data;
+						this.$emit('changeTotalPage', res.data.TotalPage);
+						this.$emit('changeTotalRecord', res.data.TotalRecord);
+						for(var value in res.data.Data[0]) {
+							console.log(value);
+						}
 						EventBus.$emit("ToastMessage", {
 							type: "success",
 							content: "Tải dữ liệu thành công",
-							duration: 5000,
+							duration: 2000,
 						});
 					})
 					.catch((res) => {

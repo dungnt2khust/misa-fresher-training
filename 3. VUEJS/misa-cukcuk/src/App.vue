@@ -22,8 +22,7 @@ import BaseToastMessage from './components/base/BaseToastMessage.vue'
 import BasePopupDialog from './components/base/BasePopupDialog.vue'
 import { EventBus } from './main'
 
-export default {
-
+export default {  
   name: 'App',
   components: {
     EmployeeHeader: TheHeader,
@@ -33,7 +32,7 @@ export default {
     EmployeeToast: BaseToastMessage,
     EmployeePopupDialog: BasePopupDialog
   },
-  mounted() {
+  mounted() { 
     setTimeout(() => {
       EventBus.$emit('ToastMessage', {
         type: 'info',

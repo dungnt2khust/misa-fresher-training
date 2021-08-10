@@ -4,7 +4,7 @@
         <div class="popup-container-lib">
         <div class="popup-header-lib">
             <span class="popup-title-lib">{{ title }}</span>
-            <div class="popup-cancel-lib">
+            <div @click="cancelBtnOnClick" class="popup-cancel-lib">
                 <img src="../../assets/icon/x.svg" alt="">
             </div>
         </div>

@@ -16,11 +16,11 @@
 			<li
 				@click="activeItem(index)"
 				v-for="(item, index) in dropupData"
-				:class="{ 'dropup-item--active': currIdx == index }"
+				:class="{ 'dropup-item--active': currIdxTranfer == index }"
 				:key="index"
 				class="dropup-item"
 			>
-				{{ item }}
+				{{ item['label'] }}
 			</li>
 		</ul>
 	</label>
@@ -30,13 +30,20 @@
 		name: "BaseDropupFix",
 		data() {
 			return {
-				currIdx: 1,
 				dropupState: false,
-				dropupData: ["Số nhân viên 50", "Số nhân viên 20", "Số nhân viên 10"],
 			};
 		},
 		props: {
-			// dropupData: Array
+			dropupData: {
+				type: Array,
+				default: function() {
+					return [];
+				}
+			},
+			currIdxTranfer: {
+				type: Number,
+				default: -1
+			}
 		},
 		methods: {
 			/**
@@ -58,7 +65,7 @@
 			 * CreatedBy: NTDUNG (09/08/2021)
 			 */
 			activeItem(index) {
-				this.currIdx = index;
+				this.$emit('changeOptionDropup', index);
 			},
 		},
 		computed: {
@@ -68,7 +75,7 @@
 			 * @returns {string} trả về chuỗi để đưa lên dropup
 			 */
 			dropupValue() {
-				return this.dropupData[this.currIdx];
+				return this.dropupData[this.currIdxTranfer]['label'];
 			},
 		},
 	};
