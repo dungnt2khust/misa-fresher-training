@@ -20,8 +20,9 @@
 			</li>
 			<li
 				@click="pageItemOnClick(index)"
-				v-for="index in pageNum"
-				:class="{'pagination__item--active': currIdx == index }"
+				v-for="index in pageNumCeil"
+                :style="{visibility: index <= pageNum ? 'visible' : 'hidden'}"
+				:class="{'pagination__item--active': currPage == index }"
 				:key="index"
 				class="pagination__item"
                 v-show="displayItemOnClick(index)"
@@ -44,7 +45,11 @@
 			</li>
 		</ul>
 		<div class="pagination__number-employee">
-			<DropUpEmployeeNum/>
+			<DropUpEmployeeNum
+                :currIdxTranfer="currOption"
+                :dropupData="optionPaging"
+                @changeOptionDropup="changeOptionPaging($event)"
+            />
 		</div>
 	</div>
 </template>
@@ -52,51 +57,72 @@
     import BaseDropUp from './BaseDropUp.vue'
 	export default {
 		name: "BasePagination",
-		data() {
-			return {
-				pageNum: 18,
-				currIdx: 1,
-                pageNumDisplay: 4
-			};
-		},
+        props: {
+            pageNum: {
+                type: Number,
+                default: -1
+            },
+            currPage: {
+                type: Number,
+                default: -1
+            },
+            pageNumDisplay: {
+                type: Number,
+                default: -1
+            },
+            currOption: {
+                type: Number,
+                default: -1
+            },
+            optionPaging: {
+                type: Array,
+                default: function() {
+                    return [];
+                }
+            },
+            totalRecord: {
+                type: Number,
+                default: -1
+            }
+        },
         methods: {
-            /**
+            /** 
              * Sự kiện click vào item của pagination
              * CreatedBy: NTDUNG (09/08/2021)
              * @param {number} index
              */
             pageItemOnClick(index) {
-                this.currIdx = index;
+                this.$emit('changeCurrPage', index);
             },
             /**
              * Sự kiện click vào first page
              * CreatedBy: NTDUNG (09/08/2021)
              */
             firstPageOnClick() {
-                this.currIdx = 1;
+                this.$emit('changeCurrPage', 1);
             },
             /**
              * Sự kiện click vào previous page
              * CreatedBy: NTDUNG (09/08/2021)
              */
             prevPageOnClick() {
-                if (this.currIdx != 1) {
-                    this.currIdx -= 1;
+                if (this.currPage != 1) {
+                    this.$emit('changeCurrPage', this.currPage - 1);
                 }
             },/**
              * Sự kiện click vào next page
              * CreatedBy: NTDUNG (09/08/2021)
              */
             nextPageOnClick() {
-                if (this.currIdx != this.pageNum) { 
-                    this.currIdx += 1;
+                if (this.currPage != this.pageNum) { 
+                    this.$emit('changeCurrPage', this.currPage + 1);
                 }
             },/**
              * Sự kiện click vào last page
              * CreatedBy: NTDUNG (09/08/2021)
              */
             lastPageOnClick() {
-                this.currIdx = this.pageNum;
+                this.$emit('changeCurrPage', this.pageNum);
             },
             /**
              * Cho phép hiển thị hoặc không các page item
@@ -104,13 +130,25 @@
              * @param {number} index
              */
             displayItemOnClick(index) {
-                var idxDisplay = Math.ceil(this.currIdx / this.pageNumDisplay);
+                var idxDisplay = Math.ceil(this.currPage / this.pageNumDisplay);
                 return index <= idxDisplay * this.pageNumDisplay && index >= (idxDisplay - 1) * this.pageNumDisplay + 1;
+            },
+            /**
+             * Xử lý sự kiện thay đổi option paging
+             * CreatedBy: NTDUNG (09/08/2021)
+             */
+            changeOptionPaging(newIndex) {
+                this.$emit('changeCurrOption', newIndex);
             }
-        },
+        }, 
         computed: {
             paginationDesc() {
-                return 'Hiển thị 1-10/1000 nhân viên';
+                var desc = ((this.currPage - 1) * this.optionPaging[this.currOption]['value'] + 1).toString() + ' - '
+                            + ((this.currPage) * this.optionPaging[this.currOption]['value']).toString() + '/' + this.totalRecord;
+                return `Hiển thị ${desc} nhân viên`;
+            },
+            pageNumCeil() {
+                return Math.ceil(this.pageNum / this.pageNumDisplay) * this.pageNumDisplay;
             }
         },
         components: {

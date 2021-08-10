@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,18 +27,7 @@ namespace MISA.CukCukApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy("Policy",
-                    builder =>
-                    {
-                        builder.WithOrigins("https://localhost:44304/")
-                                            .AllowAnyHeader()
-                                            .AllowAnyMethod()
-                                            .AllowAnyOrigin();
-                    });
-            });
-
+            services.AddCors();
             services.AddControllers().AddJsonOptions(jsonOptions =>
             {
                 //jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
@@ -75,7 +65,7 @@ namespace MISA.CukCukApi
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors(o => o.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
 
             app.UseAuthorization();
 

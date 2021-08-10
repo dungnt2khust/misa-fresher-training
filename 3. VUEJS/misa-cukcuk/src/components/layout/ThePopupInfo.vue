@@ -281,7 +281,42 @@ export default {
 		EventBus.$on("addEmployee", () => {
 			EventBus.$emit("getDropdownData");
 			this.popupState = true;
-			this.employeeData = {};
+			this.employeeData = {
+				EmployeeId: null,
+				EmployeeCode: null,
+				FirstName: null,
+				LastName: null,
+				FullName: null,
+				Gender: null,
+				DateOfBirth: null,
+				PhoneNumber: null,
+				Email: null,
+				Address: null,
+				IdentityNumber: null,
+				IdentityDate: null,
+				IdentityPlace: null,
+				JoinDate: null,
+				MartialStatus: null,
+				EducationalBackground: null,
+				QualificationId: null,
+				DepartmentId: null,
+				PositionId: null,
+				WorkStatus: null,
+				PersonalTaxCode: null,
+				Salary: null,
+				PositionCode: null,
+				PositionName: null,
+				DepartmentCode: null,
+				DepartmentName: null,
+				QualificationName: null,
+				GenderName: null,
+				EducationalBackgroundName: null,
+				MartialStatusName: null,
+				CreatedDate: null,
+				CreatedBy: null,
+				ModifiedDate: null,
+				ModifiedBy: null
+			};
 			this.method = "POST";
 			this.getNewEmployeeId();
 		});

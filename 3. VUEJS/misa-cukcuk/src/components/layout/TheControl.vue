@@ -8,6 +8,7 @@
 						<img src="../../assets/icon/search.png" alt="" />
 					</div>
 					<input
+						@change="inputSearchOnChange($event)"
 						tabindex="1"
 						class="table-search__input"
 						placeholder="Tìm theo mã, họ tên hoặc số điện thoại"
@@ -78,6 +79,14 @@
 			 */
 			deleteEmployees() {
 				EventBus.$emit('deleteEmployees');
+			},
+			/**
+			 * Bắt sự kiện thay đổi ở ô input search
+			 * CreatedBy: NTDUNG (10/08/2021)
+			 * @param {event} event
+			 */
+			inputSearchOnChange(event) {
+				this.$emit('changeInputSearch', event.target.value);
 			}
 		},
 		components: {
