@@ -24,7 +24,7 @@
 			<tbody class="table-employee__body">
 				<tr
 					@dblclick="tableRowOnDbClick($event)"
-					@click="tableRowOnClick($event)"
+					@click="tableRowOnClick(index)"
 					v-for="(row, index) in tableData"
 					:employeeId="row.EmployeeId"
 					:key="index"
@@ -79,6 +79,8 @@
 		},
 		data() {
 			return {
+				employeeCode: '',
+				employeeFullName: '',
 				tableData: [],
 				employeeDeleteData: [],
 				checkAll: false,
@@ -97,24 +99,44 @@
 			// Bắt sự kiện nút xoá nhiều nhân viên
 			EventBus.$on("deleteEmployees", () => {
 				if (this.employeeDeleteData.length) {
-					EventBus.$emit("showPopupDialog", {
-						type: "error",
-						title: "Xác nhân xoá dữ liệu",
-						content: `Bạn có muốn xoá thông tin ${this.employeeDeleteData.length} nhân viên này không`,
-						continueBtn: "Xác nhận xoá",
-						mode: "DELETEMULTI",
-					});
-					EventBus.$on("continueBtnOnClickDELETEMULTI", () => {
-						EventBus.$emit("ToastMessage", {
-							type: "warn",
-							content: "Đang xoá. Vui lòng chờ",
-							duration: 5000,
+					if (this.employeeDeleteData.length != 1) {
+						EventBus.$emit("showPopupDialog", {
+							type: "error",
+							title: "Xác nhân xoá dữ liệu",
+							content: `Bạn có muốn xoá thông tin <b>${this.employeeDeleteData.length}</b> nhân viên này không`,
+							continueBtn: "Xác nhận xoá",
+							mode: "DELETEMULTI",
 						});
-						this.employeeDeleteData.forEach((employeeId) => {
-							this.deleteEmployee(employeeId);
+						EventBus.$on("continueBtnOnClickDELETEMULTI", () => {
+							EventBus.$emit("ToastMessage", {
+								type: "warn",
+								content: "Đang xoá. Vui lòng chờ",
+								duration: 5000,
+							});
+							this.employeeDeleteData.forEach((employeeId) => {
+								this.deleteEmployee(employeeId);
+							});
+							this.employeeDeleteData = [];
+						});	
+					} else {
+						EventBus.$emit("showPopupDialog", {
+							type: "error",
+							title: "Xác nhân xoá dữ liệu",
+							content: `Bạn có muốn xoá thông tin nhân viên <b>${this.employeeFullName} -
+							 ${this.employeeCode}</b> này không?`,
+							continueBtn: "Xác nhận xoá",
+							mode: "DELETE",
 						});
-						this.employeeDeleteData = [];
-					});	
+						EventBus.$on("continueBtnOnClickDELETE", () => {
+							EventBus.$emit("ToastMessage", {
+								type: "warn",
+								content: "Đang xoá. Vui lòng chờ",
+								duration: 5000,
+							});
+							this.deleteEmployee(this.employeeDeleteData[0]);
+							this.employeeDeleteData = [];
+						});		
+					}	
 				} else {
 					EventBus.$emit("showPopupDialog", {
 						type: "info",
@@ -132,9 +154,13 @@
 			 */
 			checkAll: function(newValue) {
 				if (newValue) {
-					console.log(this.tableData);
+					console.log(true);
+					this.employeeDeleteData = [];
+					this.tableData.forEach((item) => {
+						this.employeeDeleteData.push(item['EmployeeId']);
+					});
 				} else {
-					console.log("uncheck all");
+					this.employeeDeleteData = [];
 				}
 			},
 			/**
@@ -197,24 +223,21 @@
 			/**
 			 * Bắt sự kiện click vào từng dòng trên table (Lưu employeeid ở từng dòng vào set)
 			 * CreatedBy: NTDUNG (05/08/2021)
-			 * ModifiedBy: NTDUNG (07/08/2021)
-			 * @param {event} event
+			 * ModifiedBy: NTDUNG (11/08/2021)
+			 * @param {number} index
 			 */
-			tableRowOnClick(event) {
-				var tableRow;
-				if (event.target.tagName == "INPUT") {
-					tableRow = event.target.parentElement.parentElement;
-				} else {
-					tableRow = event.target.parentElement;
-				}
-				var employeeId = tableRow.getAttribute("EmployeeId");
+			tableRowOnClick(index) {
+				var employeeId = this.tableData[index]['EmployeeId'];
+				this.employeeFullName = this.tableData[index]['FullName'];
+				this.employeeCode = this.tableData[index]['EmployeeCode'];
+
 				var foundIdx = this.employeeDeleteData.indexOf(employeeId);
 				if (foundIdx != -1) {
 					this.employeeDeleteData.splice(foundIdx, 1);
 				} else {
 					this.employeeDeleteData.push(employeeId);
 				}
-				console.log(this.employeeDeleteData);
+				this.employeeDeleteData;
 			},
 			/**
 			 * Format lại dữ liệu trong bảng
