@@ -21,7 +21,7 @@
 			<li
 				@click="pageItemOnClick(index)"
 				v-for="index in pageNumCeil"
-                :style="{visibility: index <= pageNum ? 'visible' : 'hidden'}"
+                :style="{visibility: index <= totalPage ? 'visible' : 'hidden'}"
 				:class="{'pagination__item--active': currPage == index }"
 				:key="index"
 				class="pagination__item"
@@ -58,7 +58,7 @@
 	export default {
 		name: "BasePagination",
         props: {
-            pageNum: {
+            totalPage: {
                 type: Number,
                 default: -1
             },
@@ -114,7 +114,7 @@
              * CreatedBy: NTDUNG (09/08/2021)
              */
             nextPageOnClick() {
-                if (this.currPage != this.pageNum) { 
+                if (this.currPage != this.totalPage) { 
                     this.$emit('changeCurrPage', this.currPage + 1);
                 }
             },/**
@@ -122,7 +122,7 @@
              * CreatedBy: NTDUNG (09/08/2021)
              */
             lastPageOnClick() {
-                this.$emit('changeCurrPage', this.pageNum);
+                this.$emit('changeCurrPage', this.totalPage);
             },
             /**
              * Cho phép hiển thị hoặc không các page item
@@ -143,12 +143,14 @@
         }, 
         computed: {
             paginationDesc() {
-                var desc = ((this.currPage - 1) * this.optionPaging[this.currOption]['value'] + 1).toString() + ' - '
-                            + ((this.currPage) * this.optionPaging[this.currOption]['value']).toString() + '/' + this.totalRecord;
+                var beginIndex = ((this.currPage - 1) * this.optionPaging[this.currOption]['value'] + 1).toString();
+                var endIndex = ((this.currPage) * this.optionPaging[this.currOption]['value'] <= this.totalRecord ? ((this.currPage) * this.optionPaging[this.currOption]['value']) : this.totalRecord).toString();
+                var desc = beginIndex + ' - '
+                            + endIndex + '/' + this.totalRecord;
                 return `Hiển thị ${desc} nhân viên`;
             },
             pageNumCeil() {
-                return Math.ceil(this.pageNum / this.pageNumDisplay) * this.pageNumDisplay;
+                return Math.ceil(this.totalPage / this.pageNumDisplay) * this.pageNumDisplay;
             }
         },
         components: {

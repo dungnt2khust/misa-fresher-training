@@ -84,13 +84,13 @@
 				this.currIdx = index;
 				if (index != -1 && typeof this.dropdownData[0] == "object") {
 					// Nếu là gender thì sẽ truyền cả GenderId
-					EventBus.$emit("changeInputValue", {
+					EventBus.$emit("changeDropdownValue", {
 						NewValue: this.dropdownData[index][this.dropdownField + "Id"],
 						InputField: this.dropdownField,
 					});
 					if (this.dropdownField == "Gender")
 						// Tất cả các trường hợp đều truyền Name
-						EventBus.$emit("changeInputValue", {
+						EventBus.$emit("changeDropdownValue", {
 							NewValue: this.dropdownData[index][this.dropdownField + "Name"],
 							InputField: this.dropdownField + "Name",
 						});

@@ -2,7 +2,6 @@
     height: 40px;
     width: 100%;
     background-color: #fff;
-    position: absolute;
     top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -11,35 +10,36 @@
     display: flex;
     justify-content: space-between;
     position: relative;
+    z-index: 100000;
     margin-top: 5px;
 }
 
-.combobox.show .combobox__list {
+.combobox.combobox--show .combobox__list {
     display: block;
 }
 
-.combobox.show .combobox__icon {
+.combobox.combobox--show .combobox__icon {
     transform: rotate(180deg);
     transition: all 0.3s ease;
 }
 
-.combobox.show {
+.combobox.combobox--show {
     border: 1px solid #019160;
 }
 
-.combobox.show .combobox__dropdown {
+.combobox.combobox--show .combobox__dropdown {
     border-left: 1px solid #019160
 }
 
-.combobox.show .combobox__input-cancel {
+.combobox.combobox--show .combobox__input-cancel {
     display: block;
 }
 
-.combobox.error {
+.combobox.combobox--error {
     border: 1px solid red;
 }
 
-.combobox.error .combobox__dropdown {
+.combobox.combobox--error .combobox__dropdown {
     border-left: 1px solid red;
 }
 

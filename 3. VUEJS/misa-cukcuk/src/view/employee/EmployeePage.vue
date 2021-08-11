@@ -12,7 +12,7 @@
 				@changeTotalPage="changeTotalPage($event)"
 			/>
 			<EmployeePagination
-				:pageNum="pageNum"
+				:totalPage="totalPage"
 				:currPage="currPage"
 				:pageNumDisplay="pageNumDisplay"
 				:currOption="currOption"
@@ -28,6 +28,7 @@
 	import TheControl from '../../components/layout/TheControl.vue'
 	import BaseTable from '../../components/base/BaseTable.vue'
 	import BasePagination from '../../components/base/BasePagination.vue'
+	import { EventBus} from '../../main'
 
 	export default {
 		name: "TheContainer",
@@ -46,11 +47,13 @@
 					{HeaderName: 'Tình trạng công việc', FieldName: 'WorkStatus', Style: 2},
 				],
 				totalRecord: 0,
-				pageNum: 18,
+				totalPage: 18,
 				currPage: 1,
                 pageNumDisplay: 4, 
                 currOption: 2,
 				searchMessage: 'nv',
+				departmentId: '',
+				positionId: '',
                 optionPaging: [
                     {value: 20, label: 'Số nhân viên 20/trang'},
                     {value: 30, label: 'Số nhân viên 30/trang'},
@@ -58,6 +61,12 @@
                     {value: 50, label: 'Số nhân viên 50/trang'}
                 ]
 			}	
+		},
+		mounted() {
+			EventBus.$on('filterEmployee', data => {
+				this.departmentId = data['Department'];
+				this.positionId = data['Position'];
+			});
 		},
 		methods: {
 			/**
@@ -76,25 +85,54 @@
 			changeCurrOption(newOption) {
 				this.currOption = newOption;
 			},
+			/**
+			 * Bắt sự kiện thay đổi tổng số trang 
+			 * CreatedBy: NTDUNG (10/08/2021)
+			 * @param {number} totalRecord
+			 */
 			changeTotalPage(totalPage) {
-				this.pageNum = totalPage;
+				this.totalPage = totalPage;
 			},
+			/**
+			 * Bắt sự kiện thay đổi tổng số bản ghi
+			 * CreatedBy: NTDUNG (10/08/2021)
+			 * @param {number} totalRecord
+			 */
 			changeTotalRecord(totalRecord) {
 				this.totalRecord = totalRecord;
 			},
-			changeInputSearch(data) {
-				if (data == '') {
+			/**
+			 * Bắt sự kiện thay đổi ô input tìm kiếm 
+			 * CreatedBy: NTDUNG (10/08/2021)
+			 * @param {string} searchMessage
+			 */
+			changeInputSearch(searchMessage) {
+				if (searchMessage == '') {
 					this.searchMessage = 'nv';
 				} else {
-					this.searchMessage = data;
+					this.searchMessage = searchMessage;
 				}
 			},
 			
+			
 		},
 		computed: {	
+			/**
+			 * Tính toán đường dẫn API theo các thông tin tham số đưa vào 
+			 * CreatedBy: NTDUNG (11/08/2021)
+			 */
 			urlAPI() {
-				return `http://cukcuk.manhnv.net/v1/Employees/employeeFilter?pageSize=${this.optionPaging[this.currOption]['value']}&pageNumber=${this.currPage}&employeeFilter=${this.searchMessage}`;
+				var departmentQuery = this.departmentId != '' ? `departmentId=${this.departmentId}` : '';
+				var positionQuery = this.positionId != '' ? `positionId=${this.positionId}` : '';
+				return `http://cukcuk.manhnv.net/v1/Employees/employeeFilter
+				?pageSize=${this.optionPaging[this.currOption]['value']}
+				&&pageNumber=${this.currPage}&&employeeFilter=${this.searchMessage}
+				&&${departmentQuery}&&${positionQuery}`;
 			},
+			/**
+			 * Chỉ số bắt đầu của bảng đổ dữ liệu
+			 * CreatedBy: NTDUNG (11/08/2021)
+			 */
 			indexBegin() {
 				return (this.currPage - 1) * this.optionPaging[this.currOption]['value'] + 1;
 			}

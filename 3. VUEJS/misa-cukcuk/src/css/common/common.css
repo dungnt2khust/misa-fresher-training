@@ -40,3 +40,6 @@ input[type=number]::-webkit-outer-spin-button {
 .invalid-input {
     border: 1px solid red !important;
 }
+.focus-input {
+    border: 1px solid #019160 !important;
+}
