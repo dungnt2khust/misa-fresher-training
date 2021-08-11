@@ -106,17 +106,17 @@ export default {
 			this.currIdx = index;
 			if (index != -1) {
 				// Truyền Id mới
-				EventBus.$emit("changeInputValue", {
+				EventBus.$emit("changeDropdownValue", {
 					NewValue: this.dropdownData[index][this.dropdownField + 'Id'],
 					InputField: this.dropdownField + 'Id',
 				});
 				// Truyền Name mới
-				EventBus.$emit("changeInputValue", {
+				EventBus.$emit("changeDropdownValue", {
 					NewValue: this.dropdownData[index][this.dropdownField + "Name"],
 					InputField: this.dropdownField + "Name",
 				});
 				// Truyền Code mới
-				EventBus.$emit("changeInputValue", {
+				EventBus.$emit("changeDropdownValue", {
 					NewValue: this.dropdownData[index][this.dropdownField + "Code"],
 					InputField: this.dropdownField + "Code",
 				});

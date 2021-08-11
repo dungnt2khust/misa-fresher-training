@@ -282,7 +282,6 @@ export default {
 			EventBus.$emit("getDropdownData");
 			this.popupState = true;
 			this.employeeData = {
-				EmployeeId: null,
 				EmployeeCode: null,
 				FirstName: null,
 				LastName: null,
@@ -318,13 +317,13 @@ export default {
 				ModifiedBy: null
 			};
 			this.method = "POST";
-			this.getNewEmployeeId();
+			this.getNewEmployeeCode();
 		});
 		/**
 		 * Lắng nghe sự kiện thay đổi input
 		 * CreatedBy: NTDUNG (04/08/2021)
 		 */
-		EventBus.$on("changeInputValue", (data) => {
+		EventBus.$on("changeDropdownValue", (data) => {
 			this.changeInputValue(data["NewValue"], data["InputField"]);
 		});
 	},
@@ -346,8 +345,9 @@ export default {
 		/**
 		 * Lấy mã nhân viên mới
 		 * CreatedBy: NTDUNG (31/07/2021)
+		 * ModifiedBy: NTDUNG (11/08/2021)
 		 */
-		getNewEmployeeId() {
+		getNewEmployeeCode() {
 			axios
 				.get("http://cukcuk.manhnv.net/v1/Employees/NewEmployeeCode")
 				.then((res) => {
@@ -403,67 +403,13 @@ export default {
 			});
 
 			if (checkForm) {
+				console.log(JSON.stringify(this.employeeData));
 				// Ẩn popup đi
 				this.popupState = false;
 				if (this.method == "POST") {
-					// Thêm ngày tạo mới, người tạo mới
-					this.$set(this.employeeData, "CreatedDate", this.getNewDateJSON);
-					this.$set(this.employeeData, "CreatedBy", this.accountName);
-					EventBus.$emit("ToastMessage", {
-						type: "warn",
-						content: "Đang tạo mới. Vui lòng chờ",
-						duration: 5000,
-					});
-					// Tạo mới thông tin
-					axios
-						.post(`http://cukcuk.manhnv.net/v1/Employees`, this.employeeData)
-						.then(() => {
-							EventBus.$emit("ToastMessage", {
-								type: "success",
-								content: "Tạo mới thành công",
-								duration: 5000,
-							});
-							this.reloadTableData();
-						})
-						.catch((res) => {
-							console.log(res);
-							EventBus.$emit("ToastMessage", {
-								type: "error",
-								content: "Tạo mới thất bại. Vui lòng liên hệ MISA",
-								duration: 5000,
-							});
-						});
+					this.creatEmployee();
 				} else if (this.method == "PUT") {
-					// Thêm ngày chỉnh sửa, người chỉnh sửa
-					this.$set(this.employeeData, "ModifiedDate", this.getNewDateJSON);
-					this.$set(this.employeeData, "ModifiedBy", this.accountName);
-					EventBus.$emit("ToastMessage", {
-						type: "warn",
-						content: "Đang chỉnh sửa. Vui lòng chờ",
-						duration: 5000,
-					});
-					// Chỉnh sửa thông tin
-					axios
-						.put(
-							`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`,
-							this.employeeData
-						)
-						.then(() => {
-							EventBus.$emit("ToastMessage", {
-								type: "success",
-								content: "Chỉnh sửa thành công",
-								duration: 5000,
-							});
-							this.reloadTableData();
-						})
-						.catch((res) => {
-							console.log(res);
-							EventBus.$emit("ToastMessage", {
-								type: "error",
-								content: "Chỉnh sửa thất bại. Vui lòng liên hệ MISA",
-								duration: 5000,
-							});
-						});
+					this.updateEmployee();
 				}
 			}
 		},
@@ -471,11 +417,71 @@ export default {
 		 * Thêm mới thông tin nhân viên
 		 * CreatedBy: NTDUNG (09/08/2021)
 		 */
-		creatEmployee() {},
+		creatEmployee() {
+			// Thêm ngày tạo mới, người tạo mới
+			this.$set(this.employeeData, "CreatedDate", this.getNewDateJSON);
+			this.$set(this.employeeData, "CreatedBy", this.accountName);
+			EventBus.$emit("ToastMessage", {
+				type: "warn",
+				content: "Đang tạo mới. Vui lòng chờ",
+				duration: 5000,
+			});
+			// Tạo mới thông tin
+			axios
+				.post(`http://cukcuk.manhnv.net/v1/Employees`, this.employeeData)
+				.then(() => {
+					EventBus.$emit("ToastMessage", {
+						type: "success",
+						content: "Tạo mới thành công",
+						duration: 5000,
+					});
+					this.reloadTableData();
+				})
+				.catch((res) => {
+					console.log(res);
+					EventBus.$emit("ToastMessage", {
+						type: "error",
+						content: "Tạo mới thất bại. Vui lòng liên hệ MISA",
+						duration: 5000,
+					});
+				});
+		},
 		/**
 		 * Chỉnh sửa thông tin nhân viên
-		 * CreatedBy:
+		 * CreatedBy: NTDUNG (11/08/2021)
 		 */
+		updateEmployee() {
+			// Thêm ngày chỉnh sửa, người chỉnh sửa
+			this.$set(this.employeeData, "ModifiedDate", this.getNewDateJSON);
+			this.$set(this.employeeData, "ModifiedBy", this.accountName);
+			EventBus.$emit("ToastMessage", {
+				type: "warn",
+				content: "Đang chỉnh sửa. Vui lòng chờ",
+				duration: 5000,
+			});
+			// Chỉnh sửa thông tin
+			axios
+				.put(
+					`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`,
+					this.employeeData
+				)
+				.then(() => {
+					EventBus.$emit("ToastMessage", {
+						type: "success",
+						content: "Chỉnh sửa thành công",
+						duration: 5000,
+					});
+					this.reloadTableData();
+				})
+				.catch((res) => {
+					console.log(res);
+					EventBus.$emit("ToastMessage", {
+						type: "error",
+						content: "Chỉnh sửa thất bại. Vui lòng liên hệ MISA",
+						duration: 5000,
+					});
+				});
+		},
 		/**
 		 * Xoá thông tin nhân viên
 		 * CreatedBy: NTDUNG (02/08/2021)
@@ -531,6 +537,7 @@ export default {
 		 * @param {string} inputField
 		 */
 		changeInputValue(newValue, inputField) {
+			console.log(inputField, newValue);
 			this.$set(this.employeeData, inputField, newValue);
 		},
 	},

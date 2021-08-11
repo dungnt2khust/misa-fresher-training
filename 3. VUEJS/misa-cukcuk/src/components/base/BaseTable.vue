@@ -79,7 +79,7 @@
 		created() {
 			// Lắng nghe sự kiện load lại dữ liệu
 			EventBus.$on("reloadTableData", () => {
-				this.getTableData(false);
+				this.getTableData(this.urlAPI);
 			});
 		},
 		mounted() {
@@ -143,17 +143,14 @@
 				EventBus.$emit("ToastMessage", {
 					type: "warn",
 					content: "Đang tải dữ liệu. Vui lòng chờ",
-					duration: 5000,
+					duration: 2000,
 				});
 				axios
 					.get(urlAPI)
 					.then((res) => {
 						this.tableData = res.data.Data;
 						this.$emit('changeTotalPage', res.data.TotalPage);
-						this.$emit('changeTotalRecord', res.data.TotalRecord);
-						for(var value in res.data.Data[0]) {
-							console.log(value);
-						}
+						this.$emit('changeTotalRecord', res.data.TotalRecord);	
 						EventBus.$emit("ToastMessage", {
 							type: "success",
 							content: "Tải dữ liệu thành công",

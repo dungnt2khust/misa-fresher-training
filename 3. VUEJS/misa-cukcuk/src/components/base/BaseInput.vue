@@ -66,6 +66,9 @@ export default {
 		}
 	},
 	created() {
+		/**
+		 * Lắng nghe sự kiện validate input
+		 */
 		EventBus.$on("validateEmployeeInput", () => {
 			let inputElement = this.$el.querySelector("input");
 			this.validateInput(inputElement, "input");
@@ -75,6 +78,7 @@ export default {
 		/**
 		 * Validate các dữ liệu đã nhập ở phía input
 		 * CreatedBy: NTDUNG (02/08/2021)
+		 * ModifiedBy: NTDUNG (11/08/2021)
 		 * @param {event, element} inputParam bắt trong 2 trường hợp input on blur
 		 * và bấm nút ở form nên tham số truyền vào có 2 kiểu
 		 * @param {string} type
@@ -98,8 +102,18 @@ export default {
 				this.validateSpecialField(this.inputField, inputElement)
 			) {
 				// Khi đã validate đủ thì cho phép thay đổi giá trị input (thay đổi thông tin phía form)
-				if (this.inputType == "text")
-					this.changeInputValue(inputElement.value, this.inputField);
+				if (this.inputType == "text") {
+					switch (this.inputField) {
+						case 'Salary':
+							this.changeInputValue(parseInt(inputElement.value.replaceAll('.', '')), this.inputField);
+							break;
+						case 'PersonalTaxCode':
+							this.changeInputValue(parseInt(inputElement.value), this.inputField);
+							break;
+						default: 
+							this.changeInputValue(inputElement.value, this.inputField);
+					}
+				}
 				else if (this.inputType == "date")
 					this.changeInputValue(
 						inputElement.value + "T00:00:00",
@@ -168,13 +182,6 @@ export default {
 						inputElement.classList.add("invalid-input");
 						valid = false;
 					}
-					break;
-				// Những trường hợp trả về số
-				case "Salary":
-					inputElement.value = parseInt(inputElement.value.replaceAll('.', ''));
-					break;
-				case "PersonalTaxCode":
-					inputElement.value = parseInt(inputElement.value);
 					break;
 			}
 			return valid;

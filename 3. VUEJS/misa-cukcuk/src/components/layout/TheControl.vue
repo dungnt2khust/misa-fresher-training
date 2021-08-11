@@ -3,12 +3,14 @@
 		<div class="container__header-left">
 			<span class="table-name">Danh sách nhân viên</span>
 			<div class="table-filter">
-				<div class="table-search">
+				<div class="table-search" :class="{'focus-input': focusInput}">
 					<div class="table-search__icon">
 						<img src="../../assets/icon/search.png" alt="" />
 					</div>
 					<input
-						@change="inputSearchOnChange($event)"
+						@focus="focusInput = true"
+						@blur="focusInput = false"
+						@input="inputSearchOnInput($event)"
 						tabindex="1"
 						class="table-search__input"
 						placeholder="Tìm theo mã, họ tên hoặc số điện thoại"
@@ -17,9 +19,15 @@
 				</div>
 				<BaseCombobox
 					style="margin-right: 7px;"
-					placeHolder="Tất cả phòng ban"/>
+					@changeComboboxValue="changeComboboxValue($event)"
+					placeHolder="Tất cả phòng ban"
+					comboboxField="Department"
+					:comboboxData="departmentFilterData"/>
 				<BaseCombobox
-					placeHolder="Tất cả vị trí"/>	
+					@changeComboboxValue="changeComboboxValue($event)"
+					placeHolder="Tất cả vị trí"
+					comboboxField="Position"
+					:comboboxData="positionFilterData"/>	
 			</div>
 		</div>
 		<div class="container__header-right">
@@ -42,21 +50,48 @@
 </template>
 <script>
 	import BaseCombobox from '../base/BaseCombobox.vue'
+	import axios from 'axios'
 	import { EventBus } from "../../main"
 
 	export default {
 		name: "TheControl",
 		data() {
 			return {
+				focusInput: false,
+				filterData: {
+					Department: '',
+					Position: ''
+				},
+				timeoutInput: null,
 				// DEPARTMENT
+				departmentFilterData: [],
 				APIurl__DEPARTMENT: "http://cukcuk.manhnv.net/api/Department",
 				dropdownDefaultVal__DEPARTMENT: "Tất cả phòng ban",
 				dropdownName__DEPARTMENT: "Department",
 				// POSITION
+				positionFilterData: [],
 				APIurl__POSITION: "http://cukcuk.manhnv.net/v1/Positions",
 				dropdownDefaultVal__POSITION: "Tất cả vị trí",
 				dropdownName__POSITION: "Position",
 			};
+		},
+		mounted() {
+			// Lấy dữ liệU phòng ban
+			axios.get(this.APIurl__DEPARTMENT)
+				.then(res => {
+					this.departmentFilterData = res.data;
+				})
+				.catch(res => {
+					console.log(res)
+				});
+			// Lấy dữ liệu vị trí
+			axios.get(this.APIurl__POSITION)
+				.then(res => {
+					this.positionFilterData = res.data;
+				})
+				.catch(res => {
+					console.log(res)
+				});
 		},
 		methods: {
 			/**
@@ -81,13 +116,28 @@
 				EventBus.$emit('deleteEmployees');
 			},
 			/**
-			 * Bắt sự kiện thay đổi ở ô input search
+			 * Bắt sự kiện nhập vào ở ô input search
 			 * CreatedBy: NTDUNG (10/08/2021)
 			 * @param {event} event
 			 */
-			inputSearchOnChange(event) {
-				this.$emit('changeInputSearch', event.target.value);
+			inputSearchOnInput(event) {
+				clearTimeout(this.timeoutInput);
+
+				this.timeoutInput = setTimeout(() => {
+					this.$emit('changeInputSearch', event.target.value);
+				}, 500);
+			},
+			/**
+			 * Bắt sự kiện combobox thay đổi
+			 * CreatedBy: NTDUNG (11/08/2021)
+			 * @param {data} 
+			 */
+			changeComboboxValue(data) {
+				this.filterData[data.ComboboxField] = data.Value;
+				EventBus.$emit('filterEmployee', this.filterData);
 			}
+		},
+		computed: {	
 		},
 		components: {
 			BaseCombobox
