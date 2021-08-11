@@ -10,7 +10,7 @@
 					<input
 						@focus="focusInput = true"
 						@blur="focusInput = false"
-						@change="inputSearchOnChange($event)"
+						@input="inputSearchOnInput($event)"
 						tabindex="1"
 						class="table-search__input"
 						placeholder="Tìm theo mã, họ tên hoặc số điện thoại"
@@ -62,6 +62,7 @@
 					Department: '',
 					Position: ''
 				},
+				timeoutInput: null,
 				// DEPARTMENT
 				departmentFilterData: [],
 				APIurl__DEPARTMENT: "http://cukcuk.manhnv.net/api/Department",
@@ -115,12 +116,16 @@
 				EventBus.$emit('deleteEmployees');
 			},
 			/**
-			 * Bắt sự kiện thay đổi ở ô input search
+			 * Bắt sự kiện nhập vào ở ô input search
 			 * CreatedBy: NTDUNG (10/08/2021)
 			 * @param {event} event
 			 */
-			inputSearchOnChange(event) {
-				this.$emit('changeInputSearch', event.target.value);
+			inputSearchOnInput(event) {
+				clearTimeout(this.timeoutInput);
+
+				this.timeoutInput = setTimeout(() => {
+					this.$emit('changeInputSearch', event.target.value);
+				}, 500);
 			},
 			/**
 			 * Bắt sự kiện combobox thay đổi
