@@ -46,6 +46,7 @@ namespace MISA.CukCukApi.Controllers
         /// <summary>
         /// Lấy dữ liệu một khách hàng với customerId
         /// </summary>
+        /// CreatedBy: NTDUNG (07/08/2021)
         /// <param name="customerId">Là id của một khách hàng trong cơ sở dữ liệu</param>
         /// <returns>Trả về mã code và object chứa thông tin một khách hàng có id trùng khớp</returns> 
         [HttpGet("{customerId}")]
@@ -75,6 +76,7 @@ namespace MISA.CukCukApi.Controllers
         /// <summary>
         /// Tạo thông tin một khách hàng mới trong DATABASE
         /// </summary>
+        /// CreatedBy: NTDUNG (07/08/2021)
         /// <param name="customer">Dữ liệu của khách hàng mới</param>
         /// <returns>Trả về mã code và số dòng bị ảnh hưởng (0 không thành công, 1 đã tạo thành công)</returns>
         [HttpPost]
@@ -133,6 +135,7 @@ namespace MISA.CukCukApi.Controllers
         /// <summary>
         /// Chỉnh sửa thông tin một khách hàng theo customerId
         /// </summary>
+        /// CreatedBy: NTDUNG (07/08/2021)
         /// <param name="customer"> Dữ liệu mới cập nhật cho một khách hàng</param>
         /// <param name="customerId"> Id của khách hàng</param>
         /// <returns>Trả về mã code và số dòng bị ảnh hưởng (0 không thành công, 1 đã tạo thành công)</returns>
@@ -193,6 +196,7 @@ namespace MISA.CukCukApi.Controllers
         /// <summary>
         /// Xoá một khách hàng theo customerId
         /// </summary>
+        /// CreatedBy: NTDUNG (07/08/2021)
         /// <param name="customerId">Id của khách hàng</param>
         /// <returns>Trả về mã code và số dòng bị ảnh hưởng (0 không thành công, 1 đã tạo thành công)</returns>
         [HttpDelete("{customerId}")]
