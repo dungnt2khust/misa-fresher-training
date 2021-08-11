@@ -29,9 +29,17 @@
 					:employeeId="row.EmployeeId"
 					:key="index"
 					class="table-employee__row"
+					:class="{
+						'table-employee__row--selected':
+							employeeDeleteData.indexOf(row.EmployeeId) != -1,
+					}"
 				>
 					<td>
-						<input type="checkbox" class="table-employee__checkbox" />
+						<input
+							type="checkbox"
+							class="table-employee__checkbox"
+							:checked="employeeDeleteData.indexOf(row.EmployeeId) != -1"
+						/>
 					</td>
 					<td>{{ indexBegin + index }}</td>
 					<td
@@ -66,13 +74,13 @@
 			},
 			indexBegin: {
 				type: Number,
-				default: -1	
-			}
+				default: -1,
+			},
 		},
 		data() {
 			return {
 				tableData: [],
-				employeeDeleteData: new Set(),
+				employeeDeleteData: [],
 				checkAll: false,
 			};
 		},
@@ -83,15 +91,20 @@
 			});
 		},
 		mounted() {
+			// Gán những dòng được check vào table
 			// Gọi đến hàm lấy dữ liệu từ API
 			this.getTableData(this.urlAPI);
 			// Bắt sự kiện nút xoá nhiều nhân viên
 			EventBus.$on("deleteEmployees", () => {
-				if (this.employeeDeleteData.size) {
-					var confirmResult = confirm(
-						"Do you want delete these " + this.employeeDeleteData.size
-					);
-					if (confirmResult) {
+				if (this.employeeDeleteData.length) {
+					EventBus.$emit("showPopupDialog", {
+						type: "error",
+						title: "Xác nhân xoá dữ liệu",
+						content: `Bạn có muốn xoá thông tin ${this.employeeDeleteData.length} nhân viên này không`,
+						continueBtn: "Xác nhận xoá",
+						mode: "DELETEMULTI",
+					});
+					EventBus.$on("continueBtnOnClickDELETEMULTI", () => {
 						EventBus.$emit("ToastMessage", {
 							type: "warn",
 							content: "Đang xoá. Vui lòng chờ",
@@ -100,8 +113,8 @@
 						this.employeeDeleteData.forEach((employeeId) => {
 							this.deleteEmployee(employeeId);
 						});
-						this.employeeDeleteData.clear();
-					}
+						this.employeeDeleteData = [];
+					});	
 				} else {
 					EventBus.$emit("showPopupDialog", {
 						type: "info",
@@ -131,7 +144,7 @@
 			 */
 			urlAPI: function(newValue) {
 				this.getTableData(newValue);
-			}
+			},
 		},
 		methods: {
 			/**
@@ -149,8 +162,8 @@
 					.get(urlAPI)
 					.then((res) => {
 						this.tableData = res.data.Data;
-						this.$emit('changeTotalPage', res.data.TotalPage);
-						this.$emit('changeTotalRecord', res.data.TotalRecord);	
+						this.$emit("changeTotalPage", res.data.TotalPage);
+						this.$emit("changeTotalRecord", res.data.TotalRecord);
 						EventBus.$emit("ToastMessage", {
 							type: "success",
 							content: "Tải dữ liệu thành công",
@@ -193,17 +206,15 @@
 					tableRow = event.target.parentElement.parentElement;
 				} else {
 					tableRow = event.target.parentElement;
-					tableRow.querySelector("input").checked = !tableRow.querySelector(
-						"input"
-					).checked;
 				}
-				tableRow.classList.toggle("table-employee__row--selected");
 				var employeeId = tableRow.getAttribute("EmployeeId");
-				if (this.employeeDeleteData.has(employeeId)) {
-					this.employeeDeleteData.delete(employeeId);
+				var foundIdx = this.employeeDeleteData.indexOf(employeeId);
+				if (foundIdx != -1) {
+					this.employeeDeleteData.splice(foundIdx, 1);
 				} else {
-					this.employeeDeleteData.add(employeeId);
+					this.employeeDeleteData.push(employeeId);
 				}
+				console.log(this.employeeDeleteData);
 			},
 			/**
 			 * Format lại dữ liệu trong bảng
@@ -266,7 +277,7 @@
 				axios
 					.delete(`http://cukcuk.manhnv.net/v1/Employees/${employeeId}`)
 					.then(() => {
-						this.getTableData();
+						this.getTableData(this.urlAPI);
 					})
 					.catch((res) => {
 						console.log(res);
@@ -276,7 +287,7 @@
 							duration: 5000,
 						});
 					});
-			},
+			}
 		},
 	};
 </script>
