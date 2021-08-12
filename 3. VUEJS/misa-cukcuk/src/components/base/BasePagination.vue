@@ -1,7 +1,6 @@
 <template lang="">
 	<div class="pagination">
-		<p class="pagination__text">
-            {{ paginationDesc }}
+		<p class="pagination__text" v-html="paginationDesc">
         </p>
 		<ul class="pagination__list">
 			<li @click="firstPageOnClick()" class="pagination__item">
@@ -18,10 +17,11 @@
 					alt=""
 				/>
 			</li>
+<!-- :style="{visibility: index <= totalPage ? 'visible' : 'hidden'}" -->
 			<li
 				@click="pageItemOnClick(index)"
-				v-for="index in pageNumCeil"
-                :style="{visibility: index <= totalPage ? 'visible' : 'hidden'}"
+				v-for="index in totalPage"
+                
 				:class="{'pagination__item--active': currPage == index }"
 				:key="index"
 				class="pagination__item"
@@ -147,7 +147,7 @@
                 var endIndex = ((this.currPage) * this.optionPaging[this.currOption]['value'] <= this.totalRecord ? ((this.currPage) * this.optionPaging[this.currOption]['value']) : this.totalRecord).toString();
                 var desc = beginIndex + ' - '
                             + endIndex + '/' + this.totalRecord;
-                return `Hiển thị ${desc} nhân viên`;
+                return `Hiển thị <b>${desc}</b> nhân viên`;
             },
             pageNumCeil() {
                 return Math.ceil(this.totalPage / this.pageNumDisplay) * this.pageNumDisplay;
