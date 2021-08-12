@@ -320,12 +320,20 @@ export default {
 			this.getNewEmployeeCode();
 		});
 		/**
-		 * Lắng nghe sự kiện thay đổi input
+		 * Lắng nghe sự kiện thay đổi dropdown
 		 * CreatedBy: NTDUNG (04/08/2021)
 		 */
 		EventBus.$on("changeDropdownValue", (data) => {
 			this.changeInputValue(data["NewValue"], data["InputField"]);
 		});
+		/**
+		 * Lắng nghe sự kiện thay đổi input
+		 * CreatedBy: NTDUNG (11/08/2021)
+		 */
+		EventBus.$on("changeInputValue", (data) => {
+			this.changeInputValue(data["NewValue"], data["InputField"]);
+		});
+
 	},
 	methods: {
 		/**

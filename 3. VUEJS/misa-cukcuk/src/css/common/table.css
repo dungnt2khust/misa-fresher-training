@@ -52,7 +52,7 @@
         } 
 
         .table-employee__row.table-employee__row--selected {
-            background-color: #efefef;
+            background-color: #cacaca;
         }
             .table-employee__checkbox {
                 height: 20px;

@@ -24,14 +24,22 @@
 			<tbody class="table-employee__body">
 				<tr
 					@dblclick="tableRowOnDbClick($event)"
-					@click="tableRowOnClick($event)"
+					@click="tableRowOnClick(index)"
 					v-for="(row, index) in tableData"
 					:employeeId="row.EmployeeId"
 					:key="index"
 					class="table-employee__row"
+					:class="{
+						'table-employee__row--selected':
+							employeeDeleteData.indexOf(row.EmployeeId) != -1,
+					}"
 				>
 					<td>
-						<input type="checkbox" class="table-employee__checkbox" />
+						<input
+							type="checkbox"
+							class="table-employee__checkbox"
+							:checked="employeeDeleteData.indexOf(row.EmployeeId) != -1"
+						/>
 					</td>
 					<td>{{ indexBegin + index }}</td>
 					<td
@@ -64,16 +72,13 @@
 					return [];
 				},
 			},
-			indexBegin: {
-				type: Number,
-				default: -1	
-			}
 		},
 		data() {
 			return {
+				employeeCode: '',
+				employeeFullName: '',
 				tableData: [],
-				employeeDeleteData: new Set(),
-				checkAll: false,
+				employeeDeleteData: [],
 			};
 		},
 		created() {
@@ -83,25 +88,50 @@
 			});
 		},
 		mounted() {
+			// Gán những dòng được check vào table
 			// Gọi đến hàm lấy dữ liệu từ API
 			this.getTableData(this.urlAPI);
 			// Bắt sự kiện nút xoá nhiều nhân viên
 			EventBus.$on("deleteEmployees", () => {
-				if (this.employeeDeleteData.size) {
-					var confirmResult = confirm(
-						"Do you want delete these " + this.employeeDeleteData.size
-					);
-					if (confirmResult) {
-						EventBus.$emit("ToastMessage", {
-							type: "warn",
-							content: "Đang xoá. Vui lòng chờ",
-							duration: 5000,
+				if (this.employeeDeleteData.length) {
+					if (this.employeeDeleteData.length != 1) {
+						EventBus.$emit("showPopupDialog", {
+							type: "error",
+							title: "Xác nhân xoá dữ liệu",
+							content: `Bạn có muốn xoá thông tin <b>${this.employeeDeleteData.length}</b> nhân viên này không`,
+							continueBtn: "Xác nhận xoá",
+							mode: "DELETEMULTI",
 						});
-						this.employeeDeleteData.forEach((employeeId) => {
-							this.deleteEmployee(employeeId);
+						EventBus.$on("continueBtnOnClickDELETEMULTI", () => {
+							EventBus.$emit("ToastMessage", {
+								type: "warn",
+								content: "Đang xoá. Vui lòng chờ",
+								duration: 5000,
+							});
+							this.employeeDeleteData.forEach((employeeId) => {
+								this.deleteEmployee(employeeId);
+							});
+							this.employeeDeleteData = [];
+						});	
+					} else {
+						EventBus.$emit("showPopupDialog", {
+							type: "error",
+							title: "Xác nhân xoá dữ liệu",
+							content: `Bạn có muốn xoá thông tin nhân viên <b>${this.employeeFullName} -
+							 ${this.employeeCode}</b> này không?`,
+							continueBtn: "Xác nhận xoá",
+							mode: "DELETE",
 						});
-						this.employeeDeleteData.clear();
-					}
+						EventBus.$on("continueBtnOnClickDELETE", () => {
+							EventBus.$emit("ToastMessage", {
+								type: "warn",
+								content: "Đang xoá. Vui lòng chờ",
+								duration: 5000,
+							});
+							this.deleteEmployee(this.employeeDeleteData[0]);
+							this.employeeDeleteData = [];
+						});		
+					}	
 				} else {
 					EventBus.$emit("showPopupDialog", {
 						type: "info",
@@ -119,9 +149,13 @@
 			 */
 			checkAll: function(newValue) {
 				if (newValue) {
-					console.log(this.tableData);
+					console.log(true);
+					this.employeeDeleteData = [];
+					this.tableData.forEach((item) => {
+						this.employeeDeleteData.push(item['EmployeeId']);
+					});
 				} else {
-					console.log("uncheck all");
+					this.employeeDeleteData = [];
 				}
 			},
 			/**
@@ -131,7 +165,7 @@
 			 */
 			urlAPI: function(newValue) {
 				this.getTableData(newValue);
-			}
+			},
 		},
 		methods: {
 			/**
@@ -149,8 +183,8 @@
 					.get(urlAPI)
 					.then((res) => {
 						this.tableData = res.data.Data;
-						this.$emit('changeTotalPage', res.data.TotalPage);
-						this.$emit('changeTotalRecord', res.data.TotalRecord);	
+						this.$emit("changeTotalPage", res.data.TotalPage);
+						this.$emit("changeTotalRecord", res.data.TotalRecord);
 						EventBus.$emit("ToastMessage", {
 							type: "success",
 							content: "Tải dữ liệu thành công",
@@ -184,26 +218,21 @@
 			/**
 			 * Bắt sự kiện click vào từng dòng trên table (Lưu employeeid ở từng dòng vào set)
 			 * CreatedBy: NTDUNG (05/08/2021)
-			 * ModifiedBy: NTDUNG (07/08/2021)
-			 * @param {event} event
+			 * ModifiedBy: NTDUNG (11/08/2021)
+			 * @param {number} index
 			 */
-			tableRowOnClick(event) {
-				var tableRow;
-				if (event.target.tagName == "INPUT") {
-					tableRow = event.target.parentElement.parentElement;
+			tableRowOnClick(index) {
+				var employeeId = this.tableData[index]['EmployeeId'];
+				this.employeeFullName = this.tableData[index]['FullName'];
+				this.employeeCode = this.tableData[index]['EmployeeCode'];
+
+				var foundIdx = this.employeeDeleteData.indexOf(employeeId);
+				if (foundIdx != -1) {
+					this.employeeDeleteData.splice(foundIdx, 1);
 				} else {
-					tableRow = event.target.parentElement;
-					tableRow.querySelector("input").checked = !tableRow.querySelector(
-						"input"
-					).checked;
+					this.employeeDeleteData.push(employeeId);
 				}
-				tableRow.classList.toggle("table-employee__row--selected");
-				var employeeId = tableRow.getAttribute("EmployeeId");
-				if (this.employeeDeleteData.has(employeeId)) {
-					this.employeeDeleteData.delete(employeeId);
-				} else {
-					this.employeeDeleteData.add(employeeId);
-				}
+				this.employeeDeleteData;
 			},
 			/**
 			 * Format lại dữ liệu trong bảng
@@ -266,7 +295,7 @@
 				axios
 					.delete(`http://cukcuk.manhnv.net/v1/Employees/${employeeId}`)
 					.then(() => {
-						this.getTableData();
+						this.getTableData(this.urlAPI);
 					})
 					.catch((res) => {
 						console.log(res);
@@ -276,7 +305,7 @@
 							duration: 5000,
 						});
 					});
-			},
+			}
 		},
 	};
 </script>

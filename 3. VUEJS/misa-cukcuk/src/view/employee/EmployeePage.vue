@@ -55,6 +55,7 @@
 				departmentId: '',
 				positionId: '',
                 optionPaging: [
+                    {value: 10, label: 'Số nhân viên 10/trang'},
                     {value: 20, label: 'Số nhân viên 20/trang'},
                     {value: 30, label: 'Số nhân viên 30/trang'},
                     {value: 40, label: 'Số nhân viên 40/trang'},
@@ -84,6 +85,7 @@
 			 */
 			changeCurrOption(newOption) {
 				this.currOption = newOption;
+				this.currPage = 1;
 			},
 			/**
 			 * Bắt sự kiện thay đổi tổng số trang 
