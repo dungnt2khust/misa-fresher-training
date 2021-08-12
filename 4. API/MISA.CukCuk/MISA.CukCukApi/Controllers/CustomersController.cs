@@ -86,9 +86,10 @@ namespace MISA.CukCukApi.Controllers
                 // 2. Khởi tạo đối tượng kết nối với DATABASE:
                 IDbConnection dbConnection = new MySqlConnection(connectionString);
 
+
+                DynamicParameters parameters = new DynamicParameters();
                 // 3. Lấy dữ liệu:
                 var sqlCommand = "SELECT * FROM Customer WHERE CustomerId = @CustomerIdParam";
-                DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@CustomerIdParam", customerId);
                 var customer = dbConnection.QueryFirstOrDefault<object>(sqlCommand, param:parameters);
 
@@ -150,7 +151,19 @@ namespace MISA.CukCukApi.Controllers
                     return BadRequest(errorObj);
                 }
 
-                // 2. EMAIL phải đúng định dạng
+                // 2. EMAIL bắt buộc và phải đúng định dạng
+                if (customer.Email == "" || customer.Email == null)
+                {
+                    var errorObj = new
+                    {
+                        devMsg = Properties.Resources.CustomerEmail_Empty_ErrorMsg,
+                        userMsg = Properties.Resources.CustomerEmail_Empty_ErrorMsg,
+                        errorCode = "misa-001",
+                        moreInfo = "https://openapi.misa.com.vn/errorcode/misa-001",
+                        traceId = "ba9587fd-1a79-4ac5-a0ca-2c9f74dfd3fb"
+                    };
+                    return BadRequest(errorObj);
+                }
                 var emailFormat = @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
                 bool isValidEmail = Regex.IsMatch(customer.Email, emailFormat);
 
@@ -189,6 +202,8 @@ namespace MISA.CukCukApi.Controllers
 
                 // 3. Truy vấn dữ liệu
                 customer.CustomerId = Guid.NewGuid();
+                customer.CreatedDate = DateTime.Now;
+                customer.CreatedBy = "NTDUNG";
                 var columnsName = string.Empty;
                 var columnsParam = string.Empty;
 
@@ -220,7 +235,7 @@ namespace MISA.CukCukApi.Controllers
                 var rowEffects = dbConnection.Execute(sqlCommand, param: dynamicParam);
 
                 // 4. Trả về cho CLIENT
-                var response = StatusCode(200, rowEffects);
+                var response = StatusCode(201, rowEffects);
                 return response;
             }
             catch (Exception ex)
@@ -275,7 +290,19 @@ namespace MISA.CukCukApi.Controllers
                 return BadRequest(errorObj);
             }
 
-            // 2. EMAIL phải đúng định dạng
+            // 2. EMAIL bắt buộc và phải đúng định dạng
+            if (customer.Email == "" || customer.Email == null)
+            {
+                var errorObj = new
+                {
+                    devMsg = Properties.Resources.CustomerEmail_Empty_ErrorMsg,
+                    userMsg = Properties.Resources.CustomerEmail_Empty_ErrorMsg,
+                    errorCode = "misa-001",
+                    moreInfo = "https://openapi.misa.com.vn/errorcode/misa-001",
+                    traceId = "ba9587fd-1a79-4ac5-a0ca-2c9f74dfd3fb"
+                };
+                return BadRequest(errorObj);
+            }
             var emailFormat = @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
             bool isValidEmail = Regex.IsMatch(customer.Email, emailFormat);
 

@@ -79,11 +79,38 @@ namespace MISA.CukCukApi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email khách hàng không được để trống..
+        /// </summary>
+        public static string CustomerEmail_Empty_ErrorMsg {
+            get {
+                return ResourceManager.GetString("CustomerEmail_Empty_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email khách hàng không đúng định dạng.
         /// </summary>
         public static string CustomerEmail_Invalid_ErrorMsg {
             get {
                 return ResourceManager.GetString("CustomerEmail_Invalid_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhóm khách hàng không tồn tại.
+        /// </summary>
+        public static string CustomerGroupId_NonExist_ErrorMsg {
+            get {
+                return ResourceManager.GetString("CustomerGroupId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên nhóm khách hàng đã được sử dụng. Vui lòng thử tên khác..
+        /// </summary>
+        public static string CustomerGroupName_Duplicate_ErrorMsg {
+            get {
+                return ResourceManager.GetString("CustomerGroupName_Duplicate_ErrorMsg", resourceCulture);
             }
         }
         
@@ -97,11 +124,83 @@ namespace MISA.CukCukApi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CustomerGroupId không tồn tại.
+        /// </summary>
+        public static string Dev_CustomerGroupId_NonExist_ErrorMsg {
+            get {
+                return ResourceManager.GetString("Dev_CustomerGroupId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CustomerGroupName đã tồn tại.
+        /// </summary>
+        public static string Dev_CustomerGroupName_Duplicate_ErrorMsg {
+            get {
+                return ResourceManager.GetString("Dev_CustomerGroupName_Duplicate_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CustomerId không tồn tại.
         /// </summary>
         public static string Dev_CustomerId_NonExist_ErrorMsg {
             get {
                 return ResourceManager.GetString("Dev_CustomerId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EmployeeId không tồn tại.
+        /// </summary>
+        public static string Dev_EmployeeId_NonExist_ErrorMsg {
+            get {
+                return ResourceManager.GetString("Dev_EmployeeId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã nhân viên đã được sử dụng. Vui lòng thử mã khác..
+        /// </summary>
+        public static string EmployeeCode_Duplicate_ErrorMsg {
+            get {
+                return ResourceManager.GetString("EmployeeCode_Duplicate_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã nhân viên không được để trống..
+        /// </summary>
+        public static string EmployeeCode_Empty_ErrorMsg {
+            get {
+                return ResourceManager.GetString("EmployeeCode_Empty_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email nhân viên không được để trống..
+        /// </summary>
+        public static string EmployeeEmail_Empty_ErrorMsg {
+            get {
+                return ResourceManager.GetString("EmployeeEmail_Empty_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email nhân viên không đúng định dạng.
+        /// </summary>
+        public static string EmployeeEmail_Invalid_ErrorMsg {
+            get {
+                return ResourceManager.GetString("EmployeeEmail_Invalid_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhân viên không tồn tại.
+        /// </summary>
+        public static string EmployeeId_NonExist_ErrorMsg {
+            get {
+                return ResourceManager.GetString("EmployeeId_NonExist_ErrorMsg", resourceCulture);
             }
         }
         
