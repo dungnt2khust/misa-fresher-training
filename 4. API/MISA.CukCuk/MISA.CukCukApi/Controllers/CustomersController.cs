@@ -202,6 +202,8 @@ namespace MISA.CukCukApi.Controllers
 
                 // 3. Truy vấn dữ liệu
                 customer.CustomerId = Guid.NewGuid();
+                customer.CreatedDate = DateTime.Now;
+                customer.CreatedBy = "NTDUNG";
                 var columnsName = string.Empty;
                 var columnsParam = string.Empty;
 

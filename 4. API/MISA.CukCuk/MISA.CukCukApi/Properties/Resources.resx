@@ -129,8 +129,20 @@
   <data name="CustomerEmail_Invalid_ErrorMsg" xml:space="preserve">
     <value>Email khách hàng không đúng định dạng</value>
   </data>
+  <data name="CustomerGroupId_NonExist_ErrorMsg" xml:space="preserve">
+    <value>Nhóm khách hàng không tồn tại</value>
+  </data>
+  <data name="CustomerGroupName_Duplicate_ErrorMsg" xml:space="preserve">
+    <value>Tên nhóm khách hàng đã được sử dụng. Vui lòng thử tên khác.</value>
+  </data>
   <data name="CustomerId_NonExist_ErrorMsg" xml:space="preserve">
     <value>Khách hàng không tồn tại</value>
+  </data>
+  <data name="Dev_CustomerGroupId_NonExist_ErrorMsg" xml:space="preserve">
+    <value>CustomerGroupId không tồn tại</value>
+  </data>
+  <data name="Dev_CustomerGroupName_Duplicate_ErrorMsg" xml:space="preserve">
+    <value>CustomerGroupName đã tồn tại</value>
   </data>
   <data name="Dev_CustomerId_NonExist_ErrorMsg" xml:space="preserve">
     <value>CustomerId không tồn tại</value>

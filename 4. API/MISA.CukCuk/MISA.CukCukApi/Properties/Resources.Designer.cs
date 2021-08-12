@@ -97,11 +97,47 @@ namespace MISA.CukCukApi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nhóm khách hàng không tồn tại.
+        /// </summary>
+        public static string CustomerGroupId_NonExist_ErrorMsg {
+            get {
+                return ResourceManager.GetString("CustomerGroupId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên nhóm khách hàng đã được sử dụng. Vui lòng thử tên khác..
+        /// </summary>
+        public static string CustomerGroupName_Duplicate_ErrorMsg {
+            get {
+                return ResourceManager.GetString("CustomerGroupName_Duplicate_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Khách hàng không tồn tại.
         /// </summary>
         public static string CustomerId_NonExist_ErrorMsg {
             get {
                 return ResourceManager.GetString("CustomerId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CustomerGroupId không tồn tại.
+        /// </summary>
+        public static string Dev_CustomerGroupId_NonExist_ErrorMsg {
+            get {
+                return ResourceManager.GetString("Dev_CustomerGroupId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CustomerGroupName đã tồn tại.
+        /// </summary>
+        public static string Dev_CustomerGroupName_Duplicate_ErrorMsg {
+            get {
+                return ResourceManager.GetString("Dev_CustomerGroupName_Duplicate_ErrorMsg", resourceCulture);
             }
         }
         
