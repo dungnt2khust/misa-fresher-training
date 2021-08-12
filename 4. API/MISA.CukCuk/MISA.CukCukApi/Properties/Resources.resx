@@ -123,6 +123,9 @@
   <data name="CustomerCode_Empty_ErrorMsg" xml:space="preserve">
     <value>Mã khách hàng không được để trống.</value>
   </data>
+  <data name="CustomerEmail_Empty_ErrorMsg" xml:space="preserve">
+    <value>Email khách hàng không được để trống.</value>
+  </data>
   <data name="CustomerEmail_Invalid_ErrorMsg" xml:space="preserve">
     <value>Email khách hàng không đúng định dạng</value>
   </data>
@@ -131,6 +134,24 @@
   </data>
   <data name="Dev_CustomerId_NonExist_ErrorMsg" xml:space="preserve">
     <value>CustomerId không tồn tại</value>
+  </data>
+  <data name="Dev_EmployeeId_NonExist_ErrorMsg" xml:space="preserve">
+    <value>EmployeeId không tồn tại</value>
+  </data>
+  <data name="EmployeeCode_Duplicate_ErrorMsg" xml:space="preserve">
+    <value>Mã nhân viên đã được sử dụng. Vui lòng thử mã khác.</value>
+  </data>
+  <data name="EmployeeCode_Empty_ErrorMsg" xml:space="preserve">
+    <value>Mã nhân viên không được để trống.</value>
+  </data>
+  <data name="EmployeeEmail_Empty_ErrorMsg" xml:space="preserve">
+    <value>Email nhân viên không được để trống.</value>
+  </data>
+  <data name="EmployeeEmail_Invalid_ErrorMsg" xml:space="preserve">
+    <value>Email nhân viên không đúng định dạng</value>
+  </data>
+  <data name="EmployeeId_NonExist_ErrorMsg" xml:space="preserve">
+    <value>Nhân viên không tồn tại</value>
   </data>
   <data name="Exception_ErrorMsg" xml:space="preserve">
     <value>Có lỗi xảy ra vui lòng liên hệ MISA</value>

@@ -39,7 +39,7 @@ namespace MISA.CukCukApi.Model
         /// <summary>
         /// Trạng thái Martial
         /// </summary>
-        public int MartialStatus { get; set; }
+        public int? MartialStatus { get; set; }
         /// <summary>
         /// Trình độ học vấn
         /// </summary>
@@ -67,7 +67,7 @@ namespace MISA.CukCukApi.Model
         /// <summary>
         /// Mức lương cơ bản
         /// </summary>
-        public string Salary { get; set; }
+        public double? Salary { get; set; }
         #endregion
     }
 }
