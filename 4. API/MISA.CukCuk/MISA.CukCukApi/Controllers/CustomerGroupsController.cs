@@ -15,12 +15,13 @@ namespace MISA.CukCukApi.Controllers
     public class CustomerGroupsController : ControllerBase
     {
         /// <summary>
-        /// Lấy toàn bộ dữ liệu khách hàng
+        /// Lấy toàn bộ dữ liệu nhóm khách hàng
         /// </summary>
         /// CreatedBy: NTDUNG (07/08/2021)
-        /// <returns>Trả về mã code và json chứa thông tin tất cả khách hàng</returns> 
+        /// ModifiedBy: NTDUNG (11/08/2021)
+        /// <returns>Trả về mã code và json chứa thông tin tất cả nhóm khách hàng</returns> 
         [HttpGet]
-        public IActionResult GetCustomers()
+        public IActionResult GETCustomerGroups()
         {
             // 1. Khai báo thông tin kết nối DATABASE:
             var connectionString =
@@ -42,12 +43,12 @@ namespace MISA.CukCukApi.Controllers
         }
 
         /// <summary>
-        /// Lấy dữ liệu một khách hàng với customerId
+        /// Lấy dữ liệu một nhóm khách hàng với customerGroupId
         /// </summary>
-        /// <param name="customerId">Là id của một khách hàng trong cơ sở dữ liệu</param>
-        /// <returns>Trả về mã code và object chứa thông tin một khách hàng có id trùng khớp</returns> 
+        /// <param name="customerGroupId">Là id của một nhóm khách hàng trong cơ sở dữ liệu</param>
+        /// <returns>Trả về mã code và object chứa thông tin một nhóm khách hàng có id trùng khớp</returns> 
         [HttpGet("{customerGroupId}")]
-        public IActionResult GetCustomer(string customerGroupId)
+        public IActionResult GETCustomerGroup(string customerGroupId)
         {
             // 1. Khai báo thông tin kết nối DATABASE:
             var connectionString =
