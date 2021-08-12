@@ -124,6 +124,51 @@ namespace MISA.CukCukApi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mã phòng ban đã được sử dụng. Vui lòng thử với mã khác..
+        /// </summary>
+        public static string DepartmentCode_Duplicate_ErrorMsg {
+            get {
+                return ResourceManager.GetString("DepartmentCode_Duplicate_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã phòng ban không được để trống.
+        /// </summary>
+        public static string DepartmentCode_Empty_ErrorMsg {
+            get {
+                return ResourceManager.GetString("DepartmentCode_Empty_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phòng ban không tồn tại.
+        /// </summary>
+        public static string DepartmentId_NonExist_ErrorMsg {
+            get {
+                return ResourceManager.GetString("DepartmentId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên phòng ban đã được sử dụng. Vui lòng thử với tên khác..
+        /// </summary>
+        public static string DepartmentName_Duplicate_ErrorMsg {
+            get {
+                return ResourceManager.GetString("DepartmentName_Duplicate_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên phòng ban không được để trống.
+        /// </summary>
+        public static string DepartmentName_Empty_ErrorMsg {
+            get {
+                return ResourceManager.GetString("DepartmentName_Empty_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CustomerGroupId không tồn tại.
         /// </summary>
         public static string Dev_CustomerGroupId_NonExist_ErrorMsg {
@@ -151,11 +196,29 @@ namespace MISA.CukCukApi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DepartmentId không tồn tại.
+        /// </summary>
+        public static string Dev_DepartmentId_NonExist_ErrorMsg {
+            get {
+                return ResourceManager.GetString("Dev_DepartmentId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EmployeeId không tồn tại.
         /// </summary>
         public static string Dev_EmployeeId_NonExist_ErrorMsg {
             get {
                 return ResourceManager.GetString("Dev_EmployeeId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PositionId không tồn tại.
+        /// </summary>
+        public static string Dev_PositionId_NonExist_ErrorMsg {
+            get {
+                return ResourceManager.GetString("Dev_PositionId_NonExist_ErrorMsg", resourceCulture);
             }
         }
         
@@ -210,6 +273,51 @@ namespace MISA.CukCukApi.Properties {
         public static string Exception_ErrorMsg {
             get {
                 return ResourceManager.GetString("Exception_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã chức vụ đã được sử dụng. Vui lòng thử mã khác..
+        /// </summary>
+        public static string PositionCode_Duplicate_ErrorMsg {
+            get {
+                return ResourceManager.GetString("PositionCode_Duplicate_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã chức vụ không được để trống.
+        /// </summary>
+        public static string PositionCode_Empty_ErrorMsg {
+            get {
+                return ResourceManager.GetString("PositionCode_Empty_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chức vụ không tồn tại.
+        /// </summary>
+        public static string PositionId_NonExist_ErrorMsg {
+            get {
+                return ResourceManager.GetString("PositionId_NonExist_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên chức vụ đã được sử dụng. Vui lòng thử tên khác..
+        /// </summary>
+        public static string PositionName_Duplicate_ErrorMsg {
+            get {
+                return ResourceManager.GetString("PositionName_Duplicate_ErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên chức vụ không được để trống.
+        /// </summary>
+        public static string PositionName_Empty_ErrorMsg {
+            get {
+                return ResourceManager.GetString("PositionName_Empty_ErrorMsg", resourceCulture);
             }
         }
     }

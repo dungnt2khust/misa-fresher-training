@@ -378,6 +378,7 @@ namespace MISA.CukCukApi.Controllers
             var response = StatusCode(200, rowEffects);
             return response;
         }
+        
         /// <summary>
         /// Xoá một khách hàng theo customerId
         /// </summary>
