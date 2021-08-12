@@ -54,3 +54,4 @@ C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCukApi\obj\
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCukApi\obj\Debug\netcoreapp3.1\MISA.CukCukApi.dll
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCukApi\obj\Debug\netcoreapp3.1\MISA.CukCukApi.pdb
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCukApi\obj\Debug\netcoreapp3.1\MISA.CukCukApi.genruntimeconfig.cache
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCukApi\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
