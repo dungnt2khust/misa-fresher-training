@@ -1,0 +1,11 @@
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\bin\Debug\netcoreapp3.1\MISA.Core.deps.json
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\bin\Debug\netcoreapp3.1\MISA.Core.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\bin\Debug\netcoreapp3.1\MISA.Core.pdb
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\obj\Debug\netcoreapp3.1\MISA.Core.csproj.AssemblyReference.cache
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\obj\Debug\netcoreapp3.1\MISA.Core.Resources.ResourceVN.resources
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\obj\Debug\netcoreapp3.1\MISA.Core.csproj.GenerateResource.cache
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\obj\Debug\netcoreapp3.1\MISA.Core.AssemblyInfoInputs.cache
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\obj\Debug\netcoreapp3.1\MISA.Core.AssemblyInfo.cs
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\obj\Debug\netcoreapp3.1\MISA.Core.csproj.CoreCompileInputs.cache
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\obj\Debug\netcoreapp3.1\MISA.Core.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Core\obj\Debug\netcoreapp3.1\MISA.Core.pdb

@@ -1,4 +1,0 @@
-C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.Cukcuk.MF936\MISA.Cukcuk.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Cukcuk.Infrastructure.csproj.AssemblyReference.cache
-C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.Cukcuk.MF936\MISA.Cukcuk.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Cukcuk.Infrastructure.AssemblyInfoInputs.cache
-C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.Cukcuk.MF936\MISA.Cukcuk.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Cukcuk.Infrastructure.AssemblyInfo.cs
-C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.Cukcuk.MF936\MISA.Cukcuk.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Cukcuk.Infrastructure.csproj.CoreCompileInputs.cache

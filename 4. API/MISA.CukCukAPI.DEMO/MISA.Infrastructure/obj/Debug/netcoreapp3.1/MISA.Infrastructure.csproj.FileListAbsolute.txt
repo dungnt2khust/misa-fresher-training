@@ -1,0 +1,12 @@
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\bin\Debug\netcoreapp3.1\MISA.Infrastructure.deps.json
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\bin\Debug\netcoreapp3.1\MISA.Infrastructure.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\bin\Debug\netcoreapp3.1\MISA.Infrastructure.pdb
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Infrastructure.csproj.AssemblyReference.cache
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Infrastructure.AssemblyInfoInputs.cache
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Infrastructure.AssemblyInfo.cs
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Infrastructure.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Infrastructure.pdb
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\bin\Debug\netcoreapp3.1\MISA.Core.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\bin\Debug\netcoreapp3.1\MISA.Core.pdb
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCukAPI.DEMO\MISA.Infrastructure\obj\Debug\netcoreapp3.1\MISA.Infrastructure.csproj.CopyComplete
