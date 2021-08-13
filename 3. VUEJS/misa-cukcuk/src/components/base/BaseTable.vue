@@ -72,6 +72,10 @@
 					return [];
 				},
 			},
+			indexBegin: {
+				type: Number,
+				default: -1
+			}
 		},
 		data() {
 			return {
@@ -79,6 +83,7 @@
 				employeeFullName: '',
 				tableData: [],
 				employeeDeleteData: [],
+				checkAll: false
 			};
 		},
 		created() {

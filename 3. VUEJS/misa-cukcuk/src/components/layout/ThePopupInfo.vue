@@ -38,6 +38,7 @@
 									:required="true"
 									:valueTranfer="employeeData['EmployeeCode']"
 									inputField="EmployeeCode"
+									title="Mã nhân viên không được bỏ trống"
 								/>
 							</div>
 							<!-- FULL NAME -->

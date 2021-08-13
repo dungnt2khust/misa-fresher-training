@@ -6,6 +6,7 @@
             v-html="requiredAssign"
             ></span>
         <input
+			:title="title"
 			:tabindex="tabIndex"
             :type="inputType"
             class="popup-infor__input"
@@ -63,6 +64,10 @@ export default {
 		tabIndex: {
 			type: Number,
 			default: -1
+		},
+		title: {
+			type: String,
+			default: ""
 		}
 	},
 	created() {
@@ -108,7 +113,11 @@ export default {
 							this.changeInputValue(parseInt(inputElement.value.replaceAll('.', '')), this.inputField);
 							break;
 						case 'PersonalTaxCode':
-							this.changeInputValue(parseInt(inputElement.value), this.inputField);
+							if (inputElement.value == "") {
+								this.changeInputValue(null, this.inputField);
+							} else {
+								this.changeInputValue(parseInt(inputElement.value), this.inputField);
+							}
 							break;
 						default: 
 							this.changeInputValue(inputElement.value, this.inputField);

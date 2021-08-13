@@ -129,7 +129,7 @@
 				return `http://cukcuk.manhnv.net/v1/Employees/employeeFilter
 				?pageSize=${this.optionPaging[this.currOption]['value']}
 				&&pageNumber=${this.currPage}&&employeeFilter=${this.searchMessage}
-				&&${departmentQuery}&&${positionQuery}`;
+				&&${departmentQuery}&&${positionQuery}`;	
 			},
 			/**
 			 * Chỉ số bắt đầu của bảng đổ dữ liệu

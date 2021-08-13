@@ -17,11 +17,10 @@
 					alt=""
 				/>
 			</li>
-<!-- :style="{visibility: index <= totalPage ? 'visible' : 'hidden'}" -->
+<!-- style="{visibility: index <= totalPage ? 'visible' : 'hidden'}"                -->
 			<li
 				@click="pageItemOnClick(index)"
-				v-for="index in totalPage"
-                
+				v-for="index in totalPage" 
 				:class="{'pagination__item--active': currPage == index }"
 				:key="index"
 				class="pagination__item"
