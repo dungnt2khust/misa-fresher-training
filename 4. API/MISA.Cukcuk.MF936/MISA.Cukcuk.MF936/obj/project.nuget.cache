@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "2NKqQ8CzlcbCNAycHrWTIGFiNl/2Ny2mCoPtMKAw/PyTyky8wap7EWBZKV7aXIKX1Rr3XSW/z8qXxcMNSPXJ5w==",
+  "success": true,
+  "projectFilePath": "C:\\Workspace\\INTERN\\misa-fresher-training\\4. API\\MISA.Cukcuk.MF936\\MISA.Cukcuk.MF936\\MISA.Cukcuk.MF936.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dungg\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\dungg\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\dungg\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\dungg\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\dungg\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\dungg\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}
