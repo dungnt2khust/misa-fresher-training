@@ -10,7 +10,7 @@ namespace MISA.Core.Entities
         /// <summary>
         /// Service có trả về hợp lệ hay không
         /// </summary>
-        public bool IsValid { get; set; }
+        public bool IsValid { get; set; } = true;
         /// <summary>
         /// Dữ liệu trả về của service
         /// </summary>

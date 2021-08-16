@@ -38,7 +38,7 @@ namespace MISA.CukCukAPI.Controllers
                 // Trả về cho client:
                 if (serviceResult.IsValid == true)
                 {
-                    return StatusCode(201, serviceResult.Data);
+                    return StatusCode(200, serviceResult.Data);
                 }
                 else
                 {
