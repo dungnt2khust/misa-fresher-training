@@ -19,7 +19,8 @@ namespace MISA.CukCuk.Infrastructure.Repository
         /// <param name="pageNumber">       chỉ số trang</param>
         /// <param name="filterString">     chuỗi tìm kiếm</param>
         /// <param name="customerGroupId">  id nhóm khách hàng</param>
-        /// <returns></returns>
+        /// <returns> Kết quả trả về của việc lọc dữ liệu</returns>
+        /// CreatedBy: NTDUNG (18/08/2021)
         public FilterResponse GetByFilter(int pageSize, int pageNumber, string filterString, Guid? customerGroupId)
         {
             var sqlSelectCount = "SELECT COUNT(*) FROM Customer c ";

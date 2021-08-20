@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.CukCuk.Core.Attributes;
+using System;
 
 namespace MISA.CukCuk.Core.Entities
 {
@@ -15,6 +16,9 @@ namespace MISA.CukCuk.Core.Entities
         /// <summary>
         /// Mã khách hàng
         /// </summary>
+        [MISARequired]
+        [MISAUnique]
+        [MISADisplayName("Mã khách hàng")]
         public string CustomerCode { get; set; }
 
         /// <summary>
@@ -31,6 +35,8 @@ namespace MISA.CukCuk.Core.Entities
         /// <summary>
         /// Tên đầy đủ
         /// </summary>
+        [MISARequired]
+        [MISADisplayName("Tên đầy đủ")]
         public string FullName { get; set; }
 
 
@@ -55,6 +61,9 @@ namespace MISA.CukCuk.Core.Entities
         /// <summary>
         /// Địa chỉ email
         /// </summary>
+        [MISARequired]
+        [MISAEmail]
+        [MISADisplayName("Email")]
         public string Email { get; set; }
 
 
@@ -96,7 +105,7 @@ namespace MISA.CukCuk.Core.Entities
         /// <summary>
         /// Đã ngừng theo dõi hay chưa
         /// </summary>
-        public bool IsStopFollow { get; set; }
+        public int? IsStopFollow { get; set; }
 
         #endregion
 

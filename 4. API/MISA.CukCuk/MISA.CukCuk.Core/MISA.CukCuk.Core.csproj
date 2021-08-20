@@ -5,7 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Resource\ResourceVN.Designer.cs">
+    <Compile Remove="NewFolder1\**" />
+    <EmbeddedResource Remove="NewFolder1\**" />
+    <None Remove="NewFolder1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="5.7.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\ResourceVN.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ResourceVN.resx</DependentUpon>
@@ -13,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resource\ResourceVN.resx">
+    <EmbeddedResource Update="Resources\ResourceVN.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResourceVN.Designer.cs</LastGenOutput>
     </EmbeddedResource>

@@ -117,26 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MISABadRequestMsg" xml:space="preserve">
-    <value>Dữ liệu được gửi lên chưa đúng định dạng ! </value>
+  <data name="ConnectionString" xml:space="preserve">
+    <value>Host = localhost;Database = web07.mf936.ntdung.cukcuk; User Id = root; Password = 311200;</value>
   </data>
-  <data name="MISADeleteMsg" xml:space="preserve">
-    <value>Đã xóa thành công !</value>
+  <data name="MISA_Delete_Success_Msg" xml:space="preserve">
+    <value>Xoá {0} thành công</value>
   </data>
-  <data name="MISAErrorMessage" xml:space="preserve">
-    <value>Có lỗi xảy ra, vui lòng liên hệ MISA !</value>
-    <comment>Try catch</comment>
+  <data name="MISA_Exception_Error_Msg" xml:space="preserve">
+    <value>Có lỗi xảy ra. Vui lòng liên hệ MISA !</value>
   </data>
-  <data name="MISAInsertMsg" xml:space="preserve">
-    <value>Thêm mới thành công !</value>
+  <data name="MISA_Field_Duplicate_Msg" xml:space="preserve">
+    <value>Thông tin {0} đã được sử dụng !</value>
   </data>
-  <data name="MISANoContentMsg" xml:space="preserve">
-    <value>Không có dữ liệu !</value>
+  <data name="MISA_Field_Emply_Msg" xml:space="preserve">
+    <value>Thông tin {0} không được để trống !</value>
   </data>
-  <data name="MISASqlErrorMsg" xml:space="preserve">
-    <value>Truy vấn SQL không thành công !</value>
+  <data name="MISA_File_Empty_Msg" xml:space="preserve">
+    <value>Không có file tải lên</value>
   </data>
-  <data name="MISAUpdateMsg" xml:space="preserve">
-    <value>Cập nhật thành công !</value>
+  <data name="MISA_Insert_Success_Msg" xml:space="preserve">
+    <value>Thêm mới {0} thành công</value>
+  </data>
+  <data name="MISA_No_Content_Msg" xml:space="preserve">
+    <value>Không có dữ liệu</value>
+  </data>
+  <data name="MISA_Update_Success_Msg" xml:space="preserve">
+    <value>Chỉnh sửa {0} thành công</value>
   </data>
 </root>

@@ -25,12 +25,13 @@ namespace MISA.CukCuk.API.Controllers
 
         #endregion
 
-        #region Get Requests
+        #region Lấy mã nhân viên mới 
 
         /// <summary>
         /// Lấy mã nhân viên mới
         /// </summary>
-        /// <returns></returns>
+        /// <returns> Mã code trả về và dữ liệu hoặc mã lỗi của request</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         [HttpGet("NewEmployeeCode")]
         public IActionResult GetNewEmPloyeeCode()
         {
@@ -45,7 +46,7 @@ namespace MISA.CukCuk.API.Controllers
                 var response = new
                 {
                     devMsg = e.Message,
-                    userMsg = Properties.Resources.MISAErrorMessage,
+                    userMsg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg, 
                     errorCode = "MISA_003",
                     traceId = Guid.NewGuid().ToString()
                 };
@@ -53,6 +54,9 @@ namespace MISA.CukCuk.API.Controllers
             }
         }
 
+        #endregion
+
+        #region Phân trang và lọc dữ liệu nhân viên
         /// <summary>
         /// Lọc và phân trang theo tiêu chí tìm kiếm, theo phòng ban, vị trí
         /// </summary>
@@ -61,7 +65,8 @@ namespace MISA.CukCuk.API.Controllers
         /// <param name="filterString"></param>
         /// <param name="departmentId"></param>
         /// <param name="positionId"></param>
-        /// <returns></returns>
+        /// <returns> Mã code trả về và dữ liệu hoặc mã lỗi của request</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         [HttpGet("employeeFilter")]
         public IActionResult GetEmployeeFilter(int pageSize, int pageNumber,
                                                 string filterString, Guid? departmentId, Guid? positionId)
@@ -72,7 +77,7 @@ namespace MISA.CukCuk.API.Controllers
 
                 if (!_serviceResult.IsValid)
                 {
-                    _serviceResult.Msg = Properties.Resources.MISANoContentMsg;
+                    _serviceResult.Msg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg; 
                     return Ok(_serviceResult);
                 }
 
@@ -84,7 +89,7 @@ namespace MISA.CukCuk.API.Controllers
                 var response = new
                 {
                     devMsg = e.Message,
-                    userMsg = Properties.Resources.MISAErrorMessage,
+                    userMsg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg,
                     errorCode = "MISA_003",
                     traceId = Guid.NewGuid().ToString()
                 };

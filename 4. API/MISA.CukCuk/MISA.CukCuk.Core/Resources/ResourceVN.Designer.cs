@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MISA.CukCuk.Core.Resource {
+namespace MISA.CukCuk.Core.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace MISA.CukCuk.Core.Resource {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MISA.CukCuk.Core.Resource.ResourceVN", typeof(ResourceVN).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MISA.CukCuk.Core.Resources.ResourceVN", typeof(ResourceVN).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace MISA.CukCuk.Core.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Host = 47.241.69.179;Database = Web07.CUKCUK.HUNGNN; User Id = dev; Password = 12345678;.
+        ///   Looks up a localized string similar to Host = localhost;Database = web07.mf936.ntdung.cukcuk; User Id = root; Password = 311200;.
         /// </summary>
         public static string ConnectionString {
             get {
@@ -70,47 +70,74 @@ namespace MISA.CukCuk.Core.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã khách hàng không được để trống !.
+        ///   Looks up a localized string similar to Xoá {0} thành công.
         /// </summary>
-        public static string CustomerCodeInvalidMsg {
+        public static string MISA_Delete_Success_Msg {
             get {
-                return ResourceManager.GetString("CustomerCodeInvalidMsg", resourceCulture);
+                return ResourceManager.GetString("MISA_Delete_Success_Msg", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email không đúng định dạng !.
+        ///   Looks up a localized string similar to Có lỗi xảy ra. Vui lòng liên hệ MISA !.
         /// </summary>
-        public static string EmailInvalidMsg {
+        public static string MISA_Exception_Error_Msg {
             get {
-                return ResourceManager.GetString("EmailInvalidMsg", resourceCulture);
+                return ResourceManager.GetString("MISA_Exception_Error_Msg", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mã nhân viên không được để trống !.
+        ///   Looks up a localized string similar to Thông tin {0} đã được sử dụng !.
         /// </summary>
-        public static string EmployeeCodeInvalidMsg {
+        public static string MISA_Field_Duplicate_Msg {
             get {
-                return ResourceManager.GetString("EmployeeCodeInvalidMsg", resourceCulture);
+                return ResourceManager.GetString("MISA_Field_Duplicate_Msg", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Có lỗi xảy ra, vui lòng liên hệ MISA !.
+        ///   Looks up a localized string similar to Thông tin {0} không được để trống !.
         /// </summary>
-        public static string ErrorMsg {
+        public static string MISA_Field_Emply_Msg {
             get {
-                return ResourceManager.GetString("ErrorMsg", resourceCulture);
+                return ResourceManager.GetString("MISA_Field_Emply_Msg", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ID không được để trống !.
+        ///   Looks up a localized string similar to Không có file tải lên.
         /// </summary>
-        public static string IdEmptyMsg {
+        public static string MISA_File_Empty_Msg {
             get {
-                return ResourceManager.GetString("IdEmptyMsg", resourceCulture);
+                return ResourceManager.GetString("MISA_File_Empty_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thêm mới {0} thành công.
+        /// </summary>
+        public static string MISA_Insert_Success_Msg {
+            get {
+                return ResourceManager.GetString("MISA_Insert_Success_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không có dữ liệu.
+        /// </summary>
+        public static string MISA_No_Content_Msg {
+            get {
+                return ResourceManager.GetString("MISA_No_Content_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chỉnh sửa {0} thành công.
+        /// </summary>
+        public static string MISA_Update_Success_Msg {
+            get {
+                return ResourceManager.GetString("MISA_Update_Success_Msg", resourceCulture);
             }
         }
     }

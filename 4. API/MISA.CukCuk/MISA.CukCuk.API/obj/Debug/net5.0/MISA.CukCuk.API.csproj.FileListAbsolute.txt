@@ -55,8 +55,6 @@ C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\MISA.CukCuk.Core.pdb
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\MISA.CukCuk.Infrastructure.pdb
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\obj\Debug\net5.0\MISA.CukCuk.API.csproj.AssemblyReference.cache
-C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\obj\Debug\net5.0\MISA.CukCuk.API.Properties.Resources.resources
-C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\obj\Debug\net5.0\MISA.CukCuk.API.csproj.GenerateResource.cache
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\obj\Debug\net5.0\MISA.CukCuk.API.GeneratedMSBuildEditorConfig.editorconfig
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\obj\Debug\net5.0\MISA.CukCuk.API.AssemblyInfoInputs.cache
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\obj\Debug\net5.0\MISA.CukCuk.API.AssemblyInfo.cs
@@ -72,3 +70,9 @@ C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\obj
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\obj\Debug\net5.0\ref\MISA.CukCuk.API.dll
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\obj\Debug\net5.0\MISA.CukCuk.API.pdb
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\obj\Debug\net5.0\MISA.CukCuk.API.genruntimeconfig.cache
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\System.Security.Cryptography.ProtectedData.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\EPPlus.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\System.Xml.XPath.XmlDocument.dll

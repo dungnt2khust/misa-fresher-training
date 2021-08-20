@@ -374,11 +374,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Workspace\\INTERN\\misa-fresher-training\\4. API\\MISA.CukCuk\\MISA.CukCukApi\\MISA.CukCukApi.csproj",
+      "projectUniqueName": "C:\\Workspace\\INTERN\\misa-fresher-training\\4. API\\MISA.CukCuk.v1\\MISA.CukCukApi\\MISA.CukCukApi.csproj",
       "projectName": "MISA.CukCukApi",
-      "projectPath": "C:\\Workspace\\INTERN\\misa-fresher-training\\4. API\\MISA.CukCuk\\MISA.CukCukApi\\MISA.CukCukApi.csproj",
+      "projectPath": "C:\\Workspace\\INTERN\\misa-fresher-training\\4. API\\MISA.CukCuk.v1\\MISA.CukCukApi\\MISA.CukCukApi.csproj",
       "packagesPath": "C:\\Users\\dungg\\.nuget\\packages\\",
-      "outputPath": "C:\\Workspace\\INTERN\\misa-fresher-training\\4. API\\MISA.CukCuk\\MISA.CukCukApi\\obj\\",
+      "outputPath": "C:\\Workspace\\INTERN\\misa-fresher-training\\4. API\\MISA.CukCuk.v1\\MISA.CukCukApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\dungg\\AppData\\Roaming\\NuGet\\NuGet.Config",

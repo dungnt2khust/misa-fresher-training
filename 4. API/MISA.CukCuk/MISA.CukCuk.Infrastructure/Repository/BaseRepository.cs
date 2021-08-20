@@ -1,10 +1,11 @@
 ﻿using Dapper;
 using MISA.CukCuk.Core.Interfaces.Repositiories;
-using MISA.CukCuk.Core.Resource;
+using MISA.CukCuk.Core.Resources;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace MISA.CukCuk.Infrastructure.Repository
 {
@@ -35,13 +36,13 @@ namespace MISA.CukCuk.Infrastructure.Repository
 
         #endregion
 
-
         #region Các phương thức GET
 
         /// <summary>
         /// Lấy tất cả data
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Trả về danh sách dữ liệu</returns>
+        /// CreatedBy: NTDUNG (17/08/2020)
         public virtual List<MISAEntity> Get()
         {
             // Lấy dữ liệu
@@ -53,7 +54,8 @@ namespace MISA.CukCuk.Infrastructure.Repository
         /// Lấy theo Id
         /// </summary>
         /// <param name="entityId"></param>
-        /// <returns></returns>
+        /// <returns>Dữ liệu của một entity</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         public virtual MISAEntity GetById(Guid entityId)
         {
             
@@ -68,14 +70,14 @@ namespace MISA.CukCuk.Infrastructure.Repository
 
         #endregion
 
-
         #region Thêm mới
 
         /// <summary>
         /// Thêm mới khách hagnf
         /// </summary>
         /// <param name="entity"> Data thêm mới</param>
-        /// <returns></returns>
+        /// <returns>Số dòng bị ảnh hưởng trong database</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         public virtual int Add(MISAEntity entity)
         {
             var columnsName = new List<string>();
@@ -113,15 +115,15 @@ namespace MISA.CukCuk.Infrastructure.Repository
 
         #endregion
 
-
         #region Cập nhật
 
         /// <summary>
         /// Cập nhật thông tin khách hàng
         /// </summary>
-        /// <param name="entity">     Data</param>
-        /// <param name="entityId">   Id</param>
-        /// <returns></returns>
+        /// <param name="entity">Data</param>
+        /// <param name="entityId">Id</param>
+        /// <returns>Số dòng bị ảnh hưởng</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         public virtual int Update(MISAEntity entity, Guid entityId)
         {
             var queryLine = new List<string>();
@@ -154,14 +156,14 @@ namespace MISA.CukCuk.Infrastructure.Repository
         }
         #endregion
 
-
         #region Xóa
 
         /// <summary>
         /// Xóa nhiều khách hàng
         /// </summary>
-        /// <param name="entityIds">List id của các KH cần xóa</param>
-        /// <returns></returns>
+        /// <param name="entityIds">List id của các entity cần xóa</param>
+        /// <returns>Số dòng bị ảnh hưởng</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         public virtual int DeleteMany(List<Guid> entityIds)
         {
             var parameters = new DynamicParameters();
@@ -195,6 +197,29 @@ namespace MISA.CukCuk.Infrastructure.Repository
             return _dbConnection.Execute(sqlQuery, param: parameters);
         }
 
+        #endregion
+
+        #region Check trùng
+        /// <summary>
+        /// Kiểm tra trùng giá trị 
+        /// </summary>
+        /// <param name="fieldValue"></param>
+        /// <param name="fieldName"></param>
+        /// <returns> Boolean: true - không trùng, false - trùng</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
+        /// ModifiedBy: NTDUNG (20/08/2021)
+        public bool CheckDuplicate(string fieldValue, string fieldName)
+        {
+            // Query check trùng
+            var sqlQuery = $"SELECT * FROM {_entityName} WHERE {fieldName} = @fieldValue";
+            var parameters = new DynamicParameters();
+
+            parameters.Add("@fieldValue", fieldValue);
+
+            // Lấy dữ liệu và phản hồi cho client
+            var queryField = _dbConnection.Query<MISAEntity>(sqlQuery, param: parameters);
+            return queryField.Count() < 1;
+        }
         #endregion
     }
 }

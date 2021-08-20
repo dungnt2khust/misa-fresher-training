@@ -16,6 +16,8 @@ namespace MISA.CukCuk.API.Controllers
 
         protected ServiceResult _serviceResult;
 
+        protected readonly string _entityName = typeof(MISAEntity).Name;
+
         #endregion
 
         #region Constructors
@@ -32,7 +34,8 @@ namespace MISA.CukCuk.API.Controllers
         /// <summary>
         /// Lấy dữ liệu toàn bộ nv
         /// </summary>
-        /// <returns></returns>
+        /// <returns> Mã code trả về và dữ liệu hoặc mã lỗi của request</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -42,7 +45,7 @@ namespace MISA.CukCuk.API.Controllers
 
                 if (_serviceResult.IsValid == false)
                 {
-                    _serviceResult.Msg = Properties.Resources.MISANoContentMsg;
+                    _serviceResult.Msg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_No_Content_Msg;
                     return StatusCode(200, _serviceResult);
                 }
 
@@ -53,7 +56,7 @@ namespace MISA.CukCuk.API.Controllers
                 var response = new
                 {
                     devMsg = e.Message,
-                    userMsg = Properties.Resources.MISAErrorMessage,
+                    userMsg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg,
                     errorCode = "MISA_003",
                     traceId = Guid.NewGuid().ToString()
                 };
@@ -65,7 +68,8 @@ namespace MISA.CukCuk.API.Controllers
         /// Lấy dữ liệu nv ứng với id
         /// </summary>
         /// <param name="entityId">Id nv</param>
-        /// <returns></returns>
+        /// <returns> Mã code trả về và dữ liệu hoặc mã lỗi của request</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         [HttpGet("{entityId}")]
         public IActionResult GetEntityByid(Guid entityId)
         {
@@ -75,7 +79,7 @@ namespace MISA.CukCuk.API.Controllers
                 _serviceResult = _service.GetById(entityId);
                 if (_serviceResult.IsValid == false)
                 {
-                    _serviceResult.Msg = Properties.Resources.MISANoContentMsg;
+                    _serviceResult.Msg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_No_Content_Msg;
                     return StatusCode(200, _serviceResult);
                 }
 
@@ -86,7 +90,7 @@ namespace MISA.CukCuk.API.Controllers
                 var response = new
                 {
                     devMsg = e.Message,
-                    userMsg = Properties.Resources.MISAErrorMessage,
+                    userMsg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg,
                     errorCode = "MISA_003",
                     traceId = Guid.NewGuid().ToString()
                 };
@@ -102,7 +106,8 @@ namespace MISA.CukCuk.API.Controllers
         /// Thêm thông tin nv mới vào db
         /// </summary>
         /// <param name="entity">Object thông tin nv muốn thêm vào db</param>
-        /// <returns></returns>
+        /// <returns> Mã code trả về và dữ liệu hoặc mã lỗi của request</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         [HttpPost]
         public IActionResult InsertEntity(MISAEntity entity)
         {
@@ -114,7 +119,7 @@ namespace MISA.CukCuk.API.Controllers
                     return StatusCode(400, _serviceResult);
                 }
 
-                _serviceResult.Msg = Properties.Resources.MISAInsertMsg;
+                _serviceResult.Msg = string.Format(MISA.CukCuk.Core.Resources.ResourceVN.MISA_Insert_Success_Msg, _entityName); 
                 return StatusCode(201, _serviceResult);
             }
             catch (Exception e)
@@ -122,7 +127,7 @@ namespace MISA.CukCuk.API.Controllers
                 var response = new
                 {
                     devMsg = e.Message,
-                    userMsg = Properties.Resources.MISAErrorMessage,
+                    userMsg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg,
                     errorCode = "MISA_003",
                     traceId = Guid.NewGuid().ToString()
                 };
@@ -139,29 +144,30 @@ namespace MISA.CukCuk.API.Controllers
         /// </summary>
         /// <param name="entityId">Id nv</param>
         /// <param name="entity">Dữ liệu muốn cập nhật</param>
-        /// <returns></returns>
+        /// <returns> Mã code trả về và dữ liệu hoặc mã lỗi của request</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         [HttpPut("{entityId}")]
         public IActionResult EditEntity(Guid entityId, MISAEntity entity)
         {
             // Thực thi truy vấn và trả về kết quả cho client
             try
             {
-                var serverResult = _service.Update(entity, entityId);
+                _serviceResult = _service.Update(entity, entityId);
 
-                if (serverResult.IsValid == false)
+                if (_serviceResult.IsValid == false)
                 {
-                    return StatusCode(400, serverResult);
+                    return StatusCode(400, _serviceResult);
                 }
 
-                serverResult.Msg = Properties.Resources.MISAUpdateMsg;
-                return StatusCode(200, serverResult);
+                _serviceResult.Msg = string.Format(MISA.CukCuk.Core.Resources.ResourceVN.MISA_Update_Success_Msg, _entityName); 
+                return StatusCode(200, _serviceResult);
             }
             catch (Exception e)
             {
                 var response = new
                 {
                     devMsg = e.Message,
-                    userMsg = Properties.Resources.MISAErrorMessage,
+                    userMsg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg,
                     errorCode = "MISA_003",
                     traceId = Guid.NewGuid().ToString()
                 };
@@ -177,8 +183,8 @@ namespace MISA.CukCuk.API.Controllers
         /// Xóa nv với id tương ứng
         /// </summary>
         /// <param name="entityId">Id của nv muốn xóa</param>
-        /// <returns></returns>
-
+        /// <returns> Mã code trả về và dữ liệu hoặc mã lỗi của request</returns>
+        /// CreatedBy: NTDUNG (17/08/2021)
         [HttpDelete("{entityId}")]
         public IActionResult DeleteEntityById(Guid entityId)
         {
@@ -188,11 +194,11 @@ namespace MISA.CukCuk.API.Controllers
 
                 if (!_serviceResult.IsValid)
                 {
-                    _serviceResult.Msg = Properties.Resources.MISAErrorMessage;
+                    _serviceResult.Msg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg;
                     return StatusCode(400, _serviceResult);
                 }
 
-                _serviceResult.Msg = Properties.Resources.MISADeleteMsg;
+                _serviceResult.Msg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg;
                 return StatusCode(200, _serviceResult);
             }
             catch (Exception e)
@@ -200,7 +206,7 @@ namespace MISA.CukCuk.API.Controllers
                 var response = new
                 {
                     devMsg = e.Message,
-                    userMsg = Properties.Resources.MISAErrorMessage,
+                    userMsg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg,
                     errorCode = "MISA_003",
                     traceId = Guid.NewGuid().ToString()
                 };
@@ -223,11 +229,12 @@ namespace MISA.CukCuk.API.Controllers
 
                 if (!_serviceResult.IsValid)
                 {
-                    _serviceResult.Msg = Properties.Resources.MISAErrorMessage;
+
+                    _serviceResult.Msg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg;
                     return StatusCode(400, _serviceResult);
                 }
 
-                _serviceResult.Msg = Properties.Resources.MISADeleteMsg;
+                _serviceResult.Msg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg;                
 
                 return StatusCode(200, _serviceResult);
             }
@@ -236,7 +243,7 @@ namespace MISA.CukCuk.API.Controllers
                 var response = new
                 {
                     devMsg = e.Message,
-                    userMsg = Properties.Resources.MISAErrorMessage,
+                    userMsg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg,
                     errorCode = "MISA_003",
                     traceId = Guid.NewGuid().ToString()
                 };
