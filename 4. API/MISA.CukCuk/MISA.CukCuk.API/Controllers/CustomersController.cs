@@ -67,6 +67,13 @@ namespace MISA.CukCuk.API.Controllers
 
         #endregion
 
+        /// <summary>
+        /// Import dữ liệu khách hàng từ file excel
+        /// </summary>
+        /// <param name="formFile"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns> Mã code trả về và dữ liệu hoặc mã lỗi của request</returns>
+        /// CreatedBy: NTDUNG (20/08/2021)
         [HttpPost("import")]
         #region Import dữ liệu
         public IActionResult ImportData(IFormFile formFile, CancellationToken cancellationToken)
@@ -87,12 +94,21 @@ namespace MISA.CukCuk.API.Controllers
                     ExcelWorksheet workSheet = package.Workbook.Worksheets[0];
                     var rowCount = workSheet.Dimension.Rows;
 
-                    for (int row = 2; row <= rowCount; row++)
+                    for (int row = 3; row <= rowCount; row++)
                     {
                         var customer = new Customer
                         {
-                            CustomerCode = (string)workSheet.Cells[row, 1].Value
+                            CustomerCode = workSheet.Cells[row, 1].Value.ToString().Trim(),
+                            FullName = workSheet.Cells[row, 2].Value.ToString().Trim(),
+                            MemberCardCode = workSheet.Cells[row, 3].Value.ToString().Trim(),
+                            CustomerGroupName = workSheet.Cells[row, 4].Value.ToString().Trim(),
+                            PhoneNumber = workSheet.Cells[row, 5].Value.ToString().Trim(),
+                            CompanyName = workSheet.Cells[row, 7].Value.ToString().Trim(),
+                            CompanyTaxCode = workSheet.Cells[row, 8].Value.ToString().Trim(),
+                            Email = workSheet.Cells[row, 9].Value.ToString().Trim(),
+                            //Address = workSheet.Cells[row, 10].Value.ToString().Trim()
                         };
+
                         customers.Add(customer);
                     }
                 }

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using MISA.CukCuk.Core.Attributes;
 using MISA.CukCuk.Core.Interfaces.Repositiories;
 using MISA.CukCuk.Core.Resources;
 using MySqlConnector;
@@ -92,19 +93,24 @@ namespace MISA.CukCuk.Infrastructure.Repository
 
             foreach (var prop in properties)
             {
-                // Tên thuộc tính
-                var propName = prop.Name;
-
-                // Giá tri thuộc tính
-                var propValue = prop.GetValue(entity);
-                if (propName.Equals($"{_entityName}Id") && prop.PropertyType == typeof(Guid))
+                var propMISANotMap = prop.GetCustomAttributes(typeof(MISANotMap), true);
+                if (propMISANotMap.Length == 0)
                 {
-                    propValue = Guid.NewGuid();
-                }
+                    // Tên thuộc tính
+                    var propName = prop.Name;
 
-                columnsName.Add(propName);
-                columnsParam.Add($"@{propName}");
-                parameters.Add($"@{propName}", propValue);
+                    // Giá tri thuộc tính
+                    var propValue = prop.GetValue(entity);
+                    if (propName.Equals($"{_entityName}Id") && prop.PropertyType == typeof(Guid))
+                    {
+                        propValue = Guid.NewGuid();
+                    }
+
+                    columnsName.Add(propName);
+                    columnsParam.Add($"@{propName}");
+                    parameters.Add($"@{propName}", propValue);
+                }
+          
             }
 
             var sqlQuery = $"INSERT INTO {_entityName} ({String.Join(", ", columnsName.ToArray())}) " +
@@ -134,18 +140,22 @@ namespace MISA.CukCuk.Infrastructure.Repository
 
             foreach (var prop in properties)
             {
-                // Tên thuộc tính
-                var propName = prop.Name;
-
-                // Giá tri thuộc tính
-                var propValue = prop.GetValue(entity);
-                if (propName.Equals($"{_entityName}Id"))
+                var propMISANotMap = prop.GetCustomAttributes(typeof(MISANotMap), true);
+                if (propMISANotMap.Length == 0)
                 {
-                    propValue = entityId;
-                }
+                    // Tên thuộc tính
+                    var propName = prop.Name;
 
-                queryLine.Add($"{propName} = @{propName}");
-                parameters.Add($"@{propName}", propValue);
+                    // Giá tri thuộc tính
+                    var propValue = prop.GetValue(entity);
+                    if (propName.Equals($"{_entityName}Id"))
+                    {
+                        propValue = entityId;
+                    }
+
+                    queryLine.Add($"{propName} = @{propName}");
+                    parameters.Add($"@{propName}", propValue);
+                }
             }
 
             parameters.Add("@oldEntityId", entityId);

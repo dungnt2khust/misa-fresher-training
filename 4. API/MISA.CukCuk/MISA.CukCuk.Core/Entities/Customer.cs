@@ -107,6 +107,11 @@ namespace MISA.CukCuk.Core.Entities
         /// </summary>
         public int? IsStopFollow { get; set; }
 
+        /// <summary>
+        /// Tên của nhóm khách hàng
+        /// </summary>
+        [MISANotMap]
+        public string CustomerGroupName { get; set; }
         #endregion
 
     }
