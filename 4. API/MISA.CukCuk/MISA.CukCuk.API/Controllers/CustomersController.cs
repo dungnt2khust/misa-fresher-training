@@ -78,42 +78,28 @@ namespace MISA.CukCuk.API.Controllers
         #region Import dữ liệu
         public IActionResult ImportData(IFormFile formFile, CancellationToken cancellationToken)
         {
-            if (formFile == null || formFile.Length <= 0)
+            try
             {
-                return BadRequest(MISA.CukCuk.Core.Resources.ResourceVN.MISA_Delete_Success_Msg);
-            }
+                _serviceResult = _customerService.ImportData(formFile, cancellationToken);
 
-            var customers = new List<Customer>();
-
-            using (var stream = new MemoryStream())
-            {
-                formFile.CopyToAsync(stream, cancellationToken);
-                
-                using (var package = new ExcelPackage(stream))
+                if (_serviceResult.IsValid == false)
                 {
-                    ExcelWorksheet workSheet = package.Workbook.Worksheets[0];
-                    var rowCount = workSheet.Dimension.Rows;
-
-                    for (int row = 3; row <= rowCount; row++)
-                    {
-                        var customer = new Customer
-                        {
-                            CustomerCode = workSheet.Cells[row, 1].Value.ToString().Trim(),
-                            FullName = workSheet.Cells[row, 2].Value.ToString().Trim(),
-                            MemberCardCode = workSheet.Cells[row, 3].Value.ToString().Trim(),
-                            CustomerGroupName = workSheet.Cells[row, 4].Value.ToString().Trim(),
-                            PhoneNumber = workSheet.Cells[row, 5].Value.ToString().Trim(),
-                            CompanyName = workSheet.Cells[row, 7].Value.ToString().Trim(),
-                            CompanyTaxCode = workSheet.Cells[row, 8].Value.ToString().Trim(),
-                            Email = workSheet.Cells[row, 9].Value.ToString().Trim(),
-                            //Address = workSheet.Cells[row, 10].Value.ToString().Trim()
-                        };
-
-                        customers.Add(customer);
-                    }
+                    _serviceResult.Msg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg;
                 }
+                // Trả dữ liệu về cho client
+                return StatusCode(200, _serviceResult.Data);
             }
-            return Ok(customers);
+            catch (Exception e)
+            {
+                var response = new
+                {
+                    devMsg = e.Message,
+                    userMsg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Exception_Error_Msg,
+                    errorCode = "MISA_003",
+                    traceId = Guid.NewGuid().ToString()
+                };
+                return StatusCode(500, response);
+            }
         }
         #endregion
     }

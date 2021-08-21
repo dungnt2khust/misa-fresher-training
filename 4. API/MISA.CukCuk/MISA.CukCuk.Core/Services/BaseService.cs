@@ -65,42 +65,12 @@ namespace MISA.CukCuk.Core.Services
         public virtual ServiceResult Add(MISAEntity entity)
         {
             // Validate dữ liệu
-            var className = typeof(MISAEntity).Name;
-            var properties = entity.GetType().GetProperties();
+            var validData = ValidateData(entity, "ADD");
 
-            foreach (var prop in properties)
-            {
-                var propMISArequired = prop.GetCustomAttributes(typeof(MISARequired), true);
-                if (propMISArequired.Length > 0)
-                {
-                    var propValue = prop.GetValue(entity);
-                    var propDisplayName = prop.GetCustomAttributes(typeof(MISADisplayName), true);
-                    var propMISAUnique = prop.GetCustomAttributes(typeof(MISAUnique), true);
-                    var fieldName = (propDisplayName[0] as MISADisplayName).FieldName;
+            if (!validData)
+                return _serviceResult;
 
-                    if (propValue == null || propValue.ToString() == "")
-                    {                        
-                        _serviceResult.IsValid = false;
-                        _serviceResult.Msg = string.Format(ResourceVN.MISA_Field_Emply_Msg, fieldName);
-                        return _serviceResult;                        
-                    }    
-                    else
-                    {
-                        if (propMISAUnique.Length > 0)
-                        {
-                            var checkDuplicate = _repository.CheckDuplicate(propValue.ToString(), prop.Name);
-                            if(!checkDuplicate)
-                            {                                 
-                                _serviceResult.IsValid = false;
-                                _serviceResult.Msg = string.Format(ResourceVN.MISA_Field_Duplicate_Msg, fieldName);
-                                return _serviceResult;
-                            }                             
-                        }
-                    }                        
-                }                
-            }
             // Kết nối infrastructure service làm việc với db
-
             _serviceResult.Data = _repository.Add(entity);
             if ((int)_serviceResult.Data > 0)
             {
@@ -127,8 +97,13 @@ namespace MISA.CukCuk.Core.Services
         /// CreatedBy: NTDUNG (18/08/2021)
         public virtual ServiceResult Update(MISAEntity entity, Guid entityId)
         {
-            // Kết nối infrastructure service làm việc với db
+            // Validate dữ liệu
+            var validData = ValidateData(entity, "UPDATE");
 
+            if (!validData)
+                return _serviceResult;
+
+            // Kết nối infrastructure service làm việc với db
             _serviceResult.Data = _repository.Update(entity, entityId);
 
             if ((int)_serviceResult.Data > 0)
@@ -176,5 +151,98 @@ namespace MISA.CukCuk.Core.Services
 
         #endregion
 
+        #region Validate dữ liệu
+        /// <summary>
+        /// Validate dữ liệu 
+        /// </summary>
+        /// <param name="entity"> Dữ liệu nhập vào</param>
+        /// <param name="mode"> Các trường hợp validate khác nhau (ADD, UPDATE)</param>
+        /// <returns> Boolean: true - đữ liệu hợp lý, false - dữ liệu không hợp lệ</returns>
+        /// CreatedBy: NTDUNG (21/08/2021)
+        public bool ValidateData(MISAEntity entity, string mode)
+        {
+            // Validate dữ liệu
+            var className = typeof(MISAEntity).Name;
+            var properties = entity.GetType().GetProperties();
+
+            foreach (var prop in properties)
+            {
+                var propMISArequired = prop.GetCustomAttributes(typeof(MISARequired), true);
+                if (propMISArequired.Length > 0)
+                {
+                    var propValue = prop.GetValue(entity);
+                    var propDisplayName = prop.GetCustomAttributes(typeof(MISADisplayName), true);
+                    var propMISAUnique = prop.GetCustomAttributes(typeof(MISAUnique), true);
+                    var fieldName = (propDisplayName[0] as MISADisplayName).FieldName;
+
+                    if (propValue == null || propValue.ToString() == "")
+                    {
+                        _serviceResult.IsValid = false;
+                        _serviceResult.Msg = string.Format(ResourceVN.MISA_Field_Emply_Msg, fieldName);
+                        return false;
+                    }
+                    else
+                    {
+                        if (propMISAUnique.Length > 0)
+                        {
+                            var checkDuplicate = _repository.CheckDuplicate(entity, prop.Name, mode);
+                            if (!checkDuplicate)
+                            {
+                                _serviceResult.IsValid = false;
+                                _serviceResult.Msg = string.Format(ResourceVN.MISA_Field_Duplicate_Msg, fieldName);
+                                return false;
+                            }
+                        }
+                    }
+                }                
+            }
+            return true; 
+        }
+        #endregion
+
+        #region Validate dữ liệu import
+        /// <summary>
+        /// Validate dữ liệu được import lên so với dữ liệu trong DB
+        /// </summary>
+        /// <param name="entity"> Dữ liệu một bản ghi</param>
+        /// <returns> Trả về danh sách lỗi</returns>
+        /// CreatedBy: NTDUNG (21/08/2021)
+        public List<string> ValidateImportData(MISAEntity entity)
+        {
+            // Validate dữ liệu
+            List<string> listError = new List<string>();
+            var className = typeof(MISAEntity).Name;
+            var properties = entity.GetType().GetProperties();
+
+            foreach (var prop in properties)
+            {
+                var propMISArequired = prop.GetCustomAttributes(typeof(MISARequired), true);
+                if (propMISArequired.Length > 0)
+                {
+                    var propValue = prop.GetValue(entity);
+                    var propDisplayName = prop.GetCustomAttributes(typeof(MISADisplayName), true);
+                    var propMISAUnique = prop.GetCustomAttributes(typeof(MISAUnique), true);
+                    var fieldName = (propDisplayName[0] as MISADisplayName).FieldName;
+
+                    if (propValue == null || propValue.ToString() == "")
+                    {
+                        listError.Add(string.Format(ResourceVN.MISA_Field_Emply_Msg, fieldName));
+                    }
+                    else
+                    {
+                        if (propMISAUnique.Length > 0)
+                        {
+                            var checkDuplicate = _repository.CheckDuplicate(entity, prop.Name, "ADD");
+                            if (!checkDuplicate)
+                            {
+                                listError.Add(string.Format(ResourceVN.MISA_Field_Duplicate_Msg, fieldName));
+                            }
+                        }
+                    }
+                }
+            }
+            return listError;
+        }
+        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MISA.CukCuk.Core.Attributes;
 using System;
+using System.Collections.Generic;
 
 namespace MISA.CukCuk.Core.Entities
 {
@@ -112,6 +113,12 @@ namespace MISA.CukCuk.Core.Entities
         /// </summary>
         [MISANotMap]
         public string CustomerGroupName { get; set; }
+
+        /// <summary>
+        /// Lỗi xảy ra khi import dữ liệu
+        /// </summary>
+        [MISANotMap]
+        public List<string> ImportError { get; set; }
         #endregion
 
     }

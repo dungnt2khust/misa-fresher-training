@@ -76,3 +76,6 @@ C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\EPPlus.dll
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\Microsoft.IO.RecyclableMemoryStream.dll
 C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\System.Xml.XPath.XmlDocument.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Features.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+C:\Workspace\INTERN\misa-fresher-training\4. API\MISA.CukCuk\MISA.CukCuk.API\bin\Debug\net5.0\System.IO.Pipelines.dll

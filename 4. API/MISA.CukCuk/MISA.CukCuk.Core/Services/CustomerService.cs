@@ -1,10 +1,14 @@
-﻿using MISA.CukCuk.Core.Entities;
+﻿using Microsoft.AspNetCore.Http;
+using MISA.CukCuk.Core.Entities;
 using MISA.CukCuk.Core.Helpers;
 using MISA.CukCuk.Core.Interfaces.Repositiories;
 using MISA.CukCuk.Core.Interfaces.Services;
 using MISA.CukCuk.Core.Resources;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 
 namespace MISA.CukCuk.Core.Services
 {
@@ -45,6 +49,75 @@ namespace MISA.CukCuk.Core.Services
             return _serviceResult;
         }
 
+        #endregion
+
+        #region Import dữ liệu khách hàng
+        /// <summary>
+        /// Import dữ liệu khách hàng 
+        /// </summary>
+        /// <param name="formFile"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns> Kết quả nghiệp vụ import dữ liệu khách hàng</returns>
+        public ServiceResult ImportData(IFormFile formFile, CancellationToken cancellationToken)
+        {
+            if (formFile == null || formFile.Length <= 0)
+            {
+                _serviceResult.IsValid = false;
+                _serviceResult.Msg = MISA.CukCuk.Core.Resources.ResourceVN.MISA_Delete_Success_Msg;
+                return _serviceResult; 
+            }
+
+            var customers = new List<Customer>();
+
+            using (var stream = new MemoryStream())
+            {
+                formFile.CopyToAsync(stream, cancellationToken);
+
+                using (var package = new ExcelPackage(stream))
+                {
+                    ExcelWorksheet workSheet = package.Workbook.Worksheets[0];
+                    var rowCount = workSheet.Dimension.Rows;
+                    var colCount = workSheet.Dimension.Columns;
+
+                    for (int row = 3; row <= rowCount; row++)
+                    {
+                        /**
+                         * 1. Mã khách hàng
+                         * 2. Tên khách hàng
+                         * 3. Mã thẻ thành viên
+                         * 4. Nhóm khách hàng
+                         * 5. Số điện thoại
+                         * 6. Ngày sinh
+                         * 7. Tên công ty
+                         * 8. Mã số thuế
+                         * 9. Email
+                         * 10. Địa chỉ
+                         * 11. Ghi chú
+                         */
+                        Object[] rowValue = new object[colCount + 1];
+                        for (int col = 1; col <= colCount; col++)
+                        {
+                            rowValue[col] = workSheet.Cells[row, col].Value;
+                        }
+                        var customer = new Customer
+                        {
+                            CustomerCode = rowValue[1] == null ? null : rowValue[1].ToString().Trim(),
+                            FullName = rowValue[2] == null ? null : rowValue[2].ToString().Trim(),
+                            MemberCardCode = rowValue[3] == null ? null : rowValue[3].ToString().Trim(),
+                            CustomerGroupName = rowValue[4] == null ? null : rowValue[4].ToString().Trim(),
+                            PhoneNumber = rowValue[5] == null ? null : rowValue[5].ToString().Trim(),
+                            CompanyName = rowValue[6] == null ? null : rowValue[6].ToString().Trim(),
+                            CompanyTaxCode = rowValue[7] == null ? null : rowValue[7].ToString().Trim(),
+                            Email = rowValue[9] == null ? null : rowValue[9].ToString().Trim()
+                        };
+                        customer.ImportError = ValidateImportData(customer);
+                        customers.Add(customer);
+                    }
+                }
+            }
+            _serviceResult.Data = customers;
+            return _serviceResult;
+        }
         #endregion
     }
 }

@@ -213,19 +213,31 @@ namespace MISA.CukCuk.Infrastructure.Repository
         /// <summary>
         /// Kiểm tra trùng giá trị 
         /// </summary>
-        /// <param name="fieldValue"></param>
-        /// <param name="fieldName"></param>
+        /// <param name="entity"> Thông tin của entity</param>
+        /// <param name="fieldName"> Trường thông tin cần kiểm tra</param>
+        /// <param name="mode"> Các kiểu kiểm tra khách nhau (ADD, UPDATE)</param>
         /// <returns> Boolean: true - không trùng, false - trùng</returns>
         /// CreatedBy: NTDUNG (17/08/2021)
-        /// ModifiedBy: NTDUNG (20/08/2021)
-        public bool CheckDuplicate(string fieldValue, string fieldName)
+        /// ModifiedBy: NTDUNG (21/08/2021)
+        public bool CheckDuplicate(MISAEntity entity, string fieldName, string mode)
         {
+
             // Query check trùng
-            var sqlQuery = $"SELECT * FROM {_entityName} WHERE {fieldName} = @fieldValue";
             var parameters = new DynamicParameters();
+            var sqlQuery = "";
 
-            parameters.Add("@fieldValue", fieldValue);
-
+            if (mode == "ADD")
+            {
+                sqlQuery = $"SELECT * FROM {_entityName} WHERE {fieldName} = @fieldValue";
+                parameters.Add("@fieldValue", entity.GetType().GetProperty(fieldName).GetValue(entity, null));
+            } 
+            else if (mode == "UPDATE")
+            { 
+                sqlQuery = $"SELECT * FROM {_entityName} WHERE {fieldName} = @fieldValue AND {_entityName}Id != @entityId";
+                parameters.Add("@fieldValue", entity.GetType().GetProperty(fieldName).GetValue(entity, null));
+                parameters.Add("@entityId", entity.GetType().GetProperty($"{_entityName}Id").GetValue(entity, null));
+            }
+            
             // Lấy dữ liệu và phản hồi cho client
             var queryField = _dbConnection.Query<MISAEntity>(sqlQuery, param: parameters);
             return queryField.Count() < 1;

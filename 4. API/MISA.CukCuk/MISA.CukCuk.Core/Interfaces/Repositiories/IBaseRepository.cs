@@ -74,11 +74,13 @@ namespace MISA.CukCuk.Core.Interfaces.Repositiories
         /// <summary>
         /// Kiểm tra trùng thông tin
         /// </summary>
-        /// <param name="fieldValue"> Giá trị của trường muốn kiếm tra trùng</param>
+        /// <param name="entity"> Dứ liệu của entity</param>
+        /// <param name="fieldName"> Tên trường dữ liệu muốn kiểm tra</param>
+        /// <param name="mode"> Kiểu kiểm tra (ADD or UPDATE)</param>
         /// <returns> Trả về boolean: true - không trùng, false - trùng</returns>
         /// CreatedBy: NTDUNG (17/08/2021)
-        /// ModifiedBy: NTDUNG (20/08/2021)
-        bool CheckDuplicate(string fieldValue, string fieldName);
+        /// ModifiedBy: NTDUNG (21/08/2021)
+        bool CheckDuplicate(MISAEntity entity, string fieldName, string mode);
 
         #endregion
     }
