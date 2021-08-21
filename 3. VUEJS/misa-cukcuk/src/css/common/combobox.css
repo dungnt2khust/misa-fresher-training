@@ -18,7 +18,7 @@
     display: block;
 }
 
-.combobox.combobox--show .combobox__icon {
+.combobox.combobox--show .combobox__icon-down {
     transform: rotate(180deg);
     transition: all 0.3s ease;
 }
@@ -85,7 +85,7 @@
         background-color: #efefef;
     }
         /* 2.1. COMBOBOX ICON */
-        .combobox__icon {
+        .combobox__icon-down {
             transform: rotate(0);
             transition: all 0.3s ease;
         }

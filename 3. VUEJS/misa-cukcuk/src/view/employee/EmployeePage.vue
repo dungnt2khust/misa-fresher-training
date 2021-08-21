@@ -3,7 +3,7 @@
 		<EmployeeControl
 			@changeInputSearch="changeInputSearch($event)"
 		/>
-		<div class="container__main">
+		<div id="content">
 			<EmployeeTable
 				:urlAPI="urlAPI"
 				:tableStyle="tableStyle"
@@ -146,4 +146,6 @@
 		},
 	};
 </script>
-<style scoped></style>
+<style>
+	@import url('../../css/common/container.css');
+</style>

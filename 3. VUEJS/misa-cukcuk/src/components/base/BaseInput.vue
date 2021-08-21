@@ -2,14 +2,14 @@
     <div>
         <span 
             style="display: block" 
-            class="popup-infor__label"
+            class="label"
             v-html="requiredAssign"
             ></span>
         <input
 			:title="title"
 			:tabindex="tabIndex"
             :type="inputType"
-            class="popup-infor__input"
+            class="input"
             :class="{'text-align-right': haveUnit}"
             :style="{width: widthCalc, 'padding-right': haveUnit ? '60px' : '0'}"
             :value="formatInputValue"
@@ -313,6 +313,6 @@ export default {
 	},
 };
 </script>
-<style lang="">
-    
+<style>
+	@import url('../../css/common/input.css');
 </style>

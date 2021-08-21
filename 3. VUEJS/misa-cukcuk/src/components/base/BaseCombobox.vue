@@ -24,7 +24,7 @@
 				@click="comboboxDropdownOnClick($event)"
 				class="combobox__dropdown"
 			>
-				<i class="fas fa-chevron-down combobox__icon"></i>
+				<i class="fas fa-chevron-down combobox__icon-down"></i>
 			</div>
 			<ul class="combobox__list">
 				<li

@@ -14,23 +14,25 @@
 .dropdown.dropdown--show {
     border: 1px solid #019160 !important;
 }
-
-     /* 1. DROPDOWN VALUE  */
-    .dropdown-value {
-        padding: 10px 8px;
-        display: block;
-        cursor: pointer;
+    /* 1. HEADER */
+    .dropdown__header {
         display: flex;
         justify-content: space-between;
-    }
-        /* 1.1 DROPDOWN VALUE i  */
-        .dropdown-value i {
-            position: relative;
-            top: 2px;
-        }
+        align-items: center;
+        padding-right: 10px;
+        width: 100%;
+    } 
+        /* 1.1. DROPDOWN VALUE  */
+        .dropdown__value {
+            padding: 10px 8px;
+            display: block;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        } 
 
     /* 2. DROPDOWN LIST */
-    .dropdown-list {
+    .dropdown__list {
         margin: 0;
         padding-left: 0;
         list-style: none;
@@ -47,32 +49,32 @@
         z-index: 10000;
     }
 
-    .dropdown.dropdown--show .dropdown-list {
+    .dropdown.dropdown--show .dropdown__list {
         display: block;
     }
         /* 2.2. DROPDOWN ITEM */
-        .dropdown-item {
+        .dropdown__item {
             padding: 10px 8px;
             cursor: pointer;
         } 
 
-        .dropdown-item.dropdown-item--active {
+        .dropdown__item.dropdown__item--active {
             background-color: #019160;
             color: #fff;
         }
 
-        .dropdown-item:hover {
+        .dropdown__item:hover {
             background-color: #e1e1e1;
             color: #000;
         }
             /* 2.2.1.DROPDOWN ICON DOWN */
-            .icon-down {
+            .dropdown__icon-down {
                 transform: rotate(0);
                 transition: all 0.3s ease;
                 line-height: 40px !important;
             }
 
-            .dropdown.dropdown--show .icon-down {
+            .dropdown.dropdown--show .dropdown__icon-down {
                 transform: rotate(180deg);
                 transition: all 0.3s ease;
             }
@@ -86,30 +88,9 @@
             .dropdown-item.dropdown-item--active .dropdown-icon {
                 visibility: visible;
             }
-    
-    /* WRAPPER */
-    .dropdown-header-wrapper {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-right: 10px;
-        width: 100%;
-    } 
+ 
 
 
 
-
-/* DROPDOWN HANDLE BY INPUT CHECKBOX */
-/* #dropdown-input:checked~.dropdown-list {
-    display: block;
-}
-
-#dropdown-input:checked~.dropdown-value .icon-down {
-    display: none;
-}
-
-#dropdown-input:checked~.dropdown-value .icon-up {
-    display: block;
-} */
 
 

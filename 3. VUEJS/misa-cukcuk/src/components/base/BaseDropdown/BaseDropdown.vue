@@ -3,23 +3,22 @@
 		@blur="hideDropdown()"
 		@click="toggleDropdown()"
 		class="dropdown"
-		for="dropdown-input"
 		:class="{ 'dropdown--show': dropdownState }"
 		:tabindex="tabIndex"
 	>
-		<div class="dropdown-header-wrapper">
-			<span class="dropdown-value">
+		<div class="dropdown__header">
+			<span class="dropdown__value">
 				{{ dropdownValue }}
 			</span>
-			<i class="fas fa-chevron-down icon-down"></i>
+			<i class="fas fa-chevron-down dropdown__icon-down"></i>
 		</div>
-		<ul class="dropdown-list">
+		<ul class="dropdown__list">
 			<li
 				@click="activeItem(index)"
 				v-for="(item, index) in dropdownData"
-				:class="{ 'dropdown-item--active': currIdx == index }"
+				:class="{ 'dropdown__item--active': currIdx == index }"
 				:key="index"
-				class="dropdown-item"
+				class="dropdown__item"
 			>
 				{{ item[dropdownField + "Name"] }}
 			</li>

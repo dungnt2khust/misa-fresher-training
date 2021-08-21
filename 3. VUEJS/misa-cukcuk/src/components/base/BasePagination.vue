@@ -1,6 +1,6 @@
 <template lang="">
 	<div class="pagination">
-		<p class="pagination__text" v-html="paginationDesc">
+		<p class="pagination__desc" v-html="paginationDesc">
         </p>
 		<ul class="pagination__list">
 			<li @click="firstPageOnClick()" class="pagination__item">
@@ -17,7 +17,6 @@
 					alt=""
 				/>
 			</li>
-<!-- style="{visibility: index <= totalPage ? 'visible' : 'hidden'}"                -->
 			<li
 				@click="pageItemOnClick(index)"
 				v-for="index in totalPage" 
@@ -43,7 +42,7 @@
 				/>
 			</li>
 		</ul>
-		<div class="pagination__number-employee">
+		<div class="pagination__option">
 			<DropUpEmployeeNum
                 :currIdxTranfer="currOption"
                 :dropupData="optionPaging"

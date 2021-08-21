@@ -7,9 +7,9 @@
         <EmployeePage/>
       </div>
     </div>
-    <ThePopupInfo/>
+    <EmployeeDetail/>
     <EmployeeToast/>
-    <EmployeePopupDialog/>
+    <EmployeeDialog/>
   </div>
 </template>
 
@@ -17,9 +17,9 @@
 import TheHeader from './components/layout/TheHeader.vue'
 import TheMenu from './components/layout/TheMenu.vue'
 import EmployeePage from './view/employee/EmployeePage.vue'
-import ThePopupInfo from './components/layout/ThePopupInfo.vue'
+import EmployeeDetail from './view/employee/EmployeeDetail.vue'
 import BaseToastMessage from './components/base/BaseToastMessage.vue'
-import BasePopupDialog from './components/base/BasePopupDialog.vue'
+import BaseDialog from './components/base/BaseDialog.vue'
 import { EventBus } from './main'
 
 export default {  
@@ -28,9 +28,9 @@ export default {
     EmployeeHeader: TheHeader,
     EmployeeMenu: TheMenu,
     EmployeePage,
-    ThePopupInfo,
+    EmployeeDetail,
     EmployeeToast: BaseToastMessage,
-    EmployeePopupDialog: BasePopupDialog
+    EmployeeDialog: BaseDialog
   },
   mounted() { 
     setTimeout(() => {

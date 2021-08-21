@@ -16,7 +16,7 @@
             font-size: 13px;
         }
 
-        .menu__item.menu__item--focus {
+        .menu__item.menu__item--active {
             background-color: var(--menu-item-default-color);
             color: #fff;
         }

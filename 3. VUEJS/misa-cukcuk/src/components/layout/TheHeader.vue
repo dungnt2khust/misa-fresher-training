@@ -1,13 +1,12 @@
 <template>
     <div id="header">
-      <div class="header-left">
+      <div class="header__left">
         <div class="toggle"></div>
         <div class="logo"></div>
       </div> 
-      <div class="header-right"> 
+      <div class="header__right"> 
         <BaseDropdownFix
           :id="'dropdown-restaurant'"
-          :class="{'dropdown--restaurant': true}"
           :dropdownData="dropdownDataRestaurant"
           :indexTranfer="0"
           />           

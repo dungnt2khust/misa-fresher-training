@@ -1,24 +1,24 @@
 <template lang="">
-    <div class="popup-lib" :class="`popup--${type}-lib`" :style="{display: popupDialogState ? 'block' : 'none'}">
-        <div class="popup-overlay-lib"></div>
-        <div class="popup-container-lib">
-        <div class="popup-header-lib">
-            <span class="popup-title-lib">{{ title }}</span>
-            <div @click="cancelBtnOnClick" class="popup-cancel-lib">
+    <div class="dialog" :class="dialogClass">
+        <div class="dialog__overlay"></div>
+        <div class="dialog__container">
+        <div class="dialog__header">
+            <span class="dialog__title">{{ title }}</span>
+            <div @click="cancelBtnOnClick" class="dialog__cancel">
                 <img src="../../assets/icon/x.svg" alt="">
             </div>
         </div>
-        <div class="popup-body-lib">
-            <div class="popup-icon-lib" v-if="type != 'info'">
+        <div class="dialog__body">
+            <div class="dialog__icon" v-if="type != 'info'">
                 <i class="fas fa-exclamation-triangle"></i> 
             </div>
-            <span class="popup-content-lib" v-html="content"></span>
+            <span class="dialog__content" v-html="content"></span>
         </div>
-        <div class="popup-footer-lib">
-            <button @click="continueBtnOnClick" id="popup-btn-continue-lib" class="popup-btn-lib" v-if="type != 'info'">
+        <div class="dialog__footer">
+            <button @click="continueBtnOnClick" class="dialog__btn" v-if="type != 'info'">
                 {{ continueBtn }}
             </button>
-            <button @click="cancelBtnOnClick" id="popup-btn-cancel-lib" :class="cancelBtnState" class="popup-btn-lib">Đóng</button>
+            <button @click="cancelBtnOnClick" :class="cancelBtnState" class="dialog__btn">Đóng</button>
         </div>
         </div>
   </div>  
@@ -26,10 +26,10 @@
 <script>
 import { EventBus } from '../../main'
 export default {
-	name: "BasePopupDialog",
+	name: "BaseDialog",
 	data() {
 		return {
-			popupDialogState: false,
+			dialogState: false,
 			type: "",
 			title: "",
 			content: "",
@@ -39,12 +39,12 @@ export default {
 	},
     mounted() {
         /**
-         * Lắng nghe sự kiện hiển thị popup dialog
+         * Lắng nghe sự kiện hiển thị dialog
          * CreatedBy: NTDUNG (05/08/2021)
-         * @param {object} data chứa các thông tin hiển thị của popup dialog
+         * @param {object} data chứa các thông tin hiển thị của dialog
          */
-        EventBus.$on('showPopupDialog', data => {
-            this.popupDialogState = true;
+        EventBus.$on('showDialog', data => {
+            this.dialogState = true;
             this.type = data['type'];
             this.title = data['title'];
             this.content = data['content'];
@@ -58,7 +58,7 @@ export default {
          * CreatedBy: NTDUNG (05/08/2021)
          */
         continueBtnOnClick() {
-            this.popupDialogState = false;
+            this.dialogState = false;
             EventBus.$emit('continueBtnOnClick' + this.mode);
         },
 
@@ -67,7 +67,7 @@ export default {
          * CreatedBy: NTDUNG (05/08/2021)
          */
         cancelBtnOnClick() {
-            this.popupDialogState = false;
+            this.dialogState = false;
             EventBus.$emit('cancelBtnOnClick' + this.mode);
         }
     },
@@ -79,18 +79,29 @@ export default {
         cancelBtnState() {
             switch(this.type) {
                 case 'error':
-                    return 'popup-btn--negative-lib';
+                    return 'dialog__btn--negative';
                 case 'info':
                 case 'warn':
-                    return 'popup-btn--positive-lib';
+                    return 'dialog__btn--positive';
                 default: 
                     return '';
             }
+        },
+        /**
+         * Gán class cho dialog
+         * CreatedBy: NTDUNG (21/08/2021)
+         */
+        dialogClass() {
+            var dialogClass = {};
+            var dialogType = `dialog--${this.type}`;
+            dialogClass[dialogType] = true;
+            dialogClass["dialog--show"] = this.dialogState;
+            return dialogClass;
         }
     }
     
 };
 </script>
 <style>
-    @import url('../../css/common/popupDialog.css'); 
+    @import url('../../css/common/dialog.css'); 
 </style>

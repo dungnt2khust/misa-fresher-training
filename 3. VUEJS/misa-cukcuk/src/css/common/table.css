@@ -1,17 +1,16 @@
-/* 2.2. TABLE EMPLOYEE*/
 .table-wrapper {
     height: calc(100% - 65px);
     overflow: auto;
 }
 
-.table-employee {
+.table {
     table-layout: fixed;
     width: 100%;
     border-spacing: 0;
     padding: 0 16px;
 }
-    /* 2.1.1. TABLE EMPLOYEE HEAD */
-    .table-employee__head {
+    /* 1. TABLE HEAD */
+    .table__head {
         position: sticky;
         top: 0;
         z-index: 10;
@@ -22,46 +21,43 @@
         text-align: left;
         white-space: nowrap;
     }
-        .table-employee__head th {
+        .table__head-checkbox {
+            width: 40px;
+        }
+        .table__head-index {
+            width: 40px;
+        }
+        .table__head th {
             border-bottom: 1px solid #bbb;
         }
-        /* 2.1.1.2. TABLE EMPLOYEE HEADER */
         th, td {
             padding: 0 10px;
         }
+            .table__checkbox {
+                height: 20px;
+                width: 20px;
+                cursor: pointer;
+            }
 
-    /* 2.1.2. TABLE EMPLOYEE BODY */
-    .table-employee__body {
+    /* 2. TABLE BODY */
+    .table__body {
         cursor: pointer;
     }
-        /* 2.1.2.1. TABLE EMPLOYEE ROW */
-        .table-employee__row {
+        /* 2.1. TABLE ROW */
+        .table__row {
             height: calc((100vh - 272px) / 10);
             background-color: var(--primary-color);
         }
-
-        .table-employee__row:hover {
+        .table__row:hover {
             background-color: var(--table-row-hover) !important;
         }
-
-        .table-employee__row td {
+        .table__row td {
             border-bottom: 1px solid #bbb;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         } 
-
-        .table-employee__row.table-employee__row--selected {
+        .table__row.table__row--selected {
             background-color: #cacaca;
         }
-            .table-employee__checkbox {
-                height: 20px;
-                width: 20px;
-                background: var(--checkbox-color) !important;
-                cursor: pointer;
-            }
-
-            .table-employee__checkbox:checked {
-                background-color: var(--checkbox-color);
-            }
         

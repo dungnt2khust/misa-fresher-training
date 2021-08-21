@@ -6,19 +6,19 @@
 		class="dropup"
 		:class="{ 'dropup--show': dropupState }"
 	>
-		<div class="dropup-header-wrapper">
-			<span class="dropup-value">
+		<div class="dropup__header">
+			<span class="dropup__value">
 				{{ dropupValue }}
 			</span>
-			<i class="fas fa-chevron-up icon-up"></i>
+			<i class="fas fa-chevron-up dropup__icon-up"></i>
 		</div>
-		<ul class="dropup-list">
+		<ul class="dropup__list">
 			<li
 				@click="activeItem(index)"
 				v-for="(item, index) in dropupData"
-				:class="{ 'dropup-item--active': currIdxTranfer == index }"
+				:class="{ 'dropup__item--active': currIdxTranfer == index }"
 				:key="index"
-				class="dropup-item"
+				class="dropup__item"
 			>
 				{{ item['label'] }}
 			</li>

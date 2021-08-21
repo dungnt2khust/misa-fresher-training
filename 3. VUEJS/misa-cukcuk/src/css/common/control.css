@@ -1,0 +1,108 @@
+#control {
+    height: 120px;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+}
+    /* 1. CONTROL LEFT */
+    .control__left {
+    }
+        /* 1.1. CONTROL LABEL */
+        .control__label {
+            font-size: 22px;
+            font-weight: 600;
+        }
+        /* 1.2. CONTROL FILTER */
+        .control__filter {
+            margin-top: 16px;
+            height: var(--top-header-height);
+            display: flex;
+            justify-content: space-between;
+        }
+            /* 1.2.1. CONTROL SEARCH */
+            .control-search {
+                height: 40px;
+                min-width: 380px;
+                display: flex;
+                align-items: center;
+                border: 1px solid #bbb;
+                border-radius: 4px;
+                font-size: 14px;
+                margin-right: 7px;
+                background-color: var(--primary-color);
+            }
+                /* 1.2.1.1. CONTROL SEARCH INPUT */
+                .control-search__input {
+                    flex: 1;
+                    height: 100%;
+                    border: transparent;
+                    border-radius: 4px;
+                    outline: none;
+                }
+                    .control-search__icon img {
+                        padding-left: 16px;
+                        padding-right: 8px;
+                    }
+
+
+    /* 1.2. CONTROL RIGHT */
+    .control__right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+        /* 1.2.1 BUTTON ADD EMPLOYEE */
+        .control__add {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+            /* 1.2.1.1. BUTTON IMG */
+            .control__add-img {
+                width: 20px;
+                height: 20px;
+                margin-right: 8px;
+            }
+            /* 1.2.1.2. BUTTON NAME */
+            .control__add-name {
+                font-size: 14px;
+            }
+        /* 1.2.2. BUTTON F5 DELETE */
+        .control__f5-delete {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }  
+             /*1.2.2.1. BUTTON DELETE  */
+            .control__delete {
+                margin-right: 10px;
+                background-color: #EA2B2B !important;
+            } 
+            .control__delete:hover {
+                background-color: #ea2b2b9c !important;
+            }
+            .control__delete:active {
+                background-color: #ea2b2bde !important;
+            }
+            .control__delete i{
+                margin-right: 10px;
+            } 
+            /* 1.2.2.2. BUTTON REFRESH */
+            .control__refresh img {
+                padding: 10px 12px;
+                border: 1px solid #bbb;
+                margin-top: 4px;
+                border-radius: 4px;
+                background-color: var(--primary-color);
+            }
+
+            .control__refresh img:hover {
+                background-color: #eee;
+                cursor: pointer;
+            }
+
+
+
+
+    

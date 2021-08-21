@@ -1,10 +1,10 @@
 <template lang="">
-	<div id="container__control">
-		<div class="container__header-left">
-			<span class="table-name">Danh sách nhân viên</span>
-			<div class="table-filter">
-				<div class="table-search" :class="{'focus-input': focusInput}">
-					<div class="table-search__icon">
+	<div id="control">
+		<div class="control__left">
+			<span class="control__label">Danh sách nhân viên</span>
+			<div class="control__filter">
+				<div class="control-search" :class="{'focus-input': focusInput}">
+					<div class="control-search__icon">
 						<img src="../../assets/icon/search.png" alt="" />
 					</div>
 					<input
@@ -12,7 +12,7 @@
 						@blur="focusInput = false"
 						@input="inputSearchOnInput($event)"
 						tabindex="1"
-						class="table-search__input"
+						class="control-search__input"
 						placeholder="Tìm theo mã, họ tên hoặc số điện thoại"
 						type="text"
 					/>
@@ -30,18 +30,18 @@
 					:comboboxData="positionFilterData"/>	
 			</div>
 		</div>
-		<div class="container__header-right">
-			<button @click="addEmployee" class="button button-addemployee">
-				<div class="button__img">
+		<div class="control__right">
+			<button @click="addEmployee" class="button control__add">
+				<div class="control__add-img">
 					<img src="../../assets/icon/add.png" alt="" />
 				</div>
-				<span class="button__name"> Thêm nhân viên </span>
+				<span class="control__add-name"> Thêm nhân viên </span>
 			</button>
-			<div class="button-f5-delete">
-				<button @click="deleteEmployees()" id="button-delete" class="button">
+			<div class="control__f5-delete">
+				<button @click="deleteEmployees()" class="button control__delete">
 					<i class="fas fa-minus-square"></i> Xoá nhân viên
 				</button>
-				<div @click="reloadTableData" class="refresh">
+				<div @click="reloadTableData" class="control__refresh">
 					<img src="../../assets/icon/refresh.png" alt="" />
 				</div>
 			</div>
@@ -144,4 +144,6 @@
 		},
 	};
 </script>
-<style lang=""></style>
+<style>
+	@import url('../../css/common/control.css');
+</style>

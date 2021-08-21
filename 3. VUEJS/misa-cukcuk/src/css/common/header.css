@@ -8,7 +8,7 @@ body {
     width: 100%;
 }
     /* 1. HEADER LEFT */
-    .header-left {
+    .header__left {
         display: flex;
         align-items: center;
         min-width: var(--menu-width);
@@ -34,7 +34,7 @@ body {
         }
 
     /* 2. HEADER RIGHT */
-    .header-right {
+    .header__right {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -92,7 +92,7 @@ body {
                 cursor: pointer;
             }
         /* 2.2. DROPDOWN RESTAURANT */
-        .dropdown--restaurant {
+        #dropdown-restaurant {
             width: 200px;
             margin: 0;
             margin-left: 10px;

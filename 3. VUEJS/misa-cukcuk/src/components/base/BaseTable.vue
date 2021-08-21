@@ -1,16 +1,18 @@
-<template lang="">
+<template>
 	<div class="table-wrapper">
-		<table class="table-employee">
-			<thead class="table-employee__head">
+		<table class="table">
+			<thead class="table__head">
 				<tr>
-					<th class="table-employee__header" style="width: 40px">
+					<!-- CHECK BOX HEADER -->
+					<th class="table__head-checkbox">
 						<input
 							v-model="checkAll"
 							type="checkbox"
-							class="table-employee__checkbox"
+							class="table__checkbox"
 						/>
 					</th>
-					<th class="table-employee__header" style="width: 60px">#</th>
+					<!-- INDEX -->
+					<th class="table__head-index">#</th>
 					<th
 						v-for="(item, index) in tableStyle"
 						:key="index"
@@ -21,23 +23,23 @@
 					</th>
 				</tr>
 			</thead>
-			<tbody class="table-employee__body">
+			<tbody class="table__body">
 				<tr
 					@dblclick="tableRowOnDbClick($event)"
 					@click="tableRowOnClick(index)"
 					v-for="(row, index) in tableData"
 					:employeeId="row.EmployeeId"
 					:key="index"
-					class="table-employee__row"
+					class="table__row"
 					:class="{
-						'table-employee__row--selected':
+						'table__row--selected':
 							employeeDeleteData.indexOf(row.EmployeeId) != -1,
 					}"
 				>
 					<td>
 						<input
 							type="checkbox"
-							class="table-employee__checkbox"
+							class="table__checkbox"
 							:checked="employeeDeleteData.indexOf(row.EmployeeId) != -1"
 						/>
 					</td>
@@ -100,7 +102,7 @@
 			EventBus.$on("deleteEmployees", () => {
 				if (this.employeeDeleteData.length) {
 					if (this.employeeDeleteData.length != 1) {
-						EventBus.$emit("showPopupDialog", {
+						EventBus.$emit("showDialog", {
 							type: "error",
 							title: "Xác nhân xoá dữ liệu",
 							content: `Bạn có muốn xoá thông tin <b>${this.employeeDeleteData.length}</b> nhân viên này không`,
@@ -119,7 +121,7 @@
 							this.employeeDeleteData = [];
 						});	
 					} else {
-						EventBus.$emit("showPopupDialog", {
+						EventBus.$emit("showDialog", {
 							type: "error",
 							title: "Xác nhân xoá dữ liệu",
 							content: `Bạn có muốn xoá thông tin nhân viên <b>${this.employeeFullName} -
@@ -138,7 +140,7 @@
 						});		
 					}	
 				} else {
-					EventBus.$emit("showPopupDialog", {
+					EventBus.$emit("showDialog", {
 						type: "info",
 						title: "Bạn chưa chọn dòng nào",
 						content: `Hãy chọn những dòng mà bạn muốn xoá`,

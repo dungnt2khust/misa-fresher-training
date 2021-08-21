@@ -1,26 +1,17 @@
-.wrapper {
-    width: 500px;
-    height: 500px;
-    background-color: wheat;
-    margin: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 40px;
-}
-
 :root {
     --overlay-background: rgba(0, 0, 0, 0.3);
-    --popup-color: #fff;
+    --dialog-color: #fff;
     --icon-color--warn: #FFC400;
     --icon-color--error: #EA2B2B;
 }
 
-.popup-lib {
+.dialog {
     display: none;
 }
-.popup-overlay-lib {
+.dialog.dialog--show {
+    display: block;
+}
+.dialog__overlay {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -29,11 +20,11 @@
     background-color: var(--overlay-background);
 }
 
-.popup-container-lib {
+.dialog__container {
     position: fixed;
     width: 400px;
     height: 180px;
-    background-color: var(--popup-color);
+    background-color: var(--dialog-color);
     border-radius: 4px;
     top: 40%;
     left: 50%;
@@ -45,39 +36,39 @@
     font-size: 15px;
     overflow: hidden;
 }
-    /* 1. POPUP HEADER */
-    .popup-header-lib {
+    /* 1. DIALOG HEADER */
+    .dialog__header {
         display: flex;
         justify-content: space-between;
         height: 48px;
     }
-        .popup-title-lib {
+        .dialog__title {
             align-self: flex-end;
             margin: 0 24px;
             font-weight: bold;
         }
-        .popup-cancel-lib {
-            width: 18px;
-            height: 18px;
+        .dialog__cancel {
+            width: 24px;
+            height: 24px;
             padding: 4px;
             border-bottom-left-radius: 4px;
             border-top-right-radius: 4px;
             cursor: pointer;
         }
-        .popup-cancel-lib:hover {
+        .dialog__cancel:hover {
             background-color: #E5E5E5;
         }
-            .popup-cancel-lib img {
+            .dialog__cancel img {
                 width: 100%;
             }
 
-    /* 2. POPUP BODY */
-    .popup-body-lib {
+    /* 2. DIALOG BODY */
+    .dialog__body {
         display: flex;
         justify-content: flex-start;
         margin: -20px 24px;
     } 
-        .popup-icon-lib {
+        .dialog__icon {
             flex-shrink: 0;
             width: 40px;
             height: 40px;
@@ -88,30 +79,30 @@
             display: flex;
             justify-content: center;
         }
-            .popup-icon-lib i {
+            .dialog__icon i {
                 line-height: 36px;
             }
 
-            .popup-lib.popup--warn-lib .popup-icon-lib i {
+            .dialog.dialog--warn .dialog__icon i {
                 color: var(--icon-color--warn);
             }
-            .popup-lib.popup--error-lib .popup-icon-lib i {
+            .dialog.dialog--error .dialog__icon i {
                 color: var(--icon-color--error);
             }
-        .popup-content-lib {
+        .dialog__content {
             font-size: 13px;
             overflow-wrap: anywhere;
         }
 
-    /* 3. POPUP FOOTER */
-    .popup-footer-lib {
+    /* 3. DIALOG FOOTER */
+    .dialog__footer {
         display: flex;
         justify-content: flex-end;
         align-items: center;
         height: 60px;
         background-color: #F4F4F4;
     }   
-        .popup-btn-lib {
+        .dialog__btn {
             height: 40px;
             min-width: 100px;
             border-radius: 4px;
@@ -122,30 +113,30 @@
             padding: 0 14px;
             transition: all 0.2s ease;
         }
-        .popup-btn-lib:hover {
+        .dialog__btn:hover {
             background-color: #E5E5E5;
         }
-        .popup-btn-lib.popup-btn--positive-lib {
+        .dialog__btn.dialog__btn--positive {
             color: #fff;
             background-color: #019160;
             margin-right: 24px;
         }        
-        .popup-btn-lib.popup-btn--positive-lib:hover {
+        .dialog__btn.dialog__btn--positive:hover {
             background-color: #01B075;
         }
-        .popup-btn-lib.popup-btn--negative-lib {
+        .dialog__btn.dialog__btn--negative {
             color: #fff;
             background-color: #F65454;
             margin-right: 24px;
         }
-        .popup-btn-lib.popup-btn--negative-lib:hover {
+        .dialog__btn.dialog__btn--negative:hover {
             background-color: #f65454d5;
         }
-        .popup-btn-lib.popup-btn--warn-lib {
+        .dialog__btn.dialog__btn--warn {
             color: #fff;
             background-color: #FFC400;
             margin-right: 24px;
         }
-        .popup-btn-lib.popup-btn--warn-lib:hover {
+        .dialog__btn.dialog__btn--warn:hover {
             background-color: #ffc400c2;
         }
