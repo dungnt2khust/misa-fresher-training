@@ -103,5 +103,5 @@ export default {
 };
 </script>
 <style>
-    @import url('../../css/common/dialog.css'); 
+    @import url('../../css/base/dialog.css'); 
 </style>

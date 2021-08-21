@@ -1,3 +1,10 @@
+:root {
+    /* SIZE */
+    
+    /* COLOR */
+    --combobox-border-color: #BBB;
+}
+
 .combobox {
     height: 40px;
     width: 100%;
@@ -6,7 +13,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 4px;
-    border: 1px solid #bbb;
+    border: 1px solid var(--combobox-border-color);
     display: flex;
     justify-content: space-between;
     position: relative;
@@ -71,7 +78,7 @@
     /* 2. COMBOBOX DROPDOWN */
     .combobox__dropdown {
         flex-grow: 0;
-        border-left: 1px solid #bbb;
+        border-left: 1px solid var(--combobox-border-color);
         width: 50px;
         font-size: 16px;
         text-align: center;

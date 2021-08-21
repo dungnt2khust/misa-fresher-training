@@ -1,17 +1,20 @@
 @import url("./base/button.css");
-@import url('base/resetcss.css');
-@import url('base/variable.css');
+@import url("../css/base/resetcss.css");
 @import url("base/customizeScrollbar.css");
-@import url("./common/placeholderItalic.css");
-@import url("./common/pagination.css");
-@import url("./common/table.css");
-@import url("common/common.css"); 
+@import url("./base/placeholderItalic.css");
+@import url("./common/common.css"); 
+
+:root {
+    --primary-color: #FFF;
+    --border-color: #ccc;
+}
 
 body {
     font-family: MISAGoogleSan;
     font-size: 13px;
     background-color: var(--primary-color);
     height: 100vh;
+    min-width: 1200px;
 }
 
 @font-face {

@@ -135,7 +135,7 @@
 	};
 </script>
 <style scoped>
-	@import url("../../css/common/toastMessage.css");
+	@import url("../../css/base/toastMessage.css");
 	.toast-leave {
 		opacity: 1;
 	}

@@ -314,5 +314,5 @@ export default {
 };
 </script>
 <style>
-	@import url('../../css/common/input.css');
+	@import url('../../css/base/input.css');
 </style>

@@ -81,7 +81,7 @@
 	};
 </script>
 <style>
-	@import url("../../css/common/dropup.css");
+	@import url("../../css/base/dropup.css");
 </style>
 
 // USAGE /** ADD FIELDS TO APPLY CSS AND PROPERTIES OF DROPDOWN

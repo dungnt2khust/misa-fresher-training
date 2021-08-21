@@ -1,9 +1,9 @@
-body {
-    min-width: 1200px;
+:root {
+    --header-height: 48px;
 }
 
 #header {
-    height: var(--top-header-height);
+    height: var(--header-height);
     display: flex;
     width: 100%;
 }

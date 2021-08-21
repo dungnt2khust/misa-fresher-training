@@ -201,5 +201,5 @@ export default {
 };
 </script>
 <style>
-	@import url("../../css/common/combobox.css");
+	@import url("../../css/base/combobox.css");
 </style>

@@ -1,3 +1,7 @@
+:root {
+    --container-color: #E9EBEE;
+}
+
 
 #container {
     flex: 1;
@@ -8,7 +12,7 @@
 }
     /* CONTENT */
     #content {
-        height: calc(100vh - var(--top-header-height) - 120px);
+        height: calc(100vh - var(--header-height) - 120px);
         display: flex;
         flex-direction: column;
         justify-content: space-between;

@@ -157,7 +157,7 @@ export default {
 };
 </script>
 <style>
-	@import url("../../../css/common/dropdown.css");
+	@import url("../../../css/base/dropdown.css");
 </style>
 
 // USAGE /** ADD FIELDS TO APPLY CSS AND PROPERTIES OF DROPDOWN
