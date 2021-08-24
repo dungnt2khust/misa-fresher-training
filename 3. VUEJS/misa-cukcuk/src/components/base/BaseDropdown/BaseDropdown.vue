@@ -1,12 +1,11 @@
 <template lang="">
 	<div
-		@blur="hideDropdown()"
-		@click="toggleDropdown()"
+		v-on="dropdownListeners"		
 		class="dropdown"
-		:class="{ 'dropdown--show': dropdownState }"
 		:tabindex="tabIndex"
+		:class="{ 'dropdown--show': dropdownState, 'dropdown--focus':  dropdownFocus}"
 	>
-		<div class="dropdown__header">
+		<div class="dropdown__header"  >
 			<span class="dropdown__value">
 				{{ dropdownValue }}
 			</span>
@@ -14,9 +13,10 @@
 		</div>
 		<ul class="dropdown__list">
 			<li
-				@click="activeItem(index)"
+				@keydown.enter="selectItem(index)"
+				@click="selectItem(index)"
 				v-for="(item, index) in dropdownData"
-				:class="{ 'dropdown__item--active': currIdx == index }"
+				:class="{ 'dropdown__item--select': currIdx == index }"
 				:key="index"
 				class="dropdown__item"
 			>
@@ -36,6 +36,7 @@ export default {
 			dropdownData: [],
 			currIdx: -1,
 			dropdownState: false,
+			dropdownFocus: false
 		};
 	},
 	props: {
@@ -47,7 +48,7 @@ export default {
 			type: String,
 			default: "",
 		},
-		valueTranfer: {
+		value: {
 			type: String,
 			default: "",
 		},
@@ -101,37 +102,83 @@ export default {
 		 * ModifiedBy: NTDUNG (05/08/2021)
 		 * @param {number} index chỉ số của option trong mảng
 		 */
-		activeItem(index) {
+		selectItem(index) {
 			this.currIdx = index;
 			if (index != -1) {
 				// Truyền Id mới
-				EventBus.$emit("changeDropdownValue", {
-					NewValue: this.dropdownData[index][this.dropdownField + 'Id'],
-					InputField: this.dropdownField + 'Id',
+				this.$emit("changeDropdownValue", {
+					Value: this.dropdownData[index][this.dropdownField + 'Id'],
+					Field: this.dropdownField + 'Id',
 				});
 				// Truyền Name mới
-				EventBus.$emit("changeDropdownValue", {
-					NewValue: this.dropdownData[index][this.dropdownField + "Name"],
-					InputField: this.dropdownField + "Name",
+				this.$emit("changeDropdownValue", {
+					Value: this.dropdownData[index][this.dropdownField + "Name"],
+					Field: this.dropdownField + "Name",
 				});
 				// Truyền Code mới
-				EventBus.$emit("changeDropdownValue", {
-					NewValue: this.dropdownData[index][this.dropdownField + "Code"],
-					InputField: this.dropdownField + "Code",
+				this.$emit("changeDropdownValue", {
+					Value: this.dropdownData[index][this.dropdownField + "Code"],
+					Field: this.dropdownField + "Code",
 				});
 			}
 		},
 	},
 	watch: {
 		/**
-		 * Theo dõi biến valueTranfer khi thay đổi thì reset index
+		 * Theo dõi biến value khi thay đổi thì reset index
 		 * CreatedBy: NTDUNG (05/08/2021)
 		 */
-		valueTranfer: function() {
+		value: function() {
 			this.currIdx = -1;
 		}
 	},
 	computed: {
+		dropdownListeners: function () {
+
+			return Object.assign({}, this.$listeners, {
+				blur: () => {
+					this.dropdownFocus = false;
+					this.hideDropdown();
+				},
+				click: () => {
+					this.toggleDropdown();
+				},
+				focus: () => {
+					this.dropdownFocus = true;
+				},
+				"keydown": (event) => {
+					switch(event.key) {
+						case "Enter":
+							this.toggleDropdown();
+							break;
+						case "ArrowDown":
+							if (this.currIdx == -1) {
+								this.currIdx = 0;
+							} else {
+								if (this.currIdx == this.dropdownData.length - 1) {
+									this.currIdx = 0;
+								} else {
+									this.currIdx++;
+								}
+							}
+							this.$el.querySelectorAll("li")[this.currIdx].scrollIntoView();
+							break;
+						case "ArrowUp":
+							if (this.currIdx == -1) {
+								this.currIdx = this.dropdownData.length - 1;
+							} else {
+								if (this.currIdx == 0) {
+									this.currIdx = this.dropdownData.length - 1;
+								} else {
+									this.currIdx--;
+								}
+							}
+							this.$el.querySelectorAll("li")[this.currIdx].scrollIntoView();
+							break;
+					}
+				}
+			});
+		},
 		/**
 		 * Nếu chỉ số hiện tại bằng -1 thì trả về giá trị mặc định, lớn hơn thì trả về phần tử trong mảng
 		 * CreatedBy: NTDUNG (28/07/2021)
@@ -140,11 +187,11 @@ export default {
 		 */
 		dropdownValue() {
 			if (this.currIdx == -1) {
-				if (this.valueTranfer !== '' && this.valueTranfer !== null) {
+				if (this.value !== '' && this.value !== null) {
 					var index = this.dropdownData.findIndex((item) => {
-						return item[this.dropdownField + 'Id'] == this.valueTranfer;
+						return item[this.dropdownField + 'Id'] == this.value;
 					});
-					this.activeItem(index);
+					this.selectItem(index);
 					return index == -1 ? this.defaultValue : this.dropdownData[index][this.dropdownField + 'Name'];
 				} else {
 					return this.defaultValue;
@@ -159,15 +206,3 @@ export default {
 <style>
 	@import url("../../../css/base/dropdown.css");
 </style>
-
-// USAGE /** ADD FIELDS TO APPLY CSS AND PROPERTIES OF DROPDOWN
-<BaseDropdown
-	:id="'dropdown-restaurant'"
-	:class="{ 'dropdown--restaurant': true }"
-	:APIurl="APIurl"
-	:dropdownShow="dropdownShow"
-	:valueTranfer="valueTranfer"
-	:dropdownField="dropdownField"
-	@toggleDropdown="toggleDropdown()"
-/>
-*/

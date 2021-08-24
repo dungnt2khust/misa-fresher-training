@@ -2,6 +2,9 @@
     height: calc(100% - 65px);
     overflow: auto;
 }
+.table-wrapper.table--loading {
+    overflow: hidden;
+}
 
 .table {
     table-layout: fixed;
@@ -25,7 +28,7 @@
             width: 40px;
         }
         .table__head-index {
-            width: 40px;
+            width: 50px;
         }
         .table__head th {
             border-bottom: 1px solid #bbb;
@@ -42,6 +45,7 @@
     /* 2. TABLE BODY */
     .table__body {
         cursor: pointer;
+        position: relative;
     }
         /* 2.1. TABLE ROW */
         .table__row {
@@ -57,7 +61,26 @@
             overflow: hidden;
             text-overflow: ellipsis;
         } 
-        .table__row.table__row--selected {
+        .table__row.table__row--select {
             background-color: #cacaca;
+        }
+        /* 2.2. TABLE BODY LOADING */
+        .table__loading {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            background-color: #FFF;
+            display: none;
+        }
+        .table--loading .table__loading {
+            display: block;
+        }
+        .table__loading-img {
+            position: relative; 
+            left: 50%;
+            transform: translate(-50%);
+            top: 160px;
         }
         

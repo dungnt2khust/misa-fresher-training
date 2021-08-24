@@ -1,17 +1,17 @@
 <template lang="">
 	<div id="menu">
-		<ul class="menu__list">
-			<li
+		<div class="menu__list">
+			<a
 				v-for="(item, index) in options"
-        @click="menuItemOnClick(index)"
 				:key="index"
 				class="menu__item"
-        :class="{ 'menu__item--active': index == currIdx}"
+				:class="{'menu__item--select': item.href == $route.path}"
+				:href="item.href"
 			>
 				<div class="menu__item-icon"></div>
-				{{ item }}
-			</li>
-		</ul>
+				{{ item.name }}
+			</a>
+		</div>
 	</div>
 </template>
 <script>
@@ -20,28 +20,17 @@
 		data() {
 			return {
 				options: [
-					"Tổng quan",
-					"Báo cáo",
-					"Mua hàng",
-					"Danh mục nhân viên",
-					"Danh mục khách hàng",
-					"Thiết lập hệ thống",
-				],
-				currIdx: 3,
+					{name: "Tổng quan", href: "#"},
+					{name: "Báo cáo", href: "#"},
+					{name: "Mua hàng", href: "#"},
+					{name: "Danh mục nhân viên", href: "/employees"},
+					{name: "Danh mục khách hàng", href: "/customers"},
+					{name: "Thiết lập hệ thống", href: "#"},	
+				],	
 			};
-		},
-    methods: {
-      /**
-       * Bắt sự kiện click vào menu item
-       * @param {number} index
-       * CreatedBy: NTDUNG (21/08/2021)
-       */
-      menuItemOnClick(index) {
-        this.currIdx = index;
-      }
-    }
+		}	
 	};
 </script>
 <style>
-	@import url('../../css/common/menu.css');
+	@import url("../../css/common/menu.css");
 </style>

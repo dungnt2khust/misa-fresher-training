@@ -79,7 +79,7 @@ export default {
 			if (index != -1) {
 				this.inputValue = this.comboboxData[index][this.comboboxField + "Name"];
 				this.$emit("changeComboboxValue", {
-					ComboboxField: this.comboboxField,
+					Field: this.comboboxField,
 					Value: this.comboboxData[index][this.comboboxField + "Id"],
 				});
 			}
@@ -180,7 +180,7 @@ export default {
                 if (this.inputValue != "") this.comboboxInvalid = true;
                 else {
                     this.$emit("changeComboboxValue", {
-                        ComboboxField: this.comboboxField,
+                        Field: this.comboboxField,
                         Value: "",
                     });
                 }

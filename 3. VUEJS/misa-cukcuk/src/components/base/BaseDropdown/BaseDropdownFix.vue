@@ -18,7 +18,7 @@
 			<li
 				@click="activeItem(index)"
 				v-for="(item, index) in dropdownData"
-				:class="{'dropdown__item--active': currIdx == index }"
+				:class="{'dropdown__item--select': currIdx == index }"
 				:key="index"
 				class="dropdown__item"
 			>
@@ -28,7 +28,6 @@
 	</div>
 </template>
 <script>
-	import { EventBus } from "../../../main";
 	export default {
 		name: "BaseDropdownFix",
 		data() {
@@ -39,7 +38,7 @@
 		},
 		props: {
 			dropdownData: Array,
-			valueTranfer: {
+			value: {
 				type: [String, Number],
 				default: "",
 			},
@@ -83,25 +82,25 @@
 				this.currIdx = index;
 				if (index != -1 && typeof this.dropdownData[0] == "object") {
 					// Nếu là gender thì sẽ truyền cả GenderId
-					EventBus.$emit("changeDropdownValue", {
-						NewValue: this.dropdownData[index][this.dropdownField + "Id"],
-						InputField: this.dropdownField,
+					this.$emit("changeDropdownValue", {
+						Value: this.dropdownData[index][this.dropdownField + "Id"],
+						Field: this.dropdownField,
 					});
 					if (this.dropdownField == "Gender")
 						// Tất cả các trường hợp đều truyền Name
-						EventBus.$emit("changeDropdownValue", {
-							NewValue: this.dropdownData[index][this.dropdownField + "Name"],
-							InputField: this.dropdownField + "Name",
+						this.$emit("changeDropdownValue", {
+							Value: this.dropdownData[index][this.dropdownField + "Name"],
+							Field: this.dropdownField + "Name",
 						});
 				}
 			},
 		},
 		watch: {
 			/**
-			 * Theo dõi biến valueTranfer khi thay đổi thì reset index
+			 * Theo dõi biến value khi thay đổi thì reset index
 			 * CreatedBy: NTDUNG (05/08/2021)
 			 */
-			valueTranfer: function() {
+			value: function() {
 				this.currIdx = -1;
 			},
 		},
@@ -114,9 +113,9 @@
 			dropdownValue() {
 				if (typeof this.dropdownData[0] == "object") {
 					if (this.currIdx == -1) {
-						if (this.valueTranfer !== "" && this.valueTranfer !== null) {
+						if (this.value !== "" && this.value !== null) {
 							var index = this.dropdownData.findIndex((item) => {
-								return item[this.dropdownField + "Id"] == this.valueTranfer;
+								return item[this.dropdownField + "Id"] == this.value;
 							});
 							this.activeItem(index);
 							return index == -1

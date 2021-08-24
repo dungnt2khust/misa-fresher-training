@@ -1,5 +1,5 @@
 <template lang="">
-	<div class="form-info" :style="{ display: popupState ? 'block' : 'none' }">
+	<div class="form-info" :style="{ display: formState ? 'block' : 'none' }">
 		<!-- FORM INFO OVERLAY -->
 		<div class="form-info__overlay"></div>
 		<!-- FORM INFO MAIN -->
@@ -9,7 +9,7 @@
 				<span class="form-header__label">
 					THÔNG TIN NHÂN VIÊN
 				</span>
-				<button @click="cancelPopup" class="form-header__cancel"></button>
+				<button @click="cancelForm" class="form-header__cancel"></button>
 			</div>
 			<!-- FORM BODY -->
 			<div class="form-body">
@@ -32,31 +32,39 @@
 							<div class="form-container__item">
 								<BaseInput
 									:tabIndex="1"
-									inputLabel="Mã nhân viên"
+									label="Mã nhân viên"
 									:required="true"
-									:valueTranfer="employeeData['EmployeeCode']"
-									inputField="EmployeeCode"
-									title="Mã nhân viên không được bỏ trống"
+									field="EmployeeCode"
+									:value="employeeData['EmployeeCode']"
+									v-model="employeeData['EmployeeCode']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 							<!-- FULL NAME -->
 							<div class="form-container__item">
 								<BaseInput
 									:tabIndex="2"
-									inputLabel="Họ và tên"
+									label="Họ và tên"
 									:required="true"
-									:valueTranfer="employeeData['FullName']"
-									inputField="FullName"
+									field="FullName"
+									:value="employeeData['FullName']"
+									v-model="employeeData['FullName']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 							<!-- DOB -->
 							<div class="form-container__item">
 								<BaseInput
 									:tabIndex="3"
-									inputLabel="Ngày sinh"
-									inputType="date"
-									:valueTranfer="employeeData['DateOfBirth']"
-									inputField="DateOfBirth"
+									label="Ngày sinh"
+									type="date"
+									field="DateOfBirth"
+									:value="employeeData['DateOfBirth']"
+									v-model="employeeData['DateOfBirth']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 							<!-- GENDER -->
@@ -67,57 +75,73 @@
 									:dropdownData="genderData"
 									dropdownField="Gender"
 									defaultValue="Chọn giới tính"
-									:valueTranfer="employeeData['Gender']"
+									:value="employeeData['Gender']"
+									@changeDropdownValue="changeInputValue($event)"
 								/>
 							</div>
 							<!-- ID CARD NUMBER -->
 							<div class="form-container__item">
 								<BaseInput
 									:tabIndex="5"
-									inputLabel=" Số CMTND/ Căn cước"
+									label=" Số CMTND/ Căn cước"
 									:required="true"
-									:valueTranfer="employeeData['IdentityNumber']"
-									inputField="IdentityNumber"
+									field="IdentityNumber"
+									:value="employeeData['IdentityNumber']"
+									v-model="employeeData['IdentityNumber']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 							<!-- RELEASE DATE -->
 							<div class="form-container__item">
 								<BaseInput
 									:tabIndex="6"
-									inputLabel="Ngày cấp"
-									inputType="date"
-									inputField="IdentityDate"
-									:valueTranfer="employeeData['IdentityDate']"
+									label="Ngày cấp"
+									type="date"
+									field="IdentityDate"
+									:value="employeeData['IdentityDate']"
+									v-model="employeeData['IdentityDate']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 							<!-- RELEASE PLACE -->
 							<div class="form-container__item form-container__item--100">
 								<BaseInput
 									:tabIndex="7"
-									inputLabel="Nơi cấp"
-									:inputAlone="true"
-									inputField="IdentityPlace"
-									:valueTranfer="employeeData['IdentityPlace']"
+									label="Nơi cấp"
+									:inputHalf="true"
+									field="IdentityPlace"
+									:value="employeeData['IdentityPlace']"
+									v-model="employeeData['IdentityPlace']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 							<!-- EMAIL -->
-							<div class="form-container__item email">
+							<div class="form-container__item">
 								<BaseInput
 									:tabIndex="8"
-									inputLabel="Email"
+									label="Email"
 									:required="true"
-									:valueTranfer="employeeData['Email']"
-									inputField="Email"
+									field="Email"
+									:value="employeeData['Email']"
+									v-model="employeeData['Email']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 							<!-- PHONE -->
 							<div class="form-container__item">
 								<BaseInput
 									:tabIndex="9"
-									inputLabel="Số điện thoại"
+									label="Số điện thoại"
 									:required="true"
-									:valueTranfer="employeeData['PhoneNumber']"
-									inputField="PhoneNumber"
+									field="PhoneNumber"
+									:value="employeeData['PhoneNumber']"
+									v-model="employeeData['PhoneNumber']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 						</div>
@@ -131,12 +155,11 @@
 								<span class="form-container__label"> Vị trí </span>
 								<BaseDropdown
 									:tabIndex="10"
-									:id="'dropdown-position'"
-									:class="{ 'dropdown--position': true }"
-									:APIurl="APIurl__POSITION"
-									:valueTranfer="employeeData['PositionId']"
+									APIurl="http://cukcuk.manhnv.net/v1/Positions"
+									:value="employeeData['PositionId']"
 									defaultValue="Chọn vị trí"
 									dropdownField="Position"
+									@changeDropdownValue="changeInputValue($event)"
 								/>
 							</div>
 							<!-- DEPARTMENT -->
@@ -144,32 +167,36 @@
 								<span class="form-container__label"> Phòng ban </span>
 								<BaseDropdown
 									:tabIndex="11"
-									:id="'dropdown-department'"
-									:class="{ 'dropdown--department': true }"
-									:APIurl="APIurl__DEPARTMENT"
-									:valueTranfer="employeeData['DepartmentId']"
+									APIurl="http://cukcuk.manhnv.net/api/Department"
+									:value="employeeData['DepartmentId']"
 									defaultValue="Chọn phòng ban"
 									dropdownField="Department"
+									@changeDropdownValue="changeInputValue($event)"
 								/>
 							</div>
 							<!-- TAX CODE -->
 							<div class="form-container__item">
 								<BaseInput
 									:tabIndex="12"
-									inputLabel="Mã số thuế cá nhân"
-									inputField="PersonalTaxCode"
-									:valueTranfer="employeeData['PersonalTaxCode']"
+									label="Mã số thuế cá nhân"
+									field="PersonalTaxCode"
+									:value="employeeData['PersonalTaxCode']"
+									v-model="employeeData['PersonalTaxCode']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 							<!-- SALARY -->
-							<div class="form-container__item" style="position: relative">
+							<div class="form-container__item">
 								<BaseInput
 									:tabIndex="13"
-									inputLabel="Mức lương cơ bản"
-									inputType="text"
-									:valueTranfer="employeeData['Salary']"
-									:haveUnit="true"
-									inputField="Salary"
+									label="Mức lương cơ bản"
+									unit="VNĐ"
+									field="Salary"
+									:value="employeeData['Salary']"
+									v-model="employeeData['Salary']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 							<!-- JOIN DATE -->
@@ -177,21 +204,27 @@
 								<BaseInput
 									:tabIndex="14"
 									:required="true"
-									inputLabel="Ngày gia nhập công ty"
-									inputType="date"
-									inputField="JoinDate"
-									:valueTranfer="employeeData['JoinDate']"
+									label="Ngày gia nhập công ty"
+									type="date"
+									field="JoinDate"
+									:value="employeeData['JoinDate']"
+									v-model="employeeData['JoinDate']"
+									:validateForm="validateForm"
+									:formState="formState"
 								/>
 							</div>
 							<!-- WORK STATUS -->
 							<div class="form-container__item">
-								<span class="form-container__label"> Tình trạng công việc </span>
+								<span class="form-container__label">
+									Tình trạng công việc
+								</span>
 								<BaseDropdownFix
 									:tabIndex="15"
 									:dropdownData="workStatusData"
-									:valueTranfer="employeeData['WorkStatus']"
+									:value="employeeData['WorkStatus']"
 									defaultValue="Chọn trạng thái"
 									dropdownField="WorkStatus"
+									@changeDropdownValue="changeInputValue($event)"
 								/>
 							</div>
 						</div>
@@ -200,12 +233,14 @@
 			</div>
 			<!-- FORM FOOTER -->
 			<div class="form-footer">
-				<button @click="cancelPopup" class="form-footer__cancel">
+				<button @keydown.enter="cancelForm" @click="cancelForm" class="form-footer__cancel" tabindex="16">
 					Huỷ
-				</button>	
+				</button>
 				<button
-					@click="savePopup"
+					@click="saveForm"
+					@keydown.enter="saveForm"
 					class="button form-footer__save"
+					tabindex="17"
 				>
 					<i class="far fa-save form-footer__save-icon"></i> Lưu
 				</button>
@@ -225,10 +260,6 @@
 		name: "EmployeeDetail",
 		data() {
 			return {
-				// API url
-				APIurl__DEPARTMENT: "http://cukcuk.manhnv.net/api/Department",
-				APIurl__POSITION: "http://cukcuk.manhnv.net/v1/Positions",
-
 				//WORKSTATUS
 				workStatusData: [
 					{ WorkStatusId: 0, WorkStatusName: 0 },
@@ -246,11 +277,12 @@
 				],
 
 				// COMMON VARIABLES
-				popupState: false,
+				formState: false,
 				employeeId: "",
 				employeeData: {},
 				method: "",
 				accountName: "NTDUNG",
+				validateForm: false,
 			};
 		},
 		created() {
@@ -261,7 +293,7 @@
 			 */
 			EventBus.$on("tableRowOnDbClick", (rowId) => {
 				EventBus.$emit("getDropdownData");
-				this.popupState = true;
+				this.formState = true;
 				this.employeeId = rowId;
 				this.getEmployeeData();
 				this.method = "PUT";
@@ -272,7 +304,7 @@
 			 */
 			EventBus.$on("addEmployee", () => {
 				EventBus.$emit("getDropdownData");
-				this.popupState = true;
+				this.formState = true;
 				this.employeeData = {
 					EmployeeCode: null,
 					FirstName: null,
@@ -310,20 +342,6 @@
 				};
 				this.method = "POST";
 				this.getNewEmployeeCode();
-			});
-			/**
-			 * Lắng nghe sự kiện thay đổi dropdown
-			 * CreatedBy: NTDUNG (04/08/2021)
-			 */
-			EventBus.$on("changeDropdownValue", (data) => {
-				this.changeInputValue(data["NewValue"], data["InputField"]);
-			});
-			/**
-			 * Lắng nghe sự kiện thay đổi input
-			 * CreatedBy: NTDUNG (11/08/2021)
-			 */
-			EventBus.$on("changeInputValue", (data) => {
-				this.changeInputValue(data["NewValue"], data["InputField"]);
 			});
 		},
 		methods: {
@@ -363,11 +381,11 @@
 					});
 			},
 			/**
-			 * Ẩn popup
+			 * Ẩn form
 			 * CreatedBy: NTDUNG (30/07/2021)
 			 */
-			cancelPopup() {
-				this.popupState = false;
+			cancelForm() {
+				this.formState = false;
 				EventBus.$emit("showDialog", {
 					type: "warn",
 					title: "Huỷ nhập dữ liệu",
@@ -376,7 +394,7 @@
 					mode: "CANCELFORM",
 				});
 				EventBus.$on("continueBtnOnClickCANCELFORM", () => {
-					this.popupState = true;
+					this.formState = true;
 				});
 				EventBus.$on("cancelBtnOnClickCANCELFORM", () => {
 					this.employeeData = {};
@@ -389,28 +407,31 @@
 			 * Xử lý sự kiện nhấn nút Lưu (Chỉnh sửa hoặc tạo mới)
 			 * CreatedBy: NTDUNG (31/07/2021)
 			 */
-			savePopup() {
-				// Gọi đến sự kiện validate input để validate từng trường input
-				EventBus.$emit("validateEmployeeInput");
-				var checkForm = true;
-				var inputs = this.$el.querySelectorAll("input");
-				inputs.forEach((input) => {
-					// Kiểm tra nếu có trường input nào không hợp lệ thì false
-					if (input.classList.contains("invalid-input")) {
-						checkForm = false;
-					}
-				});
+			saveForm() {
+				// Validate form thêm lần nữa
+				this.validateForm = !this.validateForm;
+				setTimeout(() => {
+					// Gọi đến sự kiện validate input để validate từng trường input
+					var checkForm = true;
+					var inputs = this.$el.querySelectorAll("input");
+					inputs.forEach((input) => {
+						// Kiểm tra nếu có trường input nào không hợp lệ thì false
+						if (input.classList.contains("input--error")) {
+							checkForm = false;
+						}
+					});
 
-				if (checkForm) {
-					console.log(JSON.stringify(this.employeeData));
-					// Ẩn popup đi
-					this.popupState = false;
-					if (this.method == "POST") {
-						this.creatEmployee();
-					} else if (this.method == "PUT") {
-						this.updateEmployee();
+					if (checkForm) {
+						this.convertData();
+						// Ẩn form đi
+						this.formState = false;
+						if (this.method == "POST") {
+							this.creatEmployee();
+						} else if (this.method == "PUT") {
+							this.updateEmployee();
+						}
 					}
-				}
+				}, 100);
 			},
 			/**
 			 * Thêm mới thông tin nhân viên
@@ -420,20 +441,10 @@
 				// Thêm ngày tạo mới, người tạo mới
 				this.$set(this.employeeData, "CreatedDate", this.getNewDateJSON);
 				this.$set(this.employeeData, "CreatedBy", this.accountName);
-				EventBus.$emit("ToastMessage", {
-					type: "warn",
-					content: "Đang tạo mới. Vui lòng chờ",
-					duration: 5000,
-				});
 				// Tạo mới thông tin
 				axios
 					.post(`http://cukcuk.manhnv.net/v1/Employees`, this.employeeData)
 					.then(() => {
-						EventBus.$emit("ToastMessage", {
-							type: "success",
-							content: "Tạo mới thành công",
-							duration: 5000,
-						});
 						this.reloadTableData();
 					})
 					.catch((res) => {
@@ -453,11 +464,6 @@
 				// Thêm ngày chỉnh sửa, người chỉnh sửa
 				this.$set(this.employeeData, "ModifiedDate", this.getNewDateJSON);
 				this.$set(this.employeeData, "ModifiedBy", this.accountName);
-				EventBus.$emit("ToastMessage", {
-					type: "warn",
-					content: "Đang chỉnh sửa. Vui lòng chờ",
-					duration: 5000,
-				});
 				// Chỉnh sửa thông tin
 				axios
 					.put(
@@ -482,47 +488,6 @@
 					});
 			},
 			/**
-			 * Xoá thông tin nhân viên
-			 * CreatedBy: NTDUNG (02/08/2021)
-			 */
-			deleteEmployee() {
-				this.popupState = false;
-				// Show popup cảnh báo xác nhận xoá
-				EventBus.$emit("showDialog", {
-					type: "error",
-					title: "Xác nhận xoá thông tin",
-					content: `Bạn có muốn xoá <b>${this.employeeData["FullName"]} - ${this.employeeData["EmployeeCode"]}</b>`,
-					continueBtn: "Xoá nhân viên",
-					mode: "DELETE",
-				});
-				// Lắng nghe lựa chọn của popup dialog
-				EventBus.$on("continueBtnOnClickDELETE", () => {
-					EventBus.$emit("ToastMessage", {
-						type: "warn",
-						content: "Đang xoá. Vui lòng chờ",
-						duration: 5000,
-					});
-					axios
-						.delete(`http://cukcuk.manhnv.net/v1/Employees/${this.employeeId}`)
-						.then(() => {
-							EventBus.$emit("ToastMessage", {
-								type: "success",
-								content: "Xoá thành công",
-								duration: 5000,
-							});
-							this.reloadTableData();
-						})
-						.catch((res) => {
-							console.log(res);
-							EventBus.$emit("ToastMessage", {
-								type: "error",
-								content: "Xoá thất bại. Vui lòng liên hệ MISA",
-								duration: 5000,
-							});
-						});
-				});
-			},
-			/**
 			 * Phát sự kiện load lại dữ liệu bảng table
 			 * CreatedBy: NTDUNG (31/07/2021)
 			 */
@@ -532,36 +497,21 @@
 			/**
 			 * Bắt sự kiện thay đổi input để gán lại vào employeeData
 			 * CreatedBy: NTDUNG (02/08/2021)
-			 * @param {string} newValue
-			 * @param {string} inputField
+			 * ModifiedBy: NTDUNG (22/08/2021)
+			 * @param {object} data
 			 */
-			changeInputValue(newValue, inputField) {
-				console.log(inputField, newValue);
-				this.$set(this.employeeData, inputField, newValue);
+			changeInputValue(data) {
+				this.$set(this.employeeData, data["Field"], data["Value"]);
+			},
+			/**
+			 * Chuyển đổi dữ liệu trong employeeData chuẩn thành JSON
+			 * CreatedBy: NTDUNG (03/08/2021)
+			 */
+			convertData() {
+				console.log(this.employeeData);
 			},
 		},
 		computed: {
-			/**
-			 * Format các dữ liệu trước khi binding lên form thông tin
-			 * CreatedBy: NTDUNG (30/07/2021)
-			 * @param {object}
-			 */
-			formatEmployeeData() {
-				if (this.popupState) {
-					var termData = this.employeeData;
-					for (var field in termData) {
-						if (field.includes("Date")) {
-							var value = termData[`${field}`];
-							if (value != null || value == "") {
-								termData[`${field}`] = value.substring(0, 10);
-							}
-						}
-					}
-					return termData;
-				} else {
-					return {};
-				}
-			},
 			/**
 			 * Tạo một thông tin date mới theo kiểu JSON
 			 * CreatedBy: NTDUNG (03/08/2021)

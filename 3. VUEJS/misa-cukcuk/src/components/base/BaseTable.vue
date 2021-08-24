@@ -1,5 +1,5 @@
 <template>
-	<div class="table-wrapper">
+	<div class="table-wrapper" :class="{'table--loading': tableLoading}">
 		<table class="table">
 			<thead class="table__head">
 				<tr>
@@ -16,7 +16,6 @@
 					<th
 						v-for="(item, index) in tableStyle"
 						:key="index"
-						class="table-employee__header"
 						:class="classAlignTable(item.Style)"
 					>
 						{{ item.HeaderName }}
@@ -32,7 +31,7 @@
 					:key="index"
 					class="table__row"
 					:class="{
-						'table__row--selected':
+						'table__row--select':
 							employeeDeleteData.indexOf(row.EmployeeId) != -1,
 					}"
 				>
@@ -53,6 +52,9 @@
 						{{ formatDataTable(row, item.FieldName) }}
 					</td>
 				</tr>
+				<div class="table__loading">
+					<img src="../../assets/img/loading.gif" alt="" class="table__loading-img">
+				</div>
 			</tbody>
 		</table>
 	</div>
@@ -85,7 +87,8 @@
 				employeeFullName: '',
 				tableData: [],
 				employeeDeleteData: [],
-				checkAll: false
+				checkAll: false,
+				tableLoading: false
 			};
 		},
 		created() {
@@ -109,14 +112,14 @@
 							continueBtn: "Xác nhận xoá",
 							mode: "DELETEMULTI",
 						});
-						EventBus.$on("continueBtnOnClickDELETEMULTI", () => {
-							EventBus.$emit("ToastMessage", {
-								type: "warn",
-								content: "Đang xoá. Vui lòng chờ",
-								duration: 5000,
-							});
+						EventBus.$on("continueBtnOnClickDELETEMULTI", () => {	
 							this.employeeDeleteData.forEach((employeeId) => {
 								this.deleteEmployee(employeeId);
+							});
+							EventBus.$emit("ToastMessage", {
+								type: "success",
+								content: "Xoá thành công",
+								duration: 2000,
 							});
 							this.employeeDeleteData = [];
 						});	
@@ -130,13 +133,13 @@
 							mode: "DELETE",
 						});
 						EventBus.$on("continueBtnOnClickDELETE", () => {
-							EventBus.$emit("ToastMessage", {
-								type: "warn",
-								content: "Đang xoá. Vui lòng chờ",
-								duration: 5000,
-							});
 							this.deleteEmployee(this.employeeDeleteData[0]);
 							this.employeeDeleteData = [];
+							EventBus.$emit("ToastMessage", {
+								type: "success",
+								content: "Xoá thành công",
+								duration: 2000,
+							});
 						});		
 					}	
 				} else {
@@ -181,22 +184,19 @@
 			 * @param {string} urlAPI
 			 */
 			getTableData(urlAPI) {
-				EventBus.$emit("ToastMessage", {
-					type: "warn",
-					content: "Đang tải dữ liệu. Vui lòng chờ",
-					duration: 2000,
-				});
+				// Bật loading
+				this.tableLoading = true;
+				// Gọi API lấy dữ liệU
 				axios
 					.get(urlAPI)
 					.then((res) => {
+						// Gán dữ liệu vào table
 						this.tableData = res.data.Data;
+						// Tắt loading
+						this.tableLoading = false;
+						// Gửi totalPage, totalRecord ra cho phân trang hiển thị
 						this.$emit("changeTotalPage", res.data.TotalPage);
-						this.$emit("changeTotalRecord", res.data.TotalRecord);
-						EventBus.$emit("ToastMessage", {
-							type: "success",
-							content: "Tải dữ liệu thành công",
-							duration: 2000,
-						});
+						this.$emit("changeTotalRecord", res.data.TotalRecord);	
 					})
 					.catch((res) => {
 						console.log(res);

@@ -4,7 +4,7 @@
       <EmployeeHeader/>
       <div id="wrapper">
         <EmployeeMenu/>
-        <EmployeePage/>
+        <router-view/>
       </div>
     </div>
     <EmployeeDetail/>
@@ -16,7 +16,6 @@
 <script>
 import TheHeader from './components/layout/TheHeader.vue'
 import TheMenu from './components/layout/TheMenu.vue'
-import EmployeePage from './view/employee/EmployeePage.vue'
 import EmployeeDetail from './view/employee/EmployeeDetail.vue'
 import BaseToastMessage from './components/base/BaseToastMessage.vue'
 import BaseDialog from './components/base/BaseDialog.vue'
@@ -27,7 +26,6 @@ export default {
   components: {
     EmployeeHeader: TheHeader,
     EmployeeMenu: TheMenu,
-    EmployeePage,
     EmployeeDetail,
     EmployeeToast: BaseToastMessage,
     EmployeeDialog: BaseDialog

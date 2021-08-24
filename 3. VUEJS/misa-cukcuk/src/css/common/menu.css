@@ -5,8 +5,11 @@
     --menu-item-mini-width: 52px;
 
     /* COLOR */
+    --menu-item-text-color: #000;
     --menu-item-hover-color: #A7A5A5;
-    --menu-item-default-color: #019160;
+    --menu-item-select-color: #019160;
+    --menu-item-select-text-color: #FFF;
+    --menu-item-hover-text-color: #000;
 }
 
 #menu {
@@ -25,18 +28,19 @@
             align-items: center;
             cursor: pointer;
             font-size: 13px;
+            color: var(--menu-item-text-color);
+            text-decoration: none;
         }
 
-        .menu__item.menu__item--active {
-            background-color: var(--menu-item-default-color);
-            color: #fff;
+        .menu__item.menu__item--select {
+            background-color: var(--menu-item-select-color);
+            color: var(--menu-item-select-text-color);
         }
 
         .menu__item:hover {
             background-color: var(--menu-item-hover-color);
-            color: #000;
+            color: var(--menu-item-hover-text-color);
         }
-
 
         .menu__item:nth-child(1) .menu__item-icon {
             width: 20px;

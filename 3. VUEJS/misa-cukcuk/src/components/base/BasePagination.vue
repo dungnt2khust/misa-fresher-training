@@ -129,6 +129,9 @@
              */
             displayItemOnClick(index) {
                 var idxDisplay = Math.ceil(this.currPage / this.pageNumDisplay);
+                if (this.totalPage - this.currPage <= 2) {
+                    return index <= this.totalPage && index >= this.totalPage - this.pageNumDisplay + 1;
+                }
                 return index <= idxDisplay * this.pageNumDisplay && index >= (idxDisplay - 1) * this.pageNumDisplay + 1;
             },
             /**

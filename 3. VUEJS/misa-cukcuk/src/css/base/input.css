@@ -1,11 +1,42 @@
+:root {
+    --input-height: 40px;
+    --input-error-msg-color: red;
+    --input-error-msg-text-color: #FFF;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
 .input {
     margin-top: 4px;
-    height: 40px;
+    height: var(--input-height);
     padding-left: 10px;
     border: 1px solid #bbb;
     border-radius: 3;
     border-radius: 4px;
     outline: none;
+    width: 100%;
+}
+
+.input--half {
+    width: calc(50% - 5px);
+}
+
+.input__error {
+    position: absolute;
+    bottom: 40px;
+    right: 0;
+    padding: 2px 6px;
+    background-color: var(--input-error-msg-color);
+    color: var(--input-error-msg-text-color);
+    border-radius: 4px;
+    display: none;
+    transition: all 0.3s ease;
+}
+
+.input-wrapper:hover .input__error {
+    display: block;
 }
 
 .input:focus { 
@@ -14,4 +45,35 @@
 
 .label {
     font-size: 14px;
+    display: block;
+}
+
+.input__value {
+    display: block;
+    color: rgb(65, 65, 65);
+    width: 50%;
+    font-size: 14px;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    margin-left: 10px;
+    background-color: var(--primary-color);
+    height: calc(var(--input-height) - 10px);
+    line-height: var(--input-height);
+}
+.input--error {
+    border: 1px solid red !important;
+}
+
+.input.input--unit {
+    text-align: right;
+    padding-right: 48px;
+}
+.input__unit {
+    position: absolute;
+    bottom: calc(var(--input-height)/2);
+    right: 10px;
+    transform: translateY(50%);
+    font-size: 14px;
+    font-style: italic;
 }
