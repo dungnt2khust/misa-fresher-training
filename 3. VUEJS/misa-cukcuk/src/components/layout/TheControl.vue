@@ -20,12 +20,12 @@
 				<BaseCombobox
 					style="margin-right: 7px;"
 					@changeComboboxValue="changeComboboxValue($event)"
-					placeHolder="Tất cả phòng ban"
+					defaultValue="Tất cả phòng ban"
 					comboboxField="Department"
 					:comboboxData="departmentFilterData"/>
 				<BaseCombobox
 					@changeComboboxValue="changeComboboxValue($event)"
-					placeHolder="Tất cả vị trí"
+					defaultValue="Tất cả vị trí"
 					comboboxField="Position"
 					:comboboxData="positionFilterData"/>	
 			</div>
@@ -133,7 +133,7 @@
 			 * @param {data} 
 			 */
 			changeComboboxValue(data) {
-				this.filterData[data.ComboboxField] = data.Value;
+				this.filterData[data.Field] = data.Value;
 				EventBus.$emit('filterEmployee', this.filterData);
 			}
 		},

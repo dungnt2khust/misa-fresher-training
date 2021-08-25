@@ -8,7 +8,7 @@
 			:type="type"
 			class="input"
 			:class="{'input--error': isError, 'input--half': inputHalf, 'input--unit': unit != '' }"
-			:value="value"
+			:value="formatInputData"
 			v-on="inputListeners"
 		/>
 		<span class="input__unit" v-if="unit != ''"> {{ unit }}</span>
@@ -78,7 +78,6 @@ export default {
 		 * ModifiedBy: NTDUNG (06/08/2021)
 		 */
 		validateInput(value) {
-			console.log(value)
 			if (value === null || value === "") {
 				if (this.required) {
 					this.errorMsg = "Trường này bắt buộc nhập";
@@ -129,18 +128,39 @@ export default {
 	computed: {
 		/**
 		 * Lắng nghe sự kiện trên input
-		 * CreatedBy: NTDUNG (05/08/2021)
+		 * CreatedBy: NTDUNG (25/08/2021)
 		 */
 		inputListeners: function () {
-			var self = this;
 			return Object.assign({}, this.$listeners, {
-				input: function (event) {
-					self.$emit("input", event.target.value);
-					self.errors = "";
-					self.isError = false;
+				input: (event) => {	
+					this.errors = "";
+					this.isError = false;
+	
+					if (this.field == "Salary") {	
+						var salary = event.target.value.replaceAll('.', '');
+						if (this.value !== null && this.value.toString().length >= 12) {
+							if (event.inputType != "insertText") {
+								if (salary != "") {
+									this.$emit("input", Number(salary));
+								} else {
+									this.$emit("input", null);
+								}	
+							} else {
+								event.target.value = this.formatInputData;
+							}
+						} else {
+							if (salary != "") {
+								this.$emit("input", Number(salary));
+							} else {
+								this.$emit("input", null);
+							}	
+						}
+					} else {
+						this.$emit("input", event.target.value);
+					}
 				},
-				blur: function (event) {
-					self.validateInput(event.target.value);
+				blur: (event) => {
+					this.validateInput(event.target.value);
 				}
 				// change: function(event) {
 				// 	if (self.type == 'date') {
@@ -156,12 +176,16 @@ export default {
 				// }
 			});
 		},
-		// formatInputData() {
-		// 	if (this.field == "Salary") {
-		// 		return this.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-		// 	}
-		// 	return this.value;
-		// }
+		/**
+		 * Định dạng lại dữ liệu trước khi đưa lên input
+		 * CreatedBy: NTDUNG (25/08/2021)
+		 */
+		formatInputData() {
+			if (this.field == "Salary" && this.value !== null) {
+				return this.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+			}
+			return this.value;
+		}	
 	},
 	watch: {
 		validateForm: function () {

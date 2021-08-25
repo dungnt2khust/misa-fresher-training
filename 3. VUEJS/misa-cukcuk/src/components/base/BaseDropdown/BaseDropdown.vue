@@ -133,6 +133,10 @@ export default {
 		}
 	},
 	computed: {
+		/**
+		 * Lắng nghe các sự kiện trên dropdown
+		 * CreatedBy: NTDUNG (25/08/2021)
+		 */
 		dropdownListeners: function () {
 
 			return Object.assign({}, this.$listeners, {
@@ -146,12 +150,14 @@ export default {
 				focus: () => {
 					this.dropdownFocus = true;
 				},
-				"keydown": (event) => {
+				keydown: (event) => {
 					switch(event.key) {
 						case "Enter":
+							event.preventDefault();
 							this.toggleDropdown();
 							break;
 						case "ArrowDown":
+							event.preventDefault();
 							if (this.currIdx == -1) {
 								this.currIdx = 0;
 							} else {
@@ -164,6 +170,7 @@ export default {
 							this.$el.querySelectorAll("li")[this.currIdx].scrollIntoView();
 							break;
 						case "ArrowUp":
+							event.preventDefault();
 							if (this.currIdx == -1) {
 								this.currIdx = this.dropdownData.length - 1;
 							} else {

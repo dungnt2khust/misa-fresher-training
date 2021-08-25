@@ -50,9 +50,9 @@
         border-bottom-right-radius: 4px;
         overflow: hidden;
         z-index: 10000;
-        height: 100px;
+        /* height: 140px; */
         overflow: auto;
-        scroll-behavior: smooth;
+        /* scroll-behavior: smooth; */
     }
 
     .dropdown.dropdown--show .dropdown__list {

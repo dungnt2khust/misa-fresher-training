@@ -1,9 +1,8 @@
 <template lang="">
-	<div
-		@blur="hideDropdown()"
-		@click="toggleDropdown()"
+	<div	
+		v-on="dropdownListeners"		
 		class="dropdown"
-		:class="{ 'dropdown--show': dropdownState }"
+		:class="{ 'dropdown--show': dropdownState, 'dropdown--focus': dropdownFocus }"
 		:tabindex="tabIndex"
 	>
 		<div class="dropdown__header">
@@ -16,7 +15,8 @@
 			class="dropdown__list"
 		>
 			<li
-				@click="activeItem(index)"
+				@keydown.enter="selectItem(index)"
+				@click="selectItem(index)"
 				v-for="(item, index) in dropdownData"
 				:class="{'dropdown__item--select': currIdx == index }"
 				:key="index"
@@ -34,6 +34,7 @@
 			return {
 				currIdx: -1,
 				dropdownState: false,
+				dropdownFocus: false
 			};
 		},
 		props: {
@@ -78,7 +79,7 @@
 			 * Khi click vào một option thì đặt lại giá trị hiện tại
 			 * CreatedBy: NTDUNG (28/07/2021)
 			 */
-			activeItem(index) {
+			selectItem(index) {
 				this.currIdx = index;
 				if (index != -1 && typeof this.dropdownData[0] == "object") {
 					// Nếu là gender thì sẽ truyền cả GenderId
@@ -106,6 +107,56 @@
 		},
 		computed: {
 			/**
+			 * Lắng nghe các sự kiện trên dropdown
+			 * CreatedBy: NTDUNG (25/08/2021)
+			 */
+			dropdownListeners: function () {
+
+				return Object.assign({}, this.$listeners, {
+					blur: () => {
+						this.dropdownFocus = false;
+						this.hideDropdown();
+					},
+					click: () => {
+						this.toggleDropdown();
+					},
+					focus: () => {
+						this.dropdownFocus = true;
+					},
+					"keydown": (event) => {
+						switch(event.key) {
+							case "Enter":
+								this.toggleDropdown();
+								break;
+							case "ArrowDown":
+								if (this.currIdx == -1) {
+									this.currIdx = 0;
+								} else {
+									if (this.currIdx == this.dropdownData.length - 1) {
+										this.currIdx = 0;
+									} else {
+										this.currIdx++;
+									}
+								}
+								this.$el.querySelectorAll("li")[this.currIdx].scrollIntoView();
+								break;
+							case "ArrowUp":
+								if (this.currIdx == -1) {
+									this.currIdx = this.dropdownData.length - 1;
+								} else {
+									if (this.currIdx == 0) {
+										this.currIdx = this.dropdownData.length - 1;
+									} else {
+										this.currIdx--;
+									}
+								}
+								this.$el.querySelectorAll("li")[this.currIdx].scrollIntoView();
+								break;
+						}
+					}
+				});
+			},
+			/**
 			 * Tính giá trị hiện tại của Dropdown
 			 * CreatedBy: NTDUNG (28/07/2021)
 			 * @returns {string} trả về chuỗi để đưa lên dropdown
@@ -117,7 +168,7 @@
 							var index = this.dropdownData.findIndex((item) => {
 								return item[this.dropdownField + "Id"] == this.value;
 							});
-							this.activeItem(index);
+							this.selectItem(index);
 							return index == -1
 								? this.defaultValue
 								: this.dropdownData[index][this.dropdownField + "Name"];
@@ -129,7 +180,7 @@
 					}
 				} else {
 					if (this.indexTranfer != -1 && this.currIdx == -1) {
-						this.activeItem(this.indexTranfer);
+						this.selectItem(this.indexTranfer);
 						return this.dropdownData[this.indexTranfer];
 					} else {
 						return this.dropdownData[this.currIdx];

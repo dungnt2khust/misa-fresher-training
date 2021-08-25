@@ -1,5 +1,9 @@
+:root {
+    --control-height: 120px;
+}
+
 #control {
-    height: 120px;
+    height: var(--control-height);
     display: flex;
     justify-content: space-between;
     padding: 16px;

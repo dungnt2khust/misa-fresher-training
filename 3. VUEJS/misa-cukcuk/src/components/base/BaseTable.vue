@@ -21,6 +21,11 @@
 						{{ item.HeaderName }}
 					</th>
 				</tr>
+				<transition name="fade">
+				<div class="table__loading">
+					<img src="../../assets/img/loading.gif" alt="" class="table__loading-img">
+				</div>
+				</transition>
 			</thead>
 			<tbody class="table__body">
 				<tr
@@ -51,10 +56,7 @@
 					>
 						{{ formatDataTable(row, item.FieldName) }}
 					</td>
-				</tr>
-				<div class="table__loading">
-					<img src="../../assets/img/loading.gif" alt="" class="table__loading-img">
-				</div>
+				</tr>	
 			</tbody>
 		</table>
 	</div>
@@ -200,6 +202,7 @@
 					})
 					.catch((res) => {
 						console.log(res);
+						// Thông báo khi xảy ra lỗi
 						EventBus.$emit("ToastMessage", {
 							type: "error",
 							content: "Tải dữ liệu thất bại. Vui lòng liên hệ MISA.",
@@ -317,5 +320,19 @@
 	};
 </script>
 <style>
-	@import url('../../css/base/table.css');
+	@import url('../../css/base/table.css');	
+	.fade-enter {
+		opacity: 0;
+		transition: all 0.2s ease;
+	}
+	.fade-enter-active {
+		opacity: 1;
+	}
+	.fade-leave {
+		opacity: 1;
+		transition: all 0.2s ease;
+	}
+	.fade-leave-active {
+		opacity: 0;
+	}
 </style>
